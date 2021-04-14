@@ -1,6 +1,6 @@
 import "./sass/style.sass";
 import { io } from "socket.io-client";
-const socket = io("http://localhost:5100");
+const socket = io(SOCKETURL);
 
 var form = document.getElementById("form");
 var input = document.getElementById("input");
