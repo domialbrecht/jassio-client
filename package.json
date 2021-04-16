@@ -13,6 +13,8 @@
     "three": "^0.126.0"
   },
   "devDependencies": {
+    "autoprefixer": "^10.2.5",
+    "postcss-loader": "^5.2.0",
     "@babel/core": "^7.13.1",
     "@babel/preset-env": "^7.13.5",
     "babel-loader": "^8.2.2",

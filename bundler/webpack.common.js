@@ -1,5 +1,6 @@
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCSSExtractPlugin = require("mini-css-extract-plugin");
 const path = require("path");
 
 //plugin
@@ -18,6 +19,7 @@ module.exports = {
       template: path.resolve(__dirname, "../src/index.html"),
       minify: true,
     }),
+    new MiniCSSExtractPlugin(),
   ],
   module: {
     rules: [
@@ -33,16 +35,17 @@ module.exports = {
         exclude: /node_modules/,
         use: ["babel-loader"],
       },
-      // CSS
+      // SCSS
       {
         test: /\.s[ac]ss$/i,
         use: [
           // Creates `style` nodes from JS strings
-          "style-loader",
+          MiniCSSExtractPlugin.loader,
           // Translates CSS into CommonJS
           "css-loader",
           // Compiles Sass to CSS
           "sass-loader",
+          "postcss-loader",
         ],
       },
       // Images

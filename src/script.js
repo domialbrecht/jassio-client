@@ -1,4 +1,4 @@
-import "./sass/style.sass";
+import "./style.scss";
 import { io } from "socket.io-client";
 const socket = io(SOCKETURL);
 
