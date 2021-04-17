@@ -8,11 +8,8 @@
 # Install dependencies for both projects (workspaces)
 yarn install
 
-# Run the local server at localhost:8080
+# Run the local server at localhost:300
 yarn dev
-
-# Build for production in the dist/ directory
-yarn build
 ```
 
 ## Project overview
