@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  @import url("https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&display=swap");
+  html,
+  body,
+  #_next,
+  .application {
+    @apply font-sans;
+    @apply tracking-wide;
+    min-height: 100vh;
+  }
+}

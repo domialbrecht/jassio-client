@@ -1,0 +1,10 @@
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2622 1276">
+<filter xmlns="http://www.w3.org/2000/svg" id="b" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse" height="1044" width="1044" x="1725" y="0"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" mode="normal" result="shape"/><feGaussianBlur result="effect1_foregroundBlur" stdDeviation="100"/></filter>
+<filter xmlns="http://www.w3.org/2000/svg" id="c" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse" height="858" width="982" x="0" y="23"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" mode="normal" result="shape"/><feGaussianBlur result="effect1_foregroundBlur" stdDeviation="100"/></filter>
+<g filter="url(#c)" opacity=".9">
+<ellipse cx="386" cy="239" rx="386" ry="239" fill="#1d4277" opacity="0.9"/>
+</g>
+<g filter="url(#b)" opacity=".9">
+<ellipse cx="2314" cy="1040" rx="308" ry="236" fill="#533b82" opacity="0.74"/>
+</g>
+</svg>
