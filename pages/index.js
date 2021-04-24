@@ -1,8 +1,8 @@
 import Layout from "../components/layout";
-import Button from "../components/button";
 import Link from "next/link";
 import styles from "../styles/home.module.css";
 import React from "react";
+import Rules from "../components/rules";
 
 function CardItem(props) {
   const card = props.card;
@@ -134,23 +134,7 @@ export default class Home extends React.Component {
             </svg>
           </div>
         </div>
-        <div className="relative mt-48">
-          <div className="container mx-auto mb-40 text-center">
-            <h2 className="text-6xl uppercase text-theme mb-5">
-              Weisch nid wie? Hie d Regle
-            </h2>
-            <p>
-              Nachfougend isch der Spiuablouf erklärt. Klick jewils uf d
-              ?-Element für meh Infos. Die Regle si natürlech ou für z normale
-              Jasse vor Ort awendbar.
-            </p>
-          </div>
-          <div className={styles.rulesSection}></div>
-          <div
-            className={`${styles.rulesSection} ${styles.rulesSectionDark}`}
-          ></div>
-          <div className={styles.rulesSection}></div>
-        </div>
+        <Rules />
       </Layout>
     );
   }

@@ -19,6 +19,7 @@ module.exports = {
           accent: "#00909E",
           deep: "#283149",
           sky: "#DBEDF3",
+          skylight: "#abe2f5",
           subdue: "#903749",
           mellow: "#53354A",
           contrast: "#E84545",

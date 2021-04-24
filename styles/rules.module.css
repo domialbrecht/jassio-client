@@ -1,0 +1,28 @@
+.rulesSection {
+  min-height: 400px;
+  position: relative;
+  @apply rounded-3xl;
+  @apply mb-10;
+  @apply bg-theme-light;
+  @apply container;
+  @apply mx-auto;
+}
+
+.rulesSection.rulesSectionDark {
+  @apply bg-theme-dark;
+}
+
+.help {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  cursor: pointer;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  @apply bg-theme-sky;
+}

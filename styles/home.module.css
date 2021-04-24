@@ -32,6 +32,12 @@
   align-items: center;
 }
 
+@media (max-width: 1800px) {
+  .cardWrapper {
+    width: 350px;
+  }
+}
+
 .card {
   width: 100%;
   position: absolute;
@@ -45,19 +51,4 @@
 .desc:not(:last-child)::after {
   padding-left: 20px;
   content: "|";
-}
-
-.rulesSection {
-  min-height: 400px;
-  display: flex;
-  justify-content: center;
-  @apply rounded-3xl;
-  @apply mb-10;
-  @apply bg-theme-light;
-  @apply container;
-  @apply mx-auto;
-}
-
-.rulesSection.rulesSectionDark {
-  @apply bg-theme-dark;
 }
