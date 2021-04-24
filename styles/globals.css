@@ -12,4 +12,18 @@
     @apply tracking-wide;
     min-height: 100vh;
   }
+
+  .playing-card-container {
+    position: relative;
+    width: 100%;
+    padding-top: 144.97%; /* 169: 245 Aspect Ratio */
+  }
+
+  .playing-card {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+  }
 }

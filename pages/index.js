@@ -4,12 +4,54 @@ import Link from "next/link";
 import styles from "../styles/home.module.css";
 import React from "react";
 
+function CardItem(props) {
+  const card = props.card;
+  return (
+    <div className={`z-10  ${styles.card}`} style={card.styles}>
+      <div className="playing-card-container">
+        <div className="playing-card">
+          <svg className="w-full h-full" viewBox="0 0 169 245">
+            <use href={"/images/svg-cards.svg#" + card.name} />
+          </svg>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CardList(props) {
+  const cards = props.cards;
+  const cardList = cards.map((card) => (
+    // Wrong! The key should have been specified here:
+    <CardItem key={card.name} card={card} />
+  ));
+  return (
+    <div className={`relative z-10 h-full  ${styles.cardWrapper}`}>
+      {cardList}
+    </div>
+  );
+}
+
 export default class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       cardRotate: 10,
     };
+    this.cards = [
+      {
+        name: "club_10",
+        styles: this.getRotateStyle(0),
+      },
+      {
+        name: "diamond_queen",
+        styles: this.getRotateStyle(1),
+      },
+      {
+        name: "heart_king",
+        styles: this.getRotateStyle(2),
+      },
+    ];
     this.handleScroll = this.handleScroll.bind(this);
   }
   componentDidMount() {
@@ -20,18 +62,26 @@ export default class Home extends React.Component {
   }
   handleScroll(event) {
     let rTamount = 10;
-    let scrollPixelDuration = 250;
+    let scrollPixelDuration = 200;
     let dR = rTamount / scrollPixelDuration;
     if (window.scrollY < scrollPixelDuration) {
       this.setState({ cardRotate: 10 - dR * window.scrollY });
+    } else {
+      this.setState({ cardRotate: 10 - dR * 200 });
     }
   }
-  render() {
-    let rotateStyles = {
-      transform: `translate(0%, ${28 - this.state.cardRotate}%) rotate(${
-        this.state.cardRotate
+  getRotateStyle(i) {
+    return {
+      transform: `translate(0%, ${28 - this.state.cardRotate * i}%) rotate(-${
+        this.state.cardRotate * i
       }deg)`,
     };
+  }
+  render() {
+    let cards = this.cards.map((card, i) => {
+      card.styles = this.getRotateStyle(i);
+      return card;
+    });
     return (
       <Layout title="Home">
         <div className={`relative ${styles.heroContainer}`}>
@@ -59,46 +109,7 @@ export default class Home extends React.Component {
                     </div>
                   </div>
                 </div>
-                <div className="relative z-10">
-                  <div
-                    className={`card-placeholder border-theme-highlight p-5 border-4 z-10 bg-white  ${styles.card}`}
-                    style={rotateStyles}
-                  >
-                    <svg
-                      id="Layer_1"
-                      className="h-full w-full"
-                      data-name="Layer 1"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 386.31 765.42"
-                    >
-                      <path
-                        d="M224.82,569.76,61,423c-94.89-94.89,69-258.74,163.86-163.86C320.43,163.57,484.29,327.43,388.67,423Z"
-                        transform="translate(-31.57 -17.33)"
-                        fill="#db194c"
-                      />
-                      <path
-                        d="M71.19,86.86,37.74,56.91C18.37,37.54,51.82,4.09,71.19,23.46,90.7,4,124.15,37.39,104.63,56.91Z"
-                        transform="translate(-31.57 -17.33)"
-                        fill="#db194c"
-                      />
-                      <path
-                        d="M378.52,86.64l-33.45-30c-19.36-19.36,14.08-52.81,33.45-33.44C398,3.72,431.49,37.17,412,56.68Z"
-                        transform="translate(-31.57 -17.33)"
-                        fill="#db194c"
-                      />
-                      <path
-                        d="M70.85,713.21l-33.44,30C18,762.53,51.49,796,70.85,776.61c19.52,19.52,53-13.93,33.45-33.44Z"
-                        transform="translate(-31.57 -17.33)"
-                        fill="#db194c"
-                      />
-                      <path
-                        d="M378.19,713.44l-33.45,29.95c-19.37,19.37,14.08,52.82,33.45,33.45,19.52,19.52,53-13.93,33.45-33.45Z"
-                        transform="translate(-31.57 -17.33)"
-                        fill="#db194c"
-                      />
-                    </svg>
-                  </div>
-                </div>
+                <CardList cards={cards} />
               </div>
               <div className="uppercase text-white text-2xl">
                 <span className={styles.desc}>22 Spiu gspiut</span>
@@ -125,9 +136,14 @@ export default class Home extends React.Component {
         </div>
         <div className="relative mt-48">
           <div className="container mx-auto mb-40 text-center">
-            <h2 className="text-6xl uppercase text-theme">
+            <h2 className="text-6xl uppercase text-theme mb-5">
               Weisch nid wie? Hie d Regle
             </h2>
+            <p>
+              Nachfougend isch der Spiuablouf erklärt. Klick jewils uf d
+              ?-Element für meh Infos. Die Regle si natürlech ou für z normale
+              Jasse vor Ort awendbar.
+            </p>
           </div>
           <div className={styles.rulesSection}></div>
           <div
