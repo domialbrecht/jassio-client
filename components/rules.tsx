@@ -11,7 +11,7 @@ function Cards() {
   ));
 }
 
-export default () => {
+const Rules = () => {
   return (
     <div className="relative mt-48">
       <div className="container mx-auto mb-40 text-center">
@@ -101,4 +101,5 @@ export default () => {
       </div>
     </div>
   );
-}
+};
+export default Rules;

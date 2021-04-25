@@ -7,7 +7,7 @@ type LayoutProps = {
   title: string;
 };
 
-export default ({ children, title }: LayoutProps) => {
+const Layout = ({ children, title }: LayoutProps) => {
   return (
     <div className="application relative">
       <Head>
@@ -76,3 +76,5 @@ export default ({ children, title }: LayoutProps) => {
     </div>
   );
 };
+
+export default Layout;
