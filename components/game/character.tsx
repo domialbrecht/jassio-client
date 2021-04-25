@@ -1,11 +1,9 @@
 import React from "react";
 
-class Character extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
+type Props = {};
+type State = {};
+class Character extends React.Component<Props, State> {
+  state: State = {};
   render() {
     return (
       <div>

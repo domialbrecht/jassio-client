@@ -4,7 +4,20 @@ import styles from "../styles/home.module.css";
 import React from "react";
 import Rules from "../components/rules";
 
-function CardItem(props) {
+type Card = {
+  styles: React.CSSProperties;
+  name: string;
+};
+
+type ItemProps = {
+  card: Card;
+};
+
+type ListProps = {
+  cards: Card[];
+};
+
+function CardItem(props: ItemProps) {
   const card = props.card;
   return (
     <div className={`z-10  ${styles.card}`} style={card.styles}>
@@ -19,7 +32,7 @@ function CardItem(props) {
   );
 }
 
-function CardList(props) {
+function CardList(props: ListProps) {
   const cards = props.cards;
   const cardList = cards.map((card) => (
     // Wrong! The key should have been specified here:
@@ -32,35 +45,37 @@ function CardList(props) {
   );
 }
 
-export default class Home extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      cardRotate: 10,
-    };
-    this.cards = [
-      {
-        name: "club_10",
-        styles: this.getRotateStyle(0),
-      },
-      {
-        name: "diamond_queen",
-        styles: this.getRotateStyle(1),
-      },
-      {
-        name: "heart_king",
-        styles: this.getRotateStyle(2),
-      },
-    ];
-    this.handleScroll = this.handleScroll.bind(this);
-  }
+type HomeState = {
+  cardRotate: number;
+};
+
+type HomeProps = {};
+
+export default class Home extends React.Component<HomeProps, HomeState> {
+  state: HomeState = {
+    cardRotate: 10,
+  };
+  cards: Card[] = [
+    {
+      name: "club_10",
+      styles: this.getRotateStyle(0),
+    },
+    {
+      name: "diamond_queen",
+      styles: this.getRotateStyle(1),
+    },
+    {
+      name: "heart_king",
+      styles: this.getRotateStyle(2),
+    },
+  ];
   componentDidMount() {
     window.addEventListener("scroll", this.handleScroll);
   }
   componentWillUnmount() {
     window.removeEventListener("scroll", this.handleScroll);
   }
-  handleScroll(event) {
+  handleScroll = () => {
     let rTamount = 10;
     let scrollPixelDuration = 200;
     let dR = rTamount / scrollPixelDuration;
@@ -69,8 +84,8 @@ export default class Home extends React.Component {
     } else {
       this.setState({ cardRotate: 10 - dR * 200 });
     }
-  }
-  getRotateStyle(i) {
+  };
+  getRotateStyle(i: number): React.CSSProperties {
     return {
       transform: `translate(0%, ${28 - this.state.cardRotate * i}%) rotate(-${
         this.state.cardRotate * i

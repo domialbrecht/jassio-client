@@ -1,4 +1,3 @@
-import Link from "next/link";
 import styles from "../styles/rules.module.css";
 
 function Cards() {
@@ -12,7 +11,7 @@ function Cards() {
   ));
 }
 
-export default function Rules(props) {
+export default () => {
   return (
     <div className="relative mt-48">
       <div className="container mx-auto mb-40 text-center">
@@ -74,7 +73,7 @@ export default function Rules(props) {
                 </svg>
               </div>
             </div>
-            <div class="col-span-2 grid grid-cols-9 gap-1">{Cards()}</div>
+            <div className="col-span-2 grid grid-cols-9 gap-1">{Cards()}</div>
           </div>
           <div className="w-1/3">
             <h3 className="uppercase text-5xl mb-3 text-theme font-bold">

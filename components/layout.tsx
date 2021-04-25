@@ -2,7 +2,12 @@ import Head from "next/head";
 import styles from "../styles/layout.module.css";
 import Link from "next/link";
 
-export default function Layout({ children, title }) {
+type LayoutProps = {
+  children: React.ReactNode;
+  title: string;
+};
+
+export default ({ children, title }: LayoutProps) => {
   return (
     <div className="application relative">
       <Head>
@@ -70,4 +75,4 @@ export default function Layout({ children, title }) {
       </footer>
     </div>
   );
-}
+};

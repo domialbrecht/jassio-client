@@ -2,8 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Layout from "../components/layout";
 
-export default function About() {
-  return (
+export default () => (
     <Layout title="About">
       <h1>About</h1>
       <Image
@@ -18,5 +17,4 @@ export default function About() {
         </Link>
       </h2>
     </Layout>
-  );
-}
+  )

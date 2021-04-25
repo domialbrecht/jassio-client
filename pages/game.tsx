@@ -1,17 +1,22 @@
 import Head from "next/head";
 import Link from "next/link";
 import React from "react";
-import styles from "../styles/game.module.css";
 import Lobby from "../components/game/lobby";
-import Board from "../components/game/Board";
-import { io } from "socket.io-client";
+import Board from "../components/game/board";
+import { io, Socket } from "socket.io-client";
 
-export default class Game extends React.Component {
-  constructor(props) {
+type Props = {};
+type GameState = {
+  gameRunning: boolean;
+};
+
+export default class Game extends React.Component<Props, GameState> {
+  state: GameState = {
+    gameRunning: false,
+  };
+  socket: Socket;
+  constructor(props: Props) {
     super(props);
-    this.state = {
-      gameRunning: false,
-    };
     this.socket = io(process.env.NEXT_PUBLIC_SOCKET_SERVER, {
       autoConnect: false,
     });

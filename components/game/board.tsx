@@ -1,11 +1,13 @@
 import React from "react";
+import styles from "../styles/board.module.css";
+import { Socket } from "socket.io-client";
 
-class Board extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
+type Props = {
+  socket: Socket;
+};
+type State = {};
+class Board extends React.Component<Props, State> {
+  state: State = {};
   render() {
     return (
       <div className={styles.gameContainer}>
