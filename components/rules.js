@@ -4,7 +4,7 @@ import styles from "../styles/rules.module.css";
 function Cards() {
   let cards = ["6", "7", "8", "9", "10", "jack", "queen", "king", "1"];
   return cards.map((card) => (
-    <div className="bg-theme-sky">
+    <div className="bg-theme-sky" key={card}>
       <svg className="w-full h-full" viewBox="0 0 169 245">
         <use href={"/images/svg-cards.svg#spade_" + card} />
       </svg>
@@ -52,7 +52,7 @@ export default function Rules(props) {
         </div>
         <div className="mb-12 flex justify-around  items-center">
           <div className="w-1/3">
-            <div class="col-span-2 grid grid-cols-4 gap-3 mb-10">
+            <div className="col-span-2 grid grid-cols-4 gap-3 mb-10">
               <div className="bg-theme-sky">
                 <svg className="w-full h-full" viewBox="0 0 169 245">
                   <use href="/images/svg-cards.svg#heart_1" />
