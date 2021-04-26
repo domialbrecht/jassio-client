@@ -13,6 +13,7 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "sass": "^1.32.10",
+    "selector-observer": "^2.1.6",
     "socket.io-client": "^4.0.1"
   },
   "devDependencies": {

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import styles from "../styles/rules.module.css";
 
 function Cards() {
@@ -12,6 +13,12 @@ function Cards() {
 }
 
 const Rules = () => {
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const { setupScrollAnimations } = require("../lib/animate-onscroll");
+      setupScrollAnimations();
+    }
+  });
   return (
     <div className="relative mt-48">
       <div className="container mx-auto mb-40 text-center">
@@ -38,7 +45,7 @@ const Rules = () => {
               <div className="bg-theme-contrast w-12 h-12 rounded-full"></div>
             </div>
           </div>
-          <div className="w-1/3">
+          <div className="w-1/3 js-animate-in animate-in-slideX-left">
             <h3 className="uppercase text-5xl mb-3 text-theme font-bold">
               Z Setup
             </h3>
@@ -75,7 +82,7 @@ const Rules = () => {
             </div>
             <div className="col-span-2 grid grid-cols-9 gap-1">{Cards()}</div>
           </div>
-          <div className="w-1/3">
+          <div className="w-1/3 js-animate-in animate-in-slideX-left">
             <h3 className="uppercase text-5xl mb-3 text-theme font-bold">
               D Jasscharte
             </h3>

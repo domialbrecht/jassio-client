@@ -1,0 +1,23 @@
+.animate-in-slideX-left {
+  opacity: 0;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateX(-15px);
+}
+
+.animate-in-slideX-left.animate-in {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.animate-in-scale-fade {
+  opacity: 0;
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: scale(0.96) translateY(24px);
+}
+
+.animate-in-scale-fade.animate-in {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
