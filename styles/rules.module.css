@@ -2,7 +2,6 @@
   min-height: 400px;
   position: relative;
   @apply rounded-3xl;
-  @apply mb-10;
   @apply bg-theme-light;
   @apply container;
   @apply mx-auto;
@@ -12,6 +11,13 @@
   @apply bg-theme-dark;
 }
 
+.rulesBetween {
+  @apply relative;
+  @apply container;
+  @apply mx-auto;
+  @apply pl-20;
+}
+
 .help {
   position: absolute;
   display: flex;
@@ -19,10 +25,25 @@
   align-items: center;
   font-weight: bold;
   cursor: pointer;
-  top: 10px;
-  right: 10px;
+  top: 20px;
+  right: 20px;
   width: 30px;
   height: 30px;
   border-radius: 50%;
   @apply bg-theme-sky;
+}
+
+.rulesBetween .help {
+  position: static;
+}
+
+.cardPlaceholder {
+  width: 60px;
+  height: 86px;
+  @apply bg-theme-sky;
+  @apply text-xl;
+  @apply rounded;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

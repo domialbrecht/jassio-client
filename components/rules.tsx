@@ -12,6 +12,101 @@ function Cards() {
   ));
 }
 
+function BetweenOne() {
+  return (
+    <div className={styles.rulesBetween}>
+      <div
+        className={`${styles.betweenLine} absolute  h-full w-1 bg-theme-light`}
+      ></div>
+      {/* START ELEMENT ONE */}
+      <div className="flex justify-between items-center py-10">
+        <div className="flex items-center">
+          <div
+            className="bg-theme-highlight relative rounded-full w-8 h-8"
+            style={{ left: "-14px" }}
+          ></div>
+          <div className="ml-5">
+            <h4 className="uppercase text-xl">Verteile</h4>
+          </div>
+        </div>
+        <div className="ml-10 flex items-center">
+          <div className={styles.cardPlaceholder}>36</div>
+          <div>
+            <h4 className="uppercase text-xl mx-5">
+              Charte mischle {">"} verteile
+            </h4>
+          </div>
+          <div className={styles.cardPlaceholder}>9</div>
+        </div>
+        <div className={styles.help}>?</div>
+      </div>
+      {/* START ELEMENT TWO TODO: Copy */}
+      <div className="flex justify-between items-center py-10">
+        <div className="flex items-center">
+          <div
+            className="bg-theme-highlight relative rounded-full w-8 h-8"
+            style={{ left: "-14px" }}
+          ></div>
+          <div className="ml-5">
+            <h4 className="uppercase text-xl">Start bestimme</h4>
+          </div>
+        </div>
+        <div
+          className="ml-10 grid grid-flow-col gap-3"
+          style={{ maxWidth: "70%" }}
+        >
+          <div className="">
+            <svg className="w-full h-full" viewBox="0 0 169 245">
+              <use href="/images/svg-cards.svg#back" fill="#2B2E4A" />
+            </svg>
+          </div>
+          <div className="">
+            <svg className="w-full h-full" viewBox="0 0 169 245">
+              <use href="/images/svg-cards.svg#back" fill="#2B2E4A" />
+            </svg>
+          </div>
+          <div className="">
+            <svg className="w-full h-full" viewBox="0 0 169 245">
+              <use href="/images/svg-cards.svg#back" fill="#2B2E4A" />
+            </svg>
+          </div>
+          <div className="">
+            <svg className="w-full h-full" viewBox="0 0 169 245">
+              <use href="/images/svg-cards.svg#back" fill="#2B2E4A" />
+            </svg>
+          </div>
+          <div className="">
+            <svg className="w-full h-full" viewBox="0 0 169 245">
+              <use href="/images/svg-cards.svg#diamond_10" fill="#2B2E4A" />
+            </svg>
+          </div>
+          <div className="">
+            <svg className="w-full h-full" viewBox="0 0 169 245">
+              <use href="/images/svg-cards.svg#back" fill="#2B2E4A" />
+            </svg>
+          </div>
+          <div className="">
+            <svg className="w-full h-full" viewBox="0 0 169 245">
+              <use href="/images/svg-cards.svg#back" fill="#2B2E4A" />
+            </svg>
+          </div>
+          <div className="">
+            <svg className="w-full h-full" viewBox="0 0 169 245">
+              <use href="/images/svg-cards.svg#back" fill="#2B2E4A" />
+            </svg>
+          </div>
+          <div className="">
+            <svg className="w-full h-full" viewBox="0 0 169 245">
+              <use href="/images/svg-cards.svg#back" fill="#2B2E4A" />
+            </svg>
+          </div>
+        </div>
+        <div className={styles.help}>?</div>
+      </div>
+    </div>
+  );
+}
+
 const Rules = () => {
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -34,15 +129,18 @@ const Rules = () => {
       <div className={`${styles.rulesSection} py-20 px-10`}>
         <div className={styles.help}>?</div>
         <div className="mb-64 flex justify-around  items-center">
-          <div className="table w-1/3">
+          <div
+            className="table w-1/3 js-animate-in-trigger"
+            data-anmiate-in-stagger="200"
+          >
             <div className="flex justify-between mb-5 px-5">
-              <div className="bg-theme-contrast w-12 h-12 rounded-full"></div>
-              <div className="bg-theme-dark w-12 h-12 rounded-full"></div>
+              <div className="bg-theme-contrast w-12 h-12 rounded-full js-animate-in-item animate-in-fade"></div>
+              <div className="bg-theme-dark w-12 h-12 rounded-full js-animate-in-item animate-in-fade"></div>
             </div>
-            <div className="bg-theme-skylight w-full h-96 rounded-2xl"></div>
+            <div className="bg-white w-full h-96 rounded-2xl"></div>
             <div className="flex justify-between mt-5 px-5">
-              <div className="bg-theme-dark w-12 h-12 rounded-full"></div>
-              <div className="bg-theme-contrast w-12 h-12 rounded-full"></div>
+              <div className="bg-theme-dark w-12 h-12 rounded-full js-animate-in-item animate-in-fade"></div>
+              <div className="bg-theme-contrast w-12 h-12 rounded-full js-animate-in-item animate-in-fade"></div>
             </div>
           </div>
           <div className="w-1/3 js-animate-in animate-in-slideX-left">
@@ -100,6 +198,7 @@ const Rules = () => {
           </div>
         </div>
       </div>
+      <BetweenOne />
       <div className={`${styles.rulesSection} ${styles.rulesSectionDark}`}>
         <div className={styles.help}>?</div>
       </div>

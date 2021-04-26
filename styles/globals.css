@@ -9,8 +9,7 @@
       display: none;
     }
     body::after {
-      content: "Sorry, responsive no i arbeit!";
-      content: "Sorry, responsive no i arbeit!";
+      content: "Sorry, responsive no i arbeit! ;)";
       width: 100%;
       display: flex;
       justify-content: center;

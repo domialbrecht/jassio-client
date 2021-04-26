@@ -21,13 +21,13 @@ function toggleAnimationClasses(entries: IntersectionObserverEntry[]) {
 
 function animationOptions(element: Element) {
   const marginBottom = Number(
-    element.getAttribute("data-build-margin-bottom") || DEFAULTMARGINBOTTOM
+    element.getAttribute("data-animate-margin-bottom") || DEFAULTMARGINBOTTOM
   );
   const marginTop = Number(
-    element.getAttribute("data-build-margin-top") || DEFAULTMARGINTOP
+    element.getAttribute("data-animate-margin-top") || DEFAULTMARGINTOP
   );
   const threshold = Number(
-    element.getAttribute("data-build-threshold") || DEFAULTTHRESHOLD
+    element.getAttribute("data-animate-threshold") || DEFAULTTHRESHOLD
   );
 
   return {
@@ -42,6 +42,14 @@ function animationOptions(element: Element) {
 }
 
 export function setupScrollAnimations() {
+  observe(".js-animate-in-trigger[data-anmiate-in-stagger]", (element) => {
+    const stagger = parseInt(element.getAttribute("data-anmiate-in-stagger")!);
+    const items = element.querySelectorAll<HTMLElement>(".js-animate-in-item");
+
+    for (let i = 0; i < items.length; i++)
+      items[i].style.transitionDelay = `${i * stagger}ms`;
+  });
+
   const defaultObserver = new IntersectionObserver(toggleAnimationClasses, {
     rootMargin: `-${DEFAULTMARGINTOP}% 0% -${DEFAULTMARGINBOTTOM}% 0%`,
     threshold: DEFAULTTHRESHOLD,
