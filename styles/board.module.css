@@ -1,7 +1,0 @@
-.gameContainer {
-  @apply pt-10;
-  @apply h-full;
-  display: grid;
-  grid-template-columns: 300px auto 300px;
-  grid-template-rows: 300px auto 300px;
-}

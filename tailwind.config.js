@@ -2,12 +2,17 @@
 
 module.exports = {
   mode: "jit",
-  purge: [
-    "./pages/**/*.{js,ts,jsx,tsx}",
-    "./components/**/*.{js,ts,jsx,tsx}",
-    "./layout/**/*.{js,ts,jsx,tsx}",
-    "./helpers/**/*.{js,ts,jsx,tsx}",
-  ],
+  purge: {
+    content: [
+      "./pages/**/*.{js,ts,jsx,tsx}",
+      "./components/**/*.{js,ts,jsx,tsx}",
+      "./layout/**/*.{js,ts,jsx,tsx}",
+      "./helpers/**/*.{js,ts,jsx,tsx}",
+    ],
+    options: {
+      safelist: ["h-4/5"],
+    },
+  },
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
@@ -36,5 +41,5 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/forms")],
 };

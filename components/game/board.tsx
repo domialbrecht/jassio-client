@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../../styles/board.module.css";
+import styles from "../../styles/game/board.module.css";
 import { Socket } from "socket.io-client";
 
 type Props = {

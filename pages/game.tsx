@@ -41,11 +41,11 @@ export default class Game extends React.Component<Props, GameState> {
             content="initial-scale=1.0, width=device-width"
           />
         </Head>
-        <header className="absolute h-10 bg-theme-chroma w-full flex items-center px-5 justify-between text-white">
+        <header className="absolute h-10 bg-theme-dark w-full flex items-center px-5 justify-between text-white">
           <Link href="/">Leave</Link>
-          <Link href="/">Infos</Link>
+          <Link href="/">INFO</Link>
         </header>
-        <div className="pt-10 px-5">{this.gameState()}</div>
+        <div className="pt-10 px-5 h-full">{this.gameState()}</div>
       </div>
     );
   }
