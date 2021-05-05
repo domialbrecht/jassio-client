@@ -4,13 +4,13 @@ module.exports = {
   mode: "jit",
   purge: {
     content: [
-      "./pages/**/*.{js,ts,jsx,tsx}",
-      "./components/**/*.{js,ts,jsx,tsx}",
-      "./layout/**/*.{js,ts,jsx,tsx}",
-      "./helpers/**/*.{js,ts,jsx,tsx}",
+      "./pages/**/*.tsx",
+      "./components/**/*.tsx",
+      "./layout/**/*.tsx",
+      "./helpers/**/*.tsx",
     ],
     options: {
-      safelist: ["h-4/5"],
+      safelist: ["h-4/5", "gap-10", "gap-4", "w-1/2"],
     },
   },
   darkMode: false, // or 'media' or 'class'

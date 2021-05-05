@@ -1,8 +1,8 @@
 import Head from "next/head";
 import Link from "next/link";
 import React from "react";
-import Lobby from "../components/game/lobby";
-import Board from "../components/game/board";
+import Lobby from "../components/game/setupState/lobby";
+import Board from "../components/game/gameState/board";
 import { io, Socket } from "socket.io-client";
 
 type Props = {};
