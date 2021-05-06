@@ -3,6 +3,11 @@ import { Socket } from "socket.io-client";
 import Waiting from "./waiting";
 import Character from "./character";
 
+interface MyProps {
+  socket: Socket;
+  jkey: string;
+}
+
 export enum PlayerColor {
   BLUE = "#abe2f5",
   RED = "#F73859",
@@ -17,9 +22,7 @@ export type Player = {
   color: PlayerColor;
   teamA: boolean;
 };
-type Props = {
-  socket: Socket;
-};
+
 type State = {
   setupComplete: boolean;
   clientIsHost: boolean;
@@ -27,7 +30,8 @@ type State = {
   players: Player[];
   joinKey: string;
 };
-class Lobby extends React.Component<Props, State> {
+
+class Lobby extends React.Component<MyProps, State> {
   state: State = {
     setupComplete: false,
     clientIsHost: false,
@@ -38,6 +42,10 @@ class Lobby extends React.Component<Props, State> {
     },
     players: [{ id: 1, name: "Stifu", color: PlayerColor.RED, teamA: true }],
   };
+  constructor(props: MyProps) {
+    super(props);
+    this.state.joinKey = props.jkey;
+  }
   createPlayer(n: string) {
     return {
       id: 0,
@@ -48,29 +56,40 @@ class Lobby extends React.Component<Props, State> {
   }
   handleHost = (myName: string) => {
     let hostPlayer = this.createPlayer(myName);
+    let host = "";
+    if (typeof window !== "undefined") {
+      host = window.location.origin + "/game?key=";
+    }
+    let key = host + this.makeKey();
     const players = this.state.players.concat(hostPlayer);
     this.setState({
       clientIsHost: true,
       players: players,
       setupComplete: true,
+      joinKey: key,
     });
   };
   handleJoin = (myName: string, key: string) => {
     if (key === this.state.joinKey) {
-      let newPlayer = this.createPlayer(myName);
-      const players = this.state.players.concat(newPlayer);
-      this.setState({ setupComplete: true });
+      this.serverConnect(myName);
       return;
     }
     alert("Check key!");
     return;
   };
   renderCharacter() {
-    return <Character onHost={this.handleHost} onJoin={this.handleJoin} />;
+    return (
+      <Character
+        jKey={this.state.joinKey}
+        onHost={this.handleHost}
+        onJoin={this.handleJoin}
+      />
+    );
   }
   renderWaiting() {
     return (
       <Waiting
+        joinKey={this.state.joinKey}
         isHost={this.state.clientIsHost}
         players={this.state.players}
         hostSettings={this.state.hostSettings}
@@ -96,6 +115,23 @@ class Lobby extends React.Component<Props, State> {
         </div>
       </div>
     );
+  }
+  serverConnect(name) {
+    let newPlayer = this.createPlayer(myName);
+    const players = this.state.players.concat(newPlayer);
+    this.setState({ setupComplete: true });
+  }
+  makeKey() {
+    let result = [];
+    let characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let charactersLength = characters.length;
+    for (var i = 0; i < 5; i++) {
+      result.push(
+        characters.charAt(Math.floor(Math.random() * charactersLength))
+      );
+    }
+    return result.join("");
   }
 }
 

@@ -6,6 +6,7 @@ type Props = {
   hostSettings: HostSetting;
   players: Player[];
   isHost: boolean;
+  joinKey: string;
 };
 type State = {};
 class Waiting extends React.Component<Props, State> {
@@ -44,7 +45,19 @@ class Waiting extends React.Component<Props, State> {
           {this.openSpots()}
         </div>
         {this.props.isHost && (
-          <div className="flex justify-center">
+          <div className="flex justify-between w-full">
+            <div>
+              <span>Iladigslink</span>
+              <input
+                type="text"
+                className="cursor-pointer mt-0 block px-0.5 text-theme-darker text-xl text-center border-0 focus:ring-0 focus:border-white"
+                value={this.props.joinKey}
+                readOnly
+                onClick={() => {
+                  navigator.clipboard.writeText(this.props.joinKey);
+                }}
+              />
+            </div>
             <button className="px-8 py-3 text-2xl text-white tracking-widest bg-theme-accent hover:bg-theme-skylight uppercase">
               Starte
             </button>

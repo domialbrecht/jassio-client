@@ -1,5 +1,6 @@
 import React from "react";
 type Props = {
+  jKey: string;
   onHost: Function;
   onJoin: Function;
 };
@@ -12,16 +13,26 @@ class Character extends React.Component<Props, State> {
     playerName: "",
     joinKey: "",
   };
+  constructor(props: Props) {
+    super(props);
+    this.state.joinKey = props.jKey;
+  }
   onChange = (e: React.FormEvent<HTMLInputElement>): void => {
+    let v = e.currentTarget.value;
+    if (!v) {
+      return;
+    }
     this.setState({ playerName: e.currentTarget.value });
   };
   onChangeKey = (e: React.FormEvent<HTMLInputElement>): void => {
     this.setState({ joinKey: e.currentTarget.value });
   };
   onHost = (): void => {
+    if (!this.state.playerName) return;
     this.props.onHost(this.state.playerName);
   };
   onJoin = (): void => {
+    if (!this.state.playerName) return;
     this.props.onJoin(this.state.playerName, this.state.joinKey);
   };
 
