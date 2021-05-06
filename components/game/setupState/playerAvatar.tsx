@@ -1,4 +1,4 @@
-import { Player } from "./lobby";
+import { Player, PlayerColor } from "./lobby";
 
 type PlayerProps = {
   player: Player;
@@ -12,7 +12,7 @@ const PlayerAvatar = ({ player }: PlayerProps) => {
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 68 64"
     >
-      <ellipse cx="34" cy="32" rx="32.5" ry="30.5" fill={player.color} />
+      <ellipse cx="34" cy="32" rx="32.5" ry="30.5" fill={player.teamRed ? PlayerColor.BLUE : PlayerColor.RED} />
       <path d="M34,3C51.09,3,65,16,65,32S51.09,61,34,61,3,48,3,32,16.91,3,34,3m0-3C15.22,0,0,14.33,0,32S15.22,64,34,64,68,49.67,68,32,52.78,0,34,0Z" />
       <ellipse cx="17.5" cy="32.5" rx="5" ry="8" fill="#f1eaea" />
       <path d="M17.5,25c2.44,0,4.5,3.43,4.5,7.5S19.94,40,17.5,40,13,36.57,13,32.5,15.06,25,17.5,25m0-1c-3,0-5.5,3.81-5.5,8.5S14.46,41,17.5,41,23,37.19,23,32.5,20.54,24,17.5,24Z" />

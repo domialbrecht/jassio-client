@@ -3,9 +3,9 @@ import Link from "next/link";
 import React from "react";
 import Lobby from "../../components/game/setupState/lobby";
 import Board from "../../components/game/gameState/board";
-import { io, Socket } from "socket.io-client";
+import socket from "../../lib/socket";
 
-interface myProps {}
+interface myProps { }
 type GameState = {
   gameRunning: boolean;
   jkey: string;
@@ -16,7 +16,6 @@ class Game extends React.Component<myProps, GameState> {
     gameRunning: false,
     jkey: "",
   };
-  socket: Socket;
   constructor(props: myProps) {
     super(props);
     if (typeof window !== "undefined") {
@@ -25,18 +24,15 @@ class Game extends React.Component<myProps, GameState> {
         this.state.jkey = key;
       }
     }
-    this.socket = io(process.env.NEXT_PUBLIC_SOCKET_SERVER, {
-      autoConnect: false,
-    });
   }
   componentWillUnmount() {
-    this.socket.disconnect();
+    socket.disconnect();
   }
   gameState() {
     if (this.state.gameRunning) {
-      return <Board socket={this.socket} />;
+      return <Board />;
     }
-    return <Lobby jkey={this.state.jkey} socket={this.socket} />;
+    return <Lobby jkey={this.state.jkey} />;
   }
   render() {
     return (
