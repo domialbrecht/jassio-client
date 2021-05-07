@@ -32,6 +32,7 @@ type State = {
 };
 
 class Lobby extends React.Component<MyProps, State> {
+  _isMounted = false;
   state: State = {
     setupComplete: false,
     clientIsHost: false,
@@ -107,29 +108,36 @@ class Lobby extends React.Component<MyProps, State> {
     socket.auth = { username, host, key };
     socket.connect();
   }
+  componentWillUnmount() {
+    this._isMounted = false;
+    socket.disconnect();
+  }
   componentDidMount() {
+    this._isMounted = true;
     socket.on("hosted", (key: string) => {
+      if (!this._isMounted) return false;
       this.setState({
         joinKey: window.location.origin + "/game?key=" + key,
         setupComplete: true
       });
     });
     socket.on("players", (players) => {
-      let newPlayers: Player[] = this.state.players.concat(
-        players.map((p: { id: any; name: any; }, i: number) => {
-          return {
-            self: p.id == p.id,
-            id: p.id,
-            name: p.name,
-            teamRed: i > 1,
-          }
-        })
-      )
+      if(!this._isMounted) return false;
+      let newPlayers: Player[] = players.map((p: { id: any; name: any; }, i: number) => {
+        return {
+          self: p.id == p.id,
+          id: p.id,
+          name: p.name,
+          teamRed: i > 1,
+        }
+      })
       this.setState({
         players: newPlayers,
+        setupComplete: true
       });
     });
     socket.on("connect_error", (err) => {
+      if (!this._isMounted) return false;
       if (err.message === "invalid username") {
         this.setState({
           nameInput: "",
