@@ -1,0 +1,63 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Users\domin\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add -D @vuedx/typescript-plugin-vue
+
+PATH: 
+  C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\domin\bin;C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64\compiler;C:\Program Files\ImageMagick-7.0.10-Q16-HDRI;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Windows\System32\OpenSSH;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\ffmpeg\bin;C:\Program Files\dotnet;C:\laragon\bin\php\php-7.2.19-Win32-VC15-x64;C:\ProgramData\ComposerSetup\bin;C:\Program Files\sass;C:\Program Files\Git\cmd;C:\Program Files\libwebp\bin;C:\Program Files\Amazon\AWSCLIV2;C:\HashiCorp\Vagrant\bin;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Program Files\youtubedl;C:\Program Files\WorldPainter;C:\Program Files\glslViewer;C:\Program Files\nodejs;C:\Users\domin\AppData\Local\Microsoft\WindowsApps;C:\Users\domin\AppData\Local\GitHubDesktop\bin;C:\Users\domin\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\domin\AppData\Local\hyper\app-3.0.2\resources\bin;C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2020.1.2\bin;C:\Program Files\JetBrains\WebStorm 2020.1.2\bin;C:\Users\domin\AppData\Roaming\Composer\vendor\bin;C:\Program Files\heroku\bin;C:\flutter\bin;C:\Users\domin\AppData\Roaming\npm
+
+Yarn version: 
+  1.22.10
+
+Node version: 
+  14.16.1
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: EEXIST: file already exists, mkdir 'P:\Development\Websites\vitetest\node_modules\express\node_modules'
+
+npm manifest: 
+  {
+    "private": true,
+    "name": "yass.io",
+    "scripts": {
+      "dev": "vite --port 3333 --open",
+      "build": "cross-env NODE_ENV=production vite build",
+      "preview": "vite preview",
+      "preview-https": "serve dist"
+    },
+    "dependencies": {
+      "@vueuse/core": "^4.9.1",
+      "@vueuse/head": "^0.5.1",
+      "nprogress": "^0.2.0",
+      "selector-observer": "^2.1.6",
+      "socket.io-client": "^4.0.1",
+      "vue": "^3.0.11",
+      "vue-router": "^4.0.6"
+    },
+    "devDependencies": {
+      "@antfu/eslint-config": "^0.6.4",
+      "@iconify/json": "^1.1.337",
+      "@types/nprogress": "^0.2.0",
+      "@typescript-eslint/eslint-plugin": "^4.22.0",
+      "@vitejs/plugin-vue": "^1.2.2",
+      "@vue/compiler-sfc": "^3.0.11",
+      "cross-env": "^7.0.3",
+      "eslint": "^7.25.0",
+      "https-localhost": "^4.6.4",
+      "pnpm": "^6.2.4",
+      "typescript": "^4.2.4",
+      "vite": "^2.2.3",
+      "vite-plugin-icons": "^0.5.0",
+      "vite-plugin-pages": "^0.10.0",
+      "vite-plugin-vue-layouts": "^0.2.2",
+      "vite-plugin-windicss": "^0.15.10",
+      "vue-tsc": "^0.0.26"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
