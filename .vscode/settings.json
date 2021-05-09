@@ -1,10 +1,31 @@
 {
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+  },
   "cSpell.words": [
     "Vitesse"
   ],
   "typescript.tsdk": "node_modules/typescript/lib",
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true,
+  "volar.tsPlugin": true,
+  "vetur.validation.template": false,
+  "gitlens.currentLine.enabled": false,
+  "gitlens.codeLens.authors.enabled": false,
+  "gitlens.codeLens.recentChange.enabled": false,
+  "workbench.colorCustomizations": {
+    "activityBar.activeBackground": "#287be0",
+    "activityBar.activeBorder": "#8b144a",
+    "activityBar.background": "#287be0",
+    "activityBar.foreground": "#e7e7e7",
+    "activityBar.inactiveForeground": "#e7e7e799",
+    "activityBarBadge.background": "#8b144a",
+    "activityBarBadge.foreground": "#e7e7e7",
+    "statusBar.background": "#1b63ba",
+    "statusBar.foreground": "#e7e7e7",
+    "statusBarItem.hoverBackground": "#287be0",
+    "titleBar.activeBackground": "#1b63ba",
+    "titleBar.activeForeground": "#e7e7e7",
+    "titleBar.inactiveBackground": "#1b63ba99",
+    "titleBar.inactiveForeground": "#e7e7e799"
   },
-  "volar.tsPlugin": true
+  "peacock.color": "#1b63ba"
 }
