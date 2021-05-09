@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, provide } from 'vue'
 import Lobby from '../components/gameSetup/Lobby.vue'
 import Board from '../components/gameRunning/Board.vue'
+import socket from '../lib/socket'
 const gameRunning = ref(false)
+provide('socket', socket)
 </script>
 
 <template>

@@ -2,7 +2,7 @@
   "private": true,
   "name": "yass.io",
   "scripts": {
-    "dev": "vite --port 3333 --open",
+    "dev": "vite --port 3333",
     "build": "cross-env NODE_ENV=production vite build",
     "preview": "vite preview",
     "preview-https": "serve dist"

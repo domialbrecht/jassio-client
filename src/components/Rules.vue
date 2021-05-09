@@ -44,22 +44,22 @@ onMounted(() => {
           <div class="col-span-2 grid grid-cols-4 gap-3 mb-10">
             <div class="bg-sky">
               <svg class="w-full h-full" viewBox="0 0 169 245">
-                <use href="/images/svg-cards.svg#heart_1" />
+                <use :href="'/images/svg-cards.svg#heart_1'" />
               </svg>
             </div>
             <div class="bg-sky">
               <svg class="w-full h-full" viewBox="0 0 169 245">
-                <use href="/images/svg-cards.svg#diamond_1" />
+                <use :href="'/images/svg-cards.svg#diamond_1'" />
               </svg>
             </div>
             <div class="bg-sky">
               <svg class="w-full h-full" viewBox="0 0 169 245">
-                <use href="/images/svg-cards.svg#spade_1" />
+                <use :href="'/images/svg-cards.svg#spade_1'" />
               </svg>
             </div>
             <div class="bg-sky">
               <svg class="w-full h-full" viewBox="0 0 169 245">
-                <use href="/images/svg-cards.svg#club_1" />
+                <use :href="'/images/svg-cards.svg#club_1'" />
               </svg>
             </div>
           </div>
@@ -125,49 +125,19 @@ onMounted(() => {
           </div>
         </div>
         <div class="ml-10 grid grid-flow-col gap-3" style="max-width:70%;">
-          <div class>
+          <div v-for="n in 4" :key="n">
             <svg class="w-full h-full" viewBox="0 0 169 245">
-              <use href="/images/svg-cards.svg#back" fill="#2B2E4A" />
+              <use :href="'/images/svg-cards.svg#back'" fill="#2B2E4A" />
             </svg>
           </div>
           <div class>
             <svg class="w-full h-full" viewBox="0 0 169 245">
-              <use href="/images/svg-cards.svg#back" fill="#2B2E4A" />
+              <use :href="'/images/svg-cards.svg#diamond_10'" fill="#2B2E4A" />
             </svg>
           </div>
-          <div class>
+          <div v-for="n in 4" :key="n">
             <svg class="w-full h-full" viewBox="0 0 169 245">
-              <use href="/images/svg-cards.svg#back" fill="#2B2E4A" />
-            </svg>
-          </div>
-          <div class>
-            <svg class="w-full h-full" viewBox="0 0 169 245">
-              <use href="/images/svg-cards.svg#back" fill="#2B2E4A" />
-            </svg>
-          </div>
-          <div class>
-            <svg class="w-full h-full" viewBox="0 0 169 245">
-              <use href="/images/svg-cards.svg#diamond_10" fill="#2B2E4A" />
-            </svg>
-          </div>
-          <div class>
-            <svg class="w-full h-full" viewBox="0 0 169 245">
-              <use href="/images/svg-cards.svg#back" fill="#2B2E4A" />
-            </svg>
-          </div>
-          <div class>
-            <svg class="w-full h-full" viewBox="0 0 169 245">
-              <use href="/images/svg-cards.svg#back" fill="#2B2E4A" />
-            </svg>
-          </div>
-          <div class>
-            <svg class="w-full h-full" viewBox="0 0 169 245">
-              <use href="/images/svg-cards.svg#back" fill="#2B2E4A" />
-            </svg>
-          </div>
-          <div class>
-            <svg class="w-full h-full" viewBox="0 0 169 245">
-              <use href="/images/svg-cards.svg#back" fill="#2B2E4A" />
+              <use :href="'/images/svg-cards.svg#back'" fill="#2B2E4A" />
             </svg>
           </div>
         </div>
