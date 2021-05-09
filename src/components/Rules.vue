@@ -149,6 +149,27 @@ onMounted(() => {
           >Pro Rundi bestimmt e Spiler d Jassart. Ir erste Rundi isch das wie obe zeigt dä wo z Egge 10ni het. Ner geiz eifach am Chlapf nah. Der Spiler wählt vode unde ufgfüärtä Arte eini us, oder faus är z Gfüäu het si Mitspiler sig besser, chaner "schiebe". Wird gschobe bestimmt i dere Rundi der Mitspiler d Jassart. Die ersti Charte spile, "usgah" mues aber immer no der initial Spiler. Nachfolgend si d Jassarte ufglistet.</p>
         </div>
       </div>
+      <div
+        class="grid grid-flow-col gap-5 mt-12 js-animate-in-trigger"
+        data-anmiate-in-stagger="200"
+      >
+        <div class="flex flex-col items-center js-animate-in-item animate-in-fade">
+          <div class="w-full h-72 bg-green-400"></div>
+          <span class="uppercase text-white text-2xl mt-5">Obe-Abe</span>
+        </div>
+        <div class="flex flex-col items-center js-animate-in-item animate-in-fade">
+          <div class="w-full h-72 bg-blue-400"></div>
+          <span class="uppercase text-white text-2xl mt-5">Unde-Ufe</span>
+        </div>
+        <div class="flex flex-col items-center js-animate-in-item animate-in-fade">
+          <div class="w-full h-72 bg-red-400"></div>
+          <span class="uppercase text-white text-2xl mt-5">Trumpf</span>
+        </div>
+        <div class="flex flex-col items-center js-animate-in-item animate-in-fade">
+          <div class="w-full h-72 bg-indigo-400"></div>
+          <span class="uppercase text-white text-2xl mt-5">Slalom</span>
+        </div>
+      </div>
     </div>
     <div class="rulesBetween">
       <div class="betweenLine absolute h-full w-1 bg-light"></div>
@@ -159,7 +180,6 @@ onMounted(() => {
             <h4 class="uppercase text-xl">Ersti Charte(pro Spiler)</h4>
           </div>
         </div>
-        <div class="help">?</div>
       </div>
     </div>
     <div class="rulesSection p-20">
@@ -304,7 +324,6 @@ onMounted(() => {
             <h4 class="uppercase text-xl">Spiurndi</h4>
           </div>
         </div>
-        <div class="help">?</div>
       </div>
     </div>
     <div class="rulesSection p-20">
@@ -317,10 +336,10 @@ onMounted(() => {
             <span
               class="text-cyan-600"
             >Obe rächts chasch wächslä.</span>
-            Nachem erste Stich spiut dä Spiler us o der Stich gmacht het. Das geit när so witer bis aui 9 Charte gspiut si worde. När faht die nächsti Rundi wider bi
+            Nachem erste Stich spiut dä Spiler us o der Stich gmacht het. Das geit när so witer bis aui 9 Charte gspiut si worde. Denn wärdä d Pünkt Zeut u när faht die nächsti Rundi wider bi
             <span
               class="text-cyan-600"
-            >Punkt 1 / 3</span> a.
+            >Punkt 1 / 3</span> a. Usser natürläch die festgleite Gwinnpünkt, meistens 1000, si erreicht.
           </p>
         </div>
       </div>
