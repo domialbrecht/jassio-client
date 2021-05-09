@@ -12,7 +12,7 @@ onMounted(() => {
       <h2 class="text-6xl uppercase text-default mb-5">Weisch nid wie? Hie d Regle</h2>
       <p class="text-lg">
         Nachfougend isch der Spiuablouf erklärt. Klick jewils uf d ?-Element
-        für e lengeri Texterklärig. Die Regle si natürlech ou für z normale
+        für Tipps und Spiubispiu. Die Regle si natürlech ou für z normale
         Jasse vor Ort awendbar.
       </p>
     </div>
@@ -100,7 +100,7 @@ onMounted(() => {
         <div class="flex items-center">
           <div class="bg-highlight relative rounded-full w-8 h-8" style="left:-14px"></div>
           <div class="ml-5">
-            <h4 class="uppercase text-xl">Verteile</h4>
+            <h4 class="uppercase text-xl">Spiustart</h4>
           </div>
         </div>
         <div class="ml-10 flex items-center">
@@ -114,12 +114,7 @@ onMounted(() => {
       </div>
       <div class="flex justify-between items-center py-10">
         <div class="flex items-center">
-          <div
-            class="bg-highlight relative rounded-full w-8 h-8"
-            style="
-            left:
-            -14px"
-          ></div>
+          <div class="bg-highlight relative rounded-full w-8 h-8" style="left:-14px"></div>
           <div class="ml-5">
             <h4 class="uppercase text-xl">Start bestimme</h4>
           </div>
@@ -144,11 +139,191 @@ onMounted(() => {
         <div class="help">?</div>
       </div>
     </div>
-    <div class="rulesSection rulesSectionDark">
+    <div class="rulesSection rulesSectionDark p-20">
       <div class="help">?</div>
+      <div class="js-animate-in animate-in-slideX-left">
+        <h3 class="uppercase text-5xl mb-3 text-white font-bold">1/3 Jassart wählä</h3>
+        <div class="flex justify-between items-center">
+          <p
+            class="text-xl text-white"
+          >Pro Rundi bestimmt e Spiler d Jassart. Ir erste Rundi isch das wie obe zeigt dä wo z Egge 10ni het. Ner geiz eifach am Chlapf nah. Der Spiler wählt vode unde ufgfüärtä Arte eini us, oder faus är z Gfüäu het si Mitspiler sig besser, chaner "schiebe". Wird gschobe bestimmt i dere Rundi der Mitspiler d Jassart. Die ersti Charte spile, "usgah" mues aber immer no der initial Spiler. Nachfolgend si d Jassarte ufglistet.</p>
+        </div>
+      </div>
     </div>
-    <div class="rulesSection">
+    <div class="rulesBetween">
+      <div class="betweenLine absolute h-full w-1 bg-light"></div>
+      <div class="flex justify-between items-center py-10">
+        <div class="flex items-center">
+          <div class="bg-highlight relative rounded-full w-8 h-8" style="left:-14px"></div>
+          <div class="ml-5">
+            <h4 class="uppercase text-xl">Ersti Charte(pro Spiler)</h4>
+          </div>
+        </div>
+        <div class="help">?</div>
+      </div>
+    </div>
+    <div class="rulesSection p-20">
       <div class="help">?</div>
+      <div class="js-animate-in animate-in-slideX-left">
+        <h3 class="uppercase text-5xl mb-3 text-default font-bold">2/3 Wisä</h3>
+        <div class="flex justify-between items-center">
+          <p
+            class="text-xl text-default"
+          >Am Afang vor Rundi cha gwisä wärdä. Vo Wise redt me we e Spiler e gwüssi Kombination a Charte het. Je nachdäm was für ne Wiis me het bechunt z Team ner Pünkt. Generell mues ä Wis mit der erst gspiute Charte agseit wärdä. Die einzigi Usnahm si d "Stöck". Die cha der Spiler agäh wener die zwöiti Charte vor Kombi usspiut. Pro Rundi cha nur eis Team Pünkt für ä Wis ufschribe, und zwar immer das mite der Kombination mitem meiste Wärt.</p>
+        </div>
+      </div>
+      <div class="flex mt-12 justify-center js-animate-in animate-in-fade">
+        <div class="mr-11">
+          <span class="bold text-2xl">3-Blatt (20)</span>
+          <div class="flex py-5 h-56">
+            <svg class="h-full" viewBox="0 0 169 245">
+              <use :href="'/images/svg-cards.svg#heart_8'" fill="#2B2E4A" />
+            </svg>
+            <svg class="h-full" viewBox="0 0 169 245">
+              <use :href="'/images/svg-cards.svg#heart_9'" fill="#2B2E4A" />
+            </svg>
+            <svg class="h-full" viewBox="0 0 169 245">
+              <use :href="'/images/svg-cards.svg#heart_10'" fill="#2B2E4A" />
+            </svg>
+          </div>
+        </div>
+        <div class="mr-11">
+          <span
+            title="Dame u Künig vom aktuelle Trumpf"
+            class="bold text-2xl text-cyan-600 block"
+          >Stöck (20)</span>
+          <div class="flex py-5 h-56">
+            <svg class="h-full" viewBox="0 0 169 245">
+              <use :href="'/images/svg-cards.svg#diamond_queen'" fill="#2B2E4A" />
+            </svg>
+            <svg class="h-full" viewBox="0 0 169 245">
+              <use :href="'/images/svg-cards.svg#diamond_king'" fill="#2B2E4A" />
+            </svg>
+          </div>
+        </div>
+        <div class="mr-11">
+          <span class="bold text-2xl">Vier-Blatt (50)</span>
+          <div class="flex py-5 h-56">
+            <svg class="h-full" viewBox="0 0 169 245">
+              <use :href="'/images/svg-cards.svg#club_8'" fill="#2B2E4A" />
+            </svg>
+            <svg class="h-full" viewBox="0 0 169 245">
+              <use :href="'/images/svg-cards.svg#club_9'" fill="#2B2E4A" />
+            </svg>
+            <svg class="h-full" viewBox="0 0 169 245">
+              <use :href="'/images/svg-cards.svg#club_10'" fill="#2B2E4A" />
+            </svg>
+            <svg class="h-full" viewBox="0 0 169 245">
+              <use :href="'/images/svg-cards.svg#club_jack'" fill="#2B2E4A" />
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="flex mt-12 justify-center js-animate-in animate-in-fade">
+        <div class="mr-11">
+          <span class="bold text-2xl">5-Blatt (100)...6 (150) etc.</span>
+          <div class="flex py-5 h-56">
+            <svg class="h-full" viewBox="0 0 169 245">
+              <use :href="'/images/svg-cards.svg#spade_9'" fill="#2B2E4A" />
+            </svg>
+            <svg class="h-full" viewBox="0 0 169 245">
+              <use :href="'/images/svg-cards.svg#spade_10'" fill="#2B2E4A" />
+            </svg>
+            <svg class="h-full" viewBox="0 0 169 245">
+              <use :href="'/images/svg-cards.svg#spade_jack'" fill="#2B2E4A" />
+            </svg>
+            <svg class="h-full" viewBox="0 0 169 245">
+              <use :href="'/images/svg-cards.svg#spade_queen'" fill="#2B2E4A" />
+            </svg>
+            <svg class="h-full" viewBox="0 0 169 245">
+              <use :href="'/images/svg-cards.svg#spade_king'" fill="#2B2E4A" />
+            </svg>
+          </div>
+        </div>
+        <div>
+          <span class="bold text-2xl">Aui vo eim (100)</span>
+          <div class="flex py-5 h-56">
+            <svg class="h-full" viewBox="0 0 169 245">
+              <use :href="'/images/svg-cards.svg#spade_8'" fill="#2B2E4A" />
+            </svg>
+            <svg class="h-full" viewBox="0 0 169 245">
+              <use :href="'/images/svg-cards.svg#heart_8'" fill="#2B2E4A" />
+            </svg>
+            <svg class="h-full" viewBox="0 0 169 245">
+              <use :href="'/images/svg-cards.svg#diamond_8'" fill="#2B2E4A" />
+            </svg>
+            <svg class="h-full" viewBox="0 0 169 245">
+              <use :href="'/images/svg-cards.svg#club_8'" fill="#2B2E4A" />
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="flex mt-12 justify-center js-animate-in animate-in-fade">
+        <div class="mr-11">
+          <span class="bold text-2xl">Aui 9i (150)</span>
+          <div class="flex py-5 h-56">
+            <svg class="h-full" viewBox="0 0 169 245">
+              <use :href="'/images/svg-cards.svg#diamond_9'" fill="#2B2E4A" />
+            </svg>
+            <svg class="h-full" viewBox="0 0 169 245">
+              <use :href="'/images/svg-cards.svg#heart_9'" fill="#2B2E4A" />
+            </svg>
+            <svg class="h-full" viewBox="0 0 169 245">
+              <use :href="'/images/svg-cards.svg#club_9'" fill="#2B2E4A" />
+            </svg>
+            <svg class="h-full" viewBox="0 0 169 245">
+              <use :href="'/images/svg-cards.svg#spade_9'" fill="#2B2E4A" />
+            </svg>
+          </div>
+        </div>
+        <div>
+          <span class="bold text-2xl">Aui Bure (200)</span>
+          <div class="flex py-5 h-56">
+            <svg class="h-full" viewBox="0 0 169 245">
+              <use :href="'/images/svg-cards.svg#diamond_jack'" fill="#2B2E4A" />
+            </svg>
+            <svg class="h-full" viewBox="0 0 169 245">
+              <use :href="'/images/svg-cards.svg#heart_jack'" fill="#2B2E4A" />
+            </svg>
+            <svg class="h-full" viewBox="0 0 169 245">
+              <use :href="'/images/svg-cards.svg#club_jack'" fill="#2B2E4A" />
+            </svg>
+            <svg class="h-full" viewBox="0 0 169 245">
+              <use :href="'/images/svg-cards.svg#spade_jack'" fill="#2B2E4A" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="rulesBetween">
+      <div class="betweenLine absolute h-full w-1 bg-light"></div>
+      <div class="flex justify-between items-center py-10">
+        <div class="flex items-center">
+          <div class="bg-highlight relative rounded-full w-8 h-8" style="left:-14px"></div>
+          <div class="ml-5">
+            <h4 class="uppercase text-xl">Spiurndi</h4>
+          </div>
+        </div>
+        <div class="help">?</div>
+      </div>
+    </div>
+    <div class="rulesSection p-20">
+      <div class="help">?</div>
+      <div class="js-animate-in animate-in-slideX-left">
+        <h3 class="uppercase text-5xl mb-3 text-default font-bold">3/3 Usspilä</h3>
+        <div>
+          <p class="text-xl text-default">
+            Nachem Wisä, oder we niemer öppis z Wisä het, faht die eigentlechi Rundi a. Der Spiler wo agseit oder gschobe het spiut die ersti Charte us. När der nächst Spiler am Chlapf nah. Hei aui Spiler ei Charte gspiut git das e "Stich". Es mues immer jede Spiler genau 1 Charte spile. Das Team mitem Spiler wo die besti Charte gleit het nimmt di vier Charte zu sich. Weles das die besti Charte isch hängt vor aktuelle Jassart ab.
+            <span
+              class="text-cyan-600"
+            >Obe rächts chasch wächslä.</span>
+            Nachem erste Stich spiut dä Spiler us o der Stich gmacht het. Das geit när so witer bis aui 9 Charte gspiut si worde. När faht die nächsti Rundi wider bi
+            <span
+              class="text-cyan-600"
+            >Punkt 1 / 3</span> a.
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -190,6 +365,7 @@ onMounted(() => {
 
 .rulesBetween .help {
   position: static;
+  margin-right: 20px;
 }
 
 .cardPlaceholder {
