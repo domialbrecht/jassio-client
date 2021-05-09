@@ -32,7 +32,6 @@
     "vite": "^2.2.3",
     "vite-plugin-icons": "^0.5.0",
     "vite-plugin-pages": "^0.10.0",
-    "vite-plugin-vue-layouts": "^0.2.2",
     "vite-plugin-windicss": "^0.15.10",
     "vue-tsc": "^0.0.26"
   }

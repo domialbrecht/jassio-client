@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, computed, ref } from 'vue'
-import Rules from '../components/Rules.vue'
+import Rules from '~/components/Rules.vue'
+import Header from '~/components/Header.vue'
+import Footer from '~/components/Footer.vue'
 const cardRotate = ref(10)
 const getRotateStyle = (i: number): any => {
   return {
@@ -42,63 +44,67 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="relative heroContainer">
-    <div class="pt-12 pb-40 absolute top-0 right-0 left-0 bottom-0 hero">
-      <div class="flex flex-col container mx-auto h-full">
-        <div class="flex justify-between items-center h-full">
-          <div class>
-            <div>
-              <h1 class="mb-8 text-8xl text-white font-sans font-bold uppercase">
-                Intersim Jass
-                <br />Online.
-              </h1>
+  <Header />
+  <main>
+    <div class="relative heroContainer">
+      <div class="pt-12 pb-40 absolute top-0 right-0 left-0 bottom-0 hero">
+        <div class="flex flex-col container mx-auto h-full">
+          <div class="flex justify-between items-center h-full">
+            <div class>
               <div>
-                <router-link
-                  class="px-8 py-3 text-2xl text-white relative tracking-widest bg-highlight uppercase heroButton"
-                  to="/game"
-                  title="game"
-                >
-                  <span class="heroButtonOverlay"></span>
-                  <span class="label relative z-10">Spiu starte</span>
-                </router-link>
+                <h1 class="mb-8 text-8xl text-white font-sans font-bold uppercase">
+                  Intersim Jass
+                  <br />Online.
+                </h1>
+                <div>
+                  <router-link
+                    class="px-8 py-3 text-2xl text-white relative tracking-widest bg-highlight uppercase heroButton"
+                    to="/game"
+                    title="game"
+                  >
+                    <span class="heroButtonOverlay"></span>
+                    <span class="label relative z-10">Spiu starte</span>
+                  </router-link>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="relative z-10 h-full cardWrapper">
-            <div v-for="card in cards" :key="card.name" class="z-10 card" :style="card.styles">
-              <div class="playing-card-container">
-                <div class="playing-card">
-                  <svg class="w-full h-full" viewBox="0 0 169 245">
-                    <use :href="`/images/svg-cards.svg#${card.name}`" />
-                  </svg>
+            <div class="relative z-10 h-full cardWrapper">
+              <div v-for="card in cards" :key="card.name" class="z-10 card" :style="card.styles">
+                <div class="playing-card-container">
+                  <div class="playing-card">
+                    <svg class="w-full h-full" viewBox="0 0 169 245">
+                      <use :href="`/images/svg-cards.svg#${card.name}`" />
+                    </svg>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="uppercase text-white text-2xl">
-          <span class="desc">22 Spiu gspiut</span>
-          <span class="desc">64 Bure Gwise</span>
-          <span class="desc">Mark 10 Streak</span>
+          <div class="uppercase text-white text-2xl">
+            <span class="desc">22 Spiu gspiut</span>
+            <span class="desc">64 Bure Gwise</span>
+            <span class="desc">Mark 10 Streak</span>
+          </div>
         </div>
       </div>
+      <div>
+        <svg
+          id="Layer_1"
+          data-name="Layer 1"
+          class="absolute w-full bottom-0"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 1365 86.26"
+        >
+          <path
+            d="M1365,0V86.26H0V0C110.94,47.12,374.73,80.26,682.5,80.26S1254.06,47.12,1365,0Z"
+            fill="#fff"
+          />
+        </svg>
+      </div>
     </div>
-    <div>
-      <svg
-        id="Layer_1"
-        data-name="Layer 1"
-        class="absolute w-full bottom-0"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 1365 86.26"
-      >
-        <path
-          d="M1365,0V86.26H0V0C110.94,47.12,374.73,80.26,682.5,80.26S1254.06,47.12,1365,0Z"
-          fill="#fff"
-        />
-      </svg>
-    </div>
-  </div>
-  <Rules />
+    <Rules />
+  </main>
+  <Footer />
 </template>
 
 <style scoped>

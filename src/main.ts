@@ -1,5 +1,3 @@
-import generatedRoutes from 'virtual:generated-pages'
-import { setupLayouts } from 'layouts-generated'
 import { createApp } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import { createHead } from '@vueuse/head'
@@ -8,8 +6,13 @@ import App from './App.vue'
 import 'virtual:windi.css'
 import 'virtual:windi-devtools'
 import './styles/main.css'
+import Index from './pages/index.vue'
+import Game from './pages/game.vue'
 
-const routes = setupLayouts(generatedRoutes)
+const routes = [
+  { path: '/', component: Index },
+  { path: '/game', component: Game },
+]
 const router = createRouter({ history: createWebHistory(), routes })
 router.beforeEach(() => { NProgress.start() })
 router.afterEach(() => { NProgress.done() })

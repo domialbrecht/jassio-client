@@ -2,18 +2,19 @@
 import { ref, defineComponent } from 'vue'
 export default defineComponent({
   props: {
-    msg: { type: String, default: '' },
+    jkey: { type: String, default: '' },
   },
-  setup() {
+  emits: ['host', 'join'],
+  setup(props, { emit }) {
     const name = ref('')
-    const jkey = ref('')
     const onHost = () => {
-      console.log('host')
+      if (!name.value) return
+      emit('host', name.value)
     }
     const onJoin = () => {
-      console.log('join')
+      emit('join', name.value)
     }
-    return { name, jkey, onHost, onJoin }
+    return { name, onHost, onJoin }
   },
 })
 
@@ -23,7 +24,7 @@ export default defineComponent({
     <div
       class="bg-white rounded-3xl h-full mb-6 w-1/2 border-highlight border-4 flex justify-center items-center"
     >
-      <span class="text-darker">WIP Avatar apasse {{ msg }}</span>
+      <span class="text-darker">WIP Avatar apasse</span>
     </div>
     <div class="flex items-center flex-col w-1/2">
       <div class="mb-10">

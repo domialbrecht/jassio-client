@@ -2,7 +2,6 @@ import path from 'path'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import Pages from 'vite-plugin-pages'
-import Layouts from 'vite-plugin-vue-layouts'
 import ViteIcons from 'vite-plugin-icons'
 import WindiCSS from 'vite-plugin-windicss'
 
@@ -21,9 +20,6 @@ export default defineConfig({
     Pages({
       extensions: ['vue', 'md'],
     }),
-
-    // https://github.com/JohnCampionJr/vite-plugin-vue-layouts
-    Layouts(),
 
     // https://github.com/antfu/vite-plugin-icons
     ViteIcons(),
