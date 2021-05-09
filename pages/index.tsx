@@ -87,9 +87,8 @@ export default class Home extends React.Component<HomeProps, HomeState> {
   };
   getRotateStyle(i: number): React.CSSProperties {
     return {
-      transform: `translate(0%, ${28 - this.state.cardRotate * i}%) rotate(-${
-        this.state.cardRotate * i
-      }deg)`,
+      transform: `translate(0%, ${28 - this.state.cardRotate * i}%) rotate(-${this.state.cardRotate * i
+        }deg)`,
     };
   }
   render() {
@@ -113,9 +112,9 @@ export default class Home extends React.Component<HomeProps, HomeState> {
                     <div>
                       <Link href="/game">
                         <a
-                          className={`px-8 py-3 text-2xl text-white relative tracking-widest bg-theme-highlight uppercase ${styles.heroButton}`}
+                          className={`heroButton px-8 py-3 text-2xl text-white relative tracking-widest bg-theme-highlight uppercase`}
                         >
-                          <span className={styles.heroButtonOverlay}></span>
+                          <span className="heroButtonOverlay"></span>
                           <span className="label relative z-10">
                             Spiu starte
                           </span>

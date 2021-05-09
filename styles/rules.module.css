@@ -35,6 +35,7 @@
 
 .rulesBetween .help {
   position: static;
+  margin-right: 20px;
 }
 
 .cardPlaceholder {

@@ -26,7 +26,7 @@ function BetweenOne() {
             style={{ left: "-14px" }}
           ></div>
           <div className="ml-5">
-            <h4 className="uppercase text-xl">Verteile</h4>
+            <h4 className="uppercase text-xl">Spiustart</h4>
           </div>
         </div>
         <div className="ml-10 flex items-center">
@@ -48,7 +48,7 @@ function BetweenOne() {
             style={{ left: "-14px" }}
           ></div>
           <div className="ml-5">
-            <h4 className="uppercase text-xl">Start bestimme</h4>
+            <h4 className="uppercase text-xl">Wär afaht</h4>
           </div>
         </div>
         <div

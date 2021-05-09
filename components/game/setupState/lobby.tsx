@@ -17,6 +17,7 @@ export type HostSetting = {
 };
 export type Player = {
   self: boolean;
+  isHost: boolean;
   id: string;
   name: string;
   teamRed: boolean;
@@ -122,10 +123,11 @@ class Lobby extends React.Component<MyProps, State> {
       });
     });
     socket.on("players", (players) => {
-      if(!this._isMounted) return false;
-      let newPlayers: Player[] = players.map((p: { id: any; name: any; }, i: number) => {
+      if (!this._isMounted) return false;
+      let newPlayers: Player[] = players.map((p: { id: any; name: any; isHost: any; }, i: number) => {
         return {
           self: p.id == p.id,
+          isHost: p.isHost,
           id: p.id,
           name: p.name,
           teamRed: i > 1,
@@ -133,7 +135,16 @@ class Lobby extends React.Component<MyProps, State> {
       })
       this.setState({
         players: newPlayers,
-        setupComplete: true
+        setupComplete: true,
+      });
+    });
+    socket.on("abandoned", () => {
+      if (!this._isMounted) return false;
+      this.setState({
+        setupComplete: false,
+        joinKey: "",
+        nameInput: "",
+        players: []
       });
     });
     socket.on("connect_error", (err) => {

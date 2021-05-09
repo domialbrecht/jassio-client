@@ -4,8 +4,13 @@ import React from "react";
 import Lobby from "../../components/game/setupState/lobby";
 import Board from "../../components/game/gameState/board";
 import socket from "../../lib/socket";
+import { withRouter, NextRouter } from 'next/router'
 
-interface myProps { }
+interface WithRouterProps {
+  router: NextRouter
+}
+
+interface myProps extends WithRouterProps { }
 type GameState = {
   gameRunning: boolean;
   jkey: string;
@@ -34,6 +39,11 @@ class Game extends React.Component<myProps, GameState> {
     }
     return <Lobby jkey={this.state.jkey} />;
   }
+  leaveGame = () => {
+    if (confirm("Spiu verlah?")) {
+      this.props.router.push('/')
+    }
+  }
   render() {
     return (
       <div className="game fullscreen relative h-screen">
@@ -46,7 +56,7 @@ class Game extends React.Component<myProps, GameState> {
           />
         </Head>
         <header className="absolute h-10 bg-theme-dark w-full flex items-center px-5 justify-between text-white">
-          <Link href="/">Leave</Link>
+          <span className="pointer" onClick={this.leaveGame}>LEAVE</span>
           <Link href="/">INFO</Link>
         </header>
         <div className="pt-10 px-5 h-full">{this.gameState()}</div>
@@ -54,4 +64,4 @@ class Game extends React.Component<myProps, GameState> {
     );
   }
 }
-export default Game;
+export default withRouter(Game);

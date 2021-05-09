@@ -56,12 +56,14 @@ class Character extends React.Component<Props, State> {
           </div>
           <div className="flex justify-between w-full">
             <div>
-              <button
-                onClick={this.onHost}
-                className="px-8 py-3 text-2xl text-white tracking-widest bg-theme-accent hover:bg-theme-skylight uppercase"
-              >
-                Host
+              {!this.props.jKey &&
+                <button
+                  onClick={this.onHost}
+                  className="px-8 py-3 text-2xl text-white tracking-widest bg-theme-accent hover:bg-theme-skylight uppercase"
+                >
+                  Host
               </button>
+              }
             </div>
             <div className="flex">
               <input
