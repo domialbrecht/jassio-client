@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, computed, ref } from 'vue'
 import Rules from '~/components/Rules.vue'
+import Further from '~/components/Further.vue'
 import Header from '~/components/Header.vue'
 import Footer from '~/components/Footer.vue'
 const cardRotate = ref(10)
@@ -103,19 +104,12 @@ onUnmounted(() => {
       </div>
     </div>
     <Rules />
+    <Further />
   </main>
   <Footer />
 </template>
 
-<style scoped>
-.heroContainer {
-  height: 94vh;
-  min-height: 860px;
-  max-height: 926px;
-  background-color: #2b2e4a;
-  background-image: linear-gradient(0deg, #2b2e4a 1%, #06132f 99%);
-}
-
+<style>
 .heroButton .heroButtonOverlay {
   display: block;
   position: absolute;
@@ -134,6 +128,15 @@ onUnmounted(() => {
 .heroButton:hover .heroButtonOverlay {
   transform-origin: 0 0;
   transform: scaleX(1);
+}
+</style>
+<style scoped>
+.heroContainer {
+  height: 94vh;
+  min-height: 860px;
+  max-height: 926px;
+  background-color: #2b2e4a;
+  background-image: linear-gradient(0deg, #2b2e4a 1%, #06132f 99%);
 }
 
 .cardWrapper {

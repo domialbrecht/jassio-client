@@ -1,10 +1,42 @@
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
+import Obeabe from './rulesTypes/Obeabe.vue'
+import Undeufe from './rulesTypes/Undeufe.vue'
+import Trumpf from './rulesTypes/Trumpf.vue'
+import Slalom from './rulesTypes/Slalom.vue'
 import { setupScrollAnimations } from '~/helpers'
+
 onMounted(() => {
   setupScrollAnimations()
 })
+const activeType = ref({
+  name: 'Obeabe',
+  color: 'bg-green-400',
+  component: Obeabe,
+})
+const types = [
+  {
+    name: 'Obeabe',
+    color: 'bg-green-400',
+    component: Obeabe,
+  },
+  {
+    name: 'Undeufe',
+    color: 'bg-blue-400',
+    component: Undeufe,
+  },
+  {
+    name: 'Trumpf',
+    color: 'bg-red-400',
+    component: Trumpf,
+  },
+  {
+    name: 'Slalom',
+    color: 'bg-violet-400',
+    component: Slalom,
+  },
+]
 </script>
 <template>
   <div class="relative mt-48">
@@ -35,7 +67,7 @@ onMounted(() => {
           <p class="text-xl">
             Zum spile vomene Schieber, so heisst die Jassart wo mir hie spile,
             bruchsch aus ersts mau vier Lüt. Gjasset seuber wird ner i zwöier
-            Teams. D Teammitglider sitze übers Chrütz.
+            Teams. D Teammitglider sitze übers Chrütz. Z Ziel vom Schieber isch vorem andere Team 100 Pünkt z erreiche.
           </p>
         </div>
       </div>
@@ -146,28 +178,20 @@ onMounted(() => {
         <div class="flex justify-between items-center">
           <p
             class="text-xl text-white"
-          >Pro Rundi bestimmt e Spiler d Jassart. Ir erste Rundi isch das wie obe zeigt dä wo z Egge 10ni het. Ner geiz eifach am Chlapf nah. Der Spiler wählt vode unde ufgfüärtä Arte eini us, oder faus är z Gfüäu het si Mitspiler sig besser, chaner "schiebe". Wird gschobe bestimmt i dere Rundi der Mitspiler d Jassart. Die ersti Charte spile, "usgah" mues aber immer no der initial Spiler. Nachfolgend si d Jassarte ufglistet.</p>
+          >Nachem verteile muäs dä Spiler vo "Vorhand" het d Jassart bestimme. Ir erste Rundi isch das wie obe zeigt dä wo z Egge 10ni het. Ner geiz eifach am Chlapf nah. Der Spiler wählt vode unde ufgfüärtä Arte eini us, oder faus är z Gfüäu het si Mitspiler sig besser, chaner "schiebe". Wird gschobe bestimmt i dere Rundi der Mitspiler d Jassart(Vorhand het immer no der ander). Nach der Wahl mues der Spiler mit Vorhand die ersti Charte spile. Nachfolgend si d Jassarte ufglistet.</p>
         </div>
       </div>
       <div
         class="grid grid-flow-col gap-5 mt-12 js-animate-in-trigger"
         data-anmiate-in-stagger="200"
       >
-        <div class="flex flex-col items-center js-animate-in-item animate-in-fade">
-          <div class="w-full h-72 bg-green-400"></div>
-          <span class="uppercase text-white text-2xl mt-5">Obe-Abe</span>
-        </div>
-        <div class="flex flex-col items-center js-animate-in-item animate-in-fade">
-          <div class="w-full h-72 bg-blue-400"></div>
-          <span class="uppercase text-white text-2xl mt-5">Unde-Ufe</span>
-        </div>
-        <div class="flex flex-col items-center js-animate-in-item animate-in-fade">
-          <div class="w-full h-72 bg-red-400"></div>
-          <span class="uppercase text-white text-2xl mt-5">Trumpf</span>
-        </div>
-        <div class="flex flex-col items-center js-animate-in-item animate-in-fade">
-          <div class="w-full h-72 bg-indigo-400"></div>
-          <span class="uppercase text-white text-2xl mt-5">Slalom</span>
+        <div
+          v-for="type in types"
+          :key="type.name"
+          class="flex flex-col items-center js-animate-in-item animate-in-fade"
+        >
+          <div class="w-full h-70" :class="type.color"></div>
+          <span class="uppercase text-white text-2xl mt-5">{{ type.name }}</span>
         </div>
       </div>
     </div>
@@ -177,7 +201,7 @@ onMounted(() => {
         <div class="flex items-center">
           <div class="bg-highlight relative rounded-full w-8 h-8" style="left:-14px"></div>
           <div class="ml-5">
-            <h4 class="uppercase text-xl">Ersti Charte(pro Spiler)</h4>
+            <h4 class="uppercase text-xl">Lege vor erste Charte(pro Spiler)</h4>
           </div>
         </div>
       </div>
@@ -187,9 +211,11 @@ onMounted(() => {
       <div class="js-animate-in animate-in-slideX-left">
         <h3 class="uppercase text-5xl mb-3 text-default font-bold">2/3 Wisä</h3>
         <div class="flex justify-between items-center">
-          <p
-            class="text-xl text-default"
-          >Am Afang vor Rundi cha gwisä wärdä. Vo Wise redt me we e Spiler e gwüssi Kombination a Charte het. Je nachdäm was für ne Wiis me het bechunt z Team ner Pünkt. Generell mues ä Wis mit der erst gspiute Charte agseit wärdä. Die einzigi Usnahm si d "Stöck". Die cha der Spiler agäh wener die zwöiti Charte vor Kombi usspiut. Pro Rundi cha nur eis Team Pünkt für ä Wis ufschribe, und zwar immer das mite der Kombination mitem meiste Wärt.</p>
+          <p class="text-xl text-default">
+            Jede Spiler cha zum Zitpunkt vo sire erste Charte pro Rundi "Wisä". Vo Wisä redt me we e Spiler e gwüssi Kombination a Charte het. Je nachdäm was für ne Wis me het bechunt z Team ner Pünkt. Pro Rundi cha nur eis Team Pünkt für ä Wis ufschribe, und zwar immer das mite der Kombination mitem meiste Wärt.
+            <br />
+            <br />Generell mues e Wis mit der erste Charte agäh wärdä(we der Spiler wot Wisä, mä mues nid). Die einzigi Usnahm si d "Stöck". Die cha der Spiler agäh wener die zwöiti Charte vor Kombi usspiut. Vergisst mä ä Wis isch Päch gsi. Het ei Spiler mehreri Wisä de seiter nur der höchst. Nachdem me het festgsteut weles Team der höchst Wis het, cha das Team sämtlächi Wise deklariere und verbuechä(ou di wo zerst nid si gseit worde).
+          </p>
         </div>
       </div>
       <div class="flex mt-12 justify-center js-animate-in animate-in-fade">
@@ -328,19 +354,68 @@ onMounted(() => {
     </div>
     <div class="rulesSection p-20">
       <div class="help">?</div>
+      <div class="typesswitch flex">
+        <div
+          v-for="type in types"
+          :key="type.name"
+          class="w-4 h-4 mr-2 cursor-pointer"
+          :class="type.color"
+          @click="activeType = type"
+        ></div>
+      </div>
       <div class="js-animate-in animate-in-slideX-left">
         <h3 class="uppercase text-5xl mb-3 text-default font-bold">3/3 Usspilä</h3>
         <div>
           <p class="text-xl text-default">
-            Nachem Wisä, oder we niemer öppis z Wisä het, faht die eigentlechi Rundi a. Der Spiler wo agseit oder gschobe het spiut die ersti Charte us. När der nächst Spiler am Chlapf nah. Hei aui Spiler ei Charte gspiut git das e "Stich". Es mues immer jede Spiler genau 1 Charte spile. Das Team mitem Spiler wo die besti Charte gleit het nimmt di vier Charte zu sich. Weles das die besti Charte isch hängt vor aktuelle Jassart ab.
+            Nachem Wisä, oder we niemer öppis z Wisä het, faht die eigentlechi Rundi a. Der Spiler wo Vorhand het spiut die ersti Charte us. När der nächst Spiler am Chlapf nah.
             <span
-              class="text-cyan-600"
-            >Obe rächts chasch wächslä.</span>
-            Nachem erste Stich spiut dä Spiler us o der Stich gmacht het. Das geit när so witer bis aui 9 Charte gspiut si worde. Denn wärdä d Pünkt Zeut u när faht die nächsti Rundi wider bi
+              class="text-purple-500"
+            >We der Spiler e Charte vor usgspiute Farb(Härz, Egge, Schufle, Chrütz) het de mues är eini vor gliche Farb legä! Faus nid chaner irgend e anderi spilä. Usnahm isch wenn d Jassart Trumpf isch. Die einzelne Jassarte unde gneuer erklärt.</span>
+            <span class="ml-1 text-cyan-600">Obe rächts chasch wächslä.</span>
+            <br />
+            <br />Nachem erste Stich spiut dä Spiler us wo der Stich gmacht het. Das geit när so witer bis aui 9 Charte gspiut si worde. Denn wärdä d Pünkt Zeut. Pro Rundi chöi immer 156 Pünkt gmacht wärdä.
             <span
-              class="text-cyan-600"
-            >Punkt 1 / 3</span> a. Usser natürläch die festgleite Gwinnpünkt, meistens 1000, si erreicht.
+              class="text-purple-500"
+            >D Jassart bestimmt wie viu Pünkt die einzelne Charte Wärt si. Die Chart wu Pünkt gäbä si unde pro Jassart glistet.</span> 100 Bonuspünkt giz wenn eis Team aui Stiche macht, das nennt me e "Match". Gwunne het wär zerst 1000 Pünkt erreicht. Wirds knapp so giut die Reihefolg: "Stöck" > "Wis" > "Stich". Wenn auso zum Bispiu bi 990 zu 980 z zwöitä Team cha Wisä isch z Spiu direkt fertig.
           </p>
+        </div>
+      </div>
+    </div>
+    <div class="rulesSection rulesInset">
+      <transition-group name="ruletype">
+        <div
+          v-for="type in types"
+          v-show="type.name === activeType.name"
+          :key="type.name"
+          class="p-10 insetContainer"
+          :class="type.color"
+        >
+          <div class="help">?</div>
+          <div class>
+            <h3 class="uppercase text-5xl mb-3 text-white font-bold">{{ type.name }}</h3>
+            <div>
+              <component :is="type.component"></component>
+            </div>
+          </div>
+        </div>
+      </transition-group>
+    </div>
+    <div class="rulesBetween">
+      <div class="betweenLine absolute h-full w-1 bg-light"></div>
+      <div class="flex justify-between items-center py-10">
+        <div class="flex items-center">
+          <div class="bg-highlight relative rounded-full w-8 h-8" style="left:-14px"></div>
+          <div class="ml-5">
+            <h4 class="uppercase text-xl">1000 Pünkt erreicht</h4>
+          </div>
+        </div>
+      </div>
+      <div class="flex justify-between items-center pt-10">
+        <div class="flex items-center">
+          <div class="bg-highlight relative rounded-full w-8 h-8" style="left:-14px"></div>
+          <div class="ml-5">
+            <h4 class="uppercase text-xl">Team gwinnt!!</h4>
+          </div>
         </div>
       </div>
     </div>
@@ -358,6 +433,17 @@ onMounted(() => {
 
 .rulesSection.rulesSectionDark {
   @apply bg-dark;
+}
+
+.rulesSection.rulesInset {
+  z-index: -1;
+  background: white;
+  padding: 0 50px;
+}
+
+.insetContainer {
+  position: relative;
+  border-radius: 0 0 24px 24px;
 }
 
 .rulesBetween {
@@ -382,6 +468,12 @@ onMounted(() => {
   @apply bg-sky;
 }
 
+.typesswitch {
+  position: absolute;
+  top: 30px;
+  right: 100px;
+}
+
 .rulesBetween .help {
   position: static;
   margin-right: 20px;
@@ -396,5 +488,13 @@ onMounted(() => {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.ruletype-enter-active {
+  transition: transform 1s ease-out;
+}
+.ruletype-enter-from,
+.ruletype-leave-to {
+  opacity: 0;
+  transform: translateY(-100px);
 }
 </style>
