@@ -1,5 +1,6 @@
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { Socket } from 'socket.io-client'
+import { ref, defineComponent, PropType, inject } from 'vue'
 import PlayerCard from './PlayerCard.vue'
 import { IPlayer, IHostSetting } from '~/types'
 export default defineComponent({
@@ -13,11 +14,21 @@ export default defineComponent({
     hostSettings: { type: Object as PropType<IHostSetting>, required: true },
   },
   setup(props, { emit }) {
+    const socket: Socket = inject('socket')!
     const copyKey = () => {
       navigator.clipboard.writeText(props.jkey)
     }
+    const winAmount = ref(props.hostSettings.winAmount)
+    const enableWise = ref(props.hostSettings.enableWise)
+    const settingChanged = () => {
+      socket.emit('settingChanged', { winAmount: winAmount.value, enableWise: enableWise.value })
+    }
+    socket.on('newSettings', (settings) => {
+      winAmount.value = settings.winAmount
+      enableWise.value = settings.enableWise
+    })
     return {
-      copyKey,
+      copyKey, winAmount, enableWise, settingChanged,
     }
   },
 })
@@ -25,11 +36,23 @@ export default defineComponent({
 </script>
 <template>
   <div class="w-3/4 mx-auto py-16 h-full flex flex-col justify-between items-center">
-    <div class>
-      <div>Settings 1</div>
-      <div>Settings 1</div>
-      <div>Settings 1</div>
-      <div>Settings 1</div>
+    <div class="grid grid-cols-2 grid-rows-2 gap-4">
+      <span class="text-3xl mr-6">Gwinnpunktzahl</span>
+      <input
+        v-model="winAmount"
+        :disabled="!isHost"
+        class="mt-0 block px-0.5 text-darker text-xl text-center border-0 focus:ring-0 focus:border-white"
+        @change="settingChanged"
+      />
+      <label for="checkbox" class="text-3xl mr-6">Wise isch erloubt</label>
+      <input
+        id="checkbox"
+        v-model="enableWise"
+        :disabled="!isHost"
+        type="checkbox"
+        class="h-6 w-6 bg-white block appearance-none justify-self-center checked:bg-highlight"
+        @change="settingChanged"
+      />
     </div>
     <div class="grid grid-cols-4 gap-12">
       <PlayerCard v-for="p in players" :key="p.id" :player="p" />

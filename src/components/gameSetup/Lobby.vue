@@ -45,6 +45,7 @@ export default defineComponent({
     }
     socket.on('hosted', (key: string) => {
       joinKey.value = `${window.location.origin}/game?key=${key}`
+      socket.emit('settingChanged', { winAmount: hostSettings.value.winAmount, enableWise: hostSettings.value.enableWise })
     })
     socket.on('players', (sp) => {
       const newPlayers = sp.map((p: { id: any; name: any; isHost: any }, i: number) => {
@@ -58,6 +59,10 @@ export default defineComponent({
       })
       players.value = newPlayers
       setupComplete.value = true
+    })
+    socket.on('initialSettings', (settings) => {
+      hostSettings.value.winAmount = settings.winAmount
+      hostSettings.value.enableWise = settings.enableWise
     })
     socket.on('abandoned', () => {
       nameInput.value = ''
