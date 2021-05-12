@@ -1,3 +1,26 @@
+<script setup lang="ts">
+import { ref } from 'vue'
+const playerCards = ref(['6', '7', '8', '9', '10', 'jack', 'queen', 'king', '1'])
+let tempHand = playerCards.value
+const startDrag = (evt: DragEvent, card: string) => {
+  playerCards.value = playerCards.value.filter((c) => {
+    return c !== card
+  })
+  if (!evt.dataTransfer) return
+  evt.dataTransfer.dropEffect = 'move'
+  evt.dataTransfer.effectAllowed = 'move'
+}
+const handleDrop = (evt: DragEvent, card: string) => {
+  if (!evt) return
+  console.log('drop')
+  tempHand = playerCards.value
+  console.log(evt)
+}
+const handleDragEnd = (evt: DragEvent, card: string) => {
+  console.log('dragend')
+  if (evt.dataTransfer?.dropEffect === 'none') playerCards.value = tempHand
+}
+</script>
 <template>
   <div class="grid h-full board bg-gray-800">
     <div class="bg-gray-700">
@@ -149,16 +172,22 @@
       </div>
     </div>
     <div class="bg-gray-700">
-      <div class="flex justify-center w-full h-full px-4 py-2">
-        <div
-          v-for="card in ['6', '7', '8', '9', '10', 'jack', 'queen', 'king', '1']"
-          :key="card"
-          class="h-full"
-        >
-          <svg class="h-full" viewBox="0 0 169 245">
-            <use :href="`/images/svg-cards.svg#spade_${card}`" />
-          </svg>
-        </div>
+      <div class="flex justify-center h-full px-4 py-2 hand">
+        <transition-group name="hand">
+          <div
+            v-for="card in playerCards"
+            :key="card"
+            draggable="true"
+            class="h-full card-wrapper"
+            @dragstart="startDrag($event, card)"
+            @drop="handleDrop($event, card)"
+            @dragend="handleDragEnd($event, card)"
+          >
+            <svg class="h-full" viewBox="0 0 169 245">
+              <use :href="`/images/svg-cards.svg#spade_${card}`" />
+            </svg>
+          </div>
+        </transition-group>
       </div>
     </div>
     <div class="bg-gray-700">
@@ -209,6 +238,18 @@
     "player4Hand board player2Hand"
     "player4Icon player3Hand player3Icon";
 }
-.cardEnemy {
+.hand-enter-active,
+.hand-leave-active {
+  max-width: 162px;
+  transition: all 0.15s ease;
+}
+.hand-enter-from,
+.hand-leave-to {
+  max-width: 0;
+}
+
+svg,
+svg * {
+  pointer-events: none;
 }
 </style>

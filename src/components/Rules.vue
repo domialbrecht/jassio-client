@@ -347,7 +347,7 @@ const types = [
         <div class="flex items-center">
           <div class="bg-highlight relative rounded-full w-8 h-8" style="left:-14px"></div>
           <div class="ml-5">
-            <h4 class="uppercase text-xl">Spiurndi</h4>
+            <h4 class="uppercase text-xl">Spiurundi</h4>
           </div>
         </div>
       </div>
