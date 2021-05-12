@@ -16,7 +16,7 @@ const k = new URLSearchParams(window.location.search).get('key')
 if (k && typeof k === 'string')
   key = k
 
-const gameRunning = ref(false)
+const gameRunning = ref(true) // FIXME: TESTING
 provide('socket', socket)
 </script>
 
@@ -25,7 +25,7 @@ provide('socket', socket)
     <span class="pointer" @click="leaveGame">LEAVE</span>
     <router-link to="/">HELP</router-link>
   </header>
-  <main class="pt-10 px-5 h-full">
+  <main class="pt-10 h-full">
     <Lobby v-if="!gameRunning" :jkey="key" />
     <Board v-else />
   </main>
