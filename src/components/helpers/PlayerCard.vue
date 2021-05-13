@@ -4,6 +4,7 @@ import { IPlayer } from '~/types'
 export default defineComponent({
   props: {
     player: { type: Object as PropType<IPlayer>, required: true },
+    inBoard: { type: Boolean, default: false },
   },
 })
 
@@ -41,5 +42,5 @@ export default defineComponent({
       stroke-width="2"
     />
   </svg>
-  <div class="text-2xl uppercase">{{ player.name }}</div>
+  <div class="uppercase" :class="inBoard ? 'text-white text-3xl' : 'text-2xl'">{{ player.name }}</div>
 </template>

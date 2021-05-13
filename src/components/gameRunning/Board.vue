@@ -83,7 +83,6 @@ export default defineComponent({
         class="transform -rotate-180 flex flex-col h-full p-3 items-center"
       >
         <PlayerCard :player="boardPlayers.get('top') || emptyPlayer" />
-        <span class="text-3xl text-white uppercase">{{ boardPlayers.get('top')?.name }}</span>
       </div>
     </div>
     <div class="bg-darker border-b-2">
@@ -104,7 +103,6 @@ export default defineComponent({
         class="transform -rotate-90 flex flex-col h-full p-3 items-center"
       >
         <PlayerCard :player="boardPlayers.get('right') || emptyPlayer" />
-        <span class="text-3xl text-white uppercase">{{ boardPlayers.get('right')?.name }}</span>
       </div>
     </div>
     <div class="bg-dark border-r-2">
@@ -170,7 +168,6 @@ export default defineComponent({
         class="transform rotate-90 flex flex-col h-full p-3 items-center"
       >
         <PlayerCard :player="boardPlayers.get('left') || emptyPlayer" />
-        <span class="text-3xl text-white uppercase">{{ boardPlayers.get('left')?.name }}</span>
       </div>
     </div>
     <div class="bg-darker border-t-2">
@@ -194,7 +191,6 @@ export default defineComponent({
     <div class="bg-darker border-t-2">
       <div v-if="boardPlayers.get('bottom')" class="flex flex-col h-full p-3 items-center">
         <PlayerCard :player="boardPlayers.get('bottom') || emptyPlayer" />
-        <span class="text-3xl text-white uppercase">{{ boardPlayers.get('bottom')?.name }}</span>
       </div>
     </div>
   </div>
