@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Socket } from 'socket.io-client'
 import { ref, defineComponent, PropType, inject } from 'vue'
-import PlayerCard from './PlayerCard.vue'
+import PlayerCard from '../helpers/PlayerCard.vue'
 import { IPlayer, IHostSetting } from '~/types'
 export default defineComponent({
   components: {
@@ -13,6 +13,7 @@ export default defineComponent({
     players: { type: Array as PropType<Array<IPlayer>>, required: true },
     hostSettings: { type: Object as PropType<IHostSetting>, required: true },
   },
+  emits: ['start'],
   setup(props, { emit }) {
     const socket: Socket = inject('socket')!
     const copyKey = () => {
@@ -20,6 +21,9 @@ export default defineComponent({
     }
     const winAmount = ref(props.hostSettings.winAmount)
     const enableWise = ref(props.hostSettings.enableWise)
+    const onStart = () => {
+      emit('start')
+    }
     const settingChanged = () => {
       socket.emit('settingChanged', { winAmount: winAmount.value, enableWise: enableWise.value })
     }
@@ -28,7 +32,7 @@ export default defineComponent({
       enableWise.value = settings.enableWise
     })
     return {
-      copyKey, winAmount, enableWise, settingChanged,
+      copyKey, winAmount, enableWise, settingChanged, onStart,
     }
   },
 })
@@ -69,10 +73,11 @@ export default defineComponent({
         >Iladig kopiere</button>
       </div>
       <a
-        class="pointer heroButton px-8 py-3 text-2xl text-white relative tracking-widest bg-highlight uppercase"
+        class="cursor-pointer heroButton px-8 py-3 text-2xl text-white relative tracking-widest bg-highlight uppercase"
+        @click="onStart"
       >
         <span class="heroButtonOverlay"></span>
-        <span class="label relative z-10">Starte</span>
+        <span class="label relative z-10 cursor-pointer">Starte</span>
       </a>
     </div>
   </div>

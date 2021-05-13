@@ -12,7 +12,8 @@ export default defineComponent({
   props: {
     jkey: { type: String, default: '' },
   },
-  setup(props) {
+  emits: ['gstart'],
+  setup(props, { emit }) {
     const clientIsHost = ref(false)
     const joinKey = ref('')
     const nameInput = ref('')
@@ -42,6 +43,9 @@ export default defineComponent({
         console.log(`name: ${name}`)
         serverConnect(name, false, joinKey.value)
       }
+    }
+    const onStart = () => {
+      emit('gstart', players.value)
     }
     socket.on('hosted', (key: string) => {
       joinKey.value = `${window.location.origin}/game?key=${key}`
@@ -77,7 +81,7 @@ export default defineComponent({
       }
     })
     return {
-      joinKey, nameInput, players, setupComplete, onHost, onJoin, clientIsHost, hostSettings,
+      joinKey, nameInput, players, setupComplete, onHost, onJoin, clientIsHost, hostSettings, onStart,
     }
   },
 })
@@ -97,6 +101,7 @@ export default defineComponent({
         :jkey="joinKey"
         :players="players"
         :host-settings="hostSettings"
+        @start="onStart"
       />
     </div>
   </div>
