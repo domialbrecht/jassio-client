@@ -45,8 +45,13 @@ export default defineComponent({
       }
     }
     const onStart = () => {
-      emit('gstart', players.value)
+      // FIXME: ENABLE if (players.value.length < 4) return
+      if (clientIsHost.value)
+        socket.emit('startGame')
     }
+    socket.on('started', () => {
+      emit('gstart', players.value)
+    })
     socket.on('hosted', (key: string) => {
       joinKey.value = `${window.location.origin}/game?key=${key}`
       socket.emit('settingChanged', { winAmount: hostSettings.value.winAmount, enableWise: hostSettings.value.enableWise })

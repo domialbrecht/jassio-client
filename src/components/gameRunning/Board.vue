@@ -1,7 +1,15 @@
 <script lang="ts">
-import { ref, defineComponent, PropType } from 'vue'
+import { Socket } from 'socket.io-client'
+import { ref, defineComponent, PropType, inject } from 'vue'
 import PlayerCard from '../helpers/PlayerCard.vue'
 import { IPlayer } from '~/types'
+
+interface Card {
+  id: number
+  display: string
+  value: number
+  suit: 'heart' | 'diamond' | 'spade' | 'club'
+}
 
 export default defineComponent({
   components: {
@@ -11,6 +19,7 @@ export default defineComponent({
     players: { type: Array as PropType<Array<IPlayer>>, required: true },
   },
   setup(props, { emit }) {
+    const socket: Socket = inject('socket')!
     // Empty player if boardPlayers are undef
     const emptyPlayer: IPlayer = {
       self: false,
@@ -21,23 +30,28 @@ export default defineComponent({
     }
     // Map players from props to each side for easy access
     const boardPlayers = new Map([
-      ['top', props.players[1]],
-      ['right', props.players[2]],
-      ['bottom', props.players[0]],
-      ['left', props.players[3]],
+      ['top', props.players.find(p => !p.teamRed && !p.self)],
+      ['right', props.players.filter(p => p.teamRed)[0]],
+      ['bottom', props.players.find(p => p.self)],
+      ['left', props.players.filter(p => p.teamRed)[1]],
     ])
 
-    const playerCards = ref([]) // Cards of client player
+    const playerCards = ref<Card[]>([]) // Cards of client player
     const otherCards = ref([]) // Simple number array for other player cards
-    const playedCards = ref({ r1: '', b1: '', r2: '', b2: '' }) // Container for cards in pot
+    const playedCards = ref({
+      r1: { id: 0, display: '', value: 0, suit: 'heart' },
+      b1: { id: 0, display: '', value: 0, suit: 'heart' },
+      r2: { id: 0, display: '', value: 0, suit: 'heart' },
+      b2: { id: 0, display: '', value: 0, suit: 'heart' },
+    }) // Container for cards in pot
     const tempHand = playerCards.value // Copy of client hand to reset after drag end
 
     const stichRed = ref(false) // If at least one stich red to show card back
     const stichBlue = ref(false) // If at least one stich blue to show card back
 
-    const dragCard = ref('') // Var for dragged card info
+    const dragCard = ref({ id: 0, display: '', value: 0, suit: 'heart' }) // Var for dragged card info
     const dragActive = ref(false) // Helper for class to prevent effects while drag
-    const startDrag = (evt: DragEvent, card: string) => {
+    const startDrag = (evt: DragEvent, card: Card) => {
       if (!evt.dataTransfer) return
       dragActive.value = true
       playerCards.value = playerCards.value.filter((c) => {
@@ -51,16 +65,14 @@ export default defineComponent({
       if (!evt || !dragCard.value) return
       evt.preventDefault()
       playedCards.value.r2 = dragCard.value
-      dragCard.value = ''
+      dragCard.value = { id: 0, display: '', value: 0, suit: 'heart' }
       console.log('drop')
       console.log(evt)
     }
-
     const allowDrop = (evt: DragEvent) => {
       evt.preventDefault()
     }
-
-    const handleDragEnd = (evt: DragEvent, card: string) => {
+    const handleDragEnd = (evt: DragEvent, card: Card) => {
       console.log('dragend')
       if (evt.dataTransfer?.dropEffect === 'none') {
         dragActive.value = false
@@ -68,6 +80,11 @@ export default defineComponent({
         playerCards.value = tempHand
       }
     }
+
+    socket.on('getCards', (cards) => {
+      playerCards.value = cards
+    })
+
     return {
       playerCards, otherCards, playedCards, tempHand, stichRed, stichBlue, startDrag, handleDrop, allowDrop, handleDragEnd, boardPlayers, emptyPlayer, dragActive,
     }
@@ -82,7 +99,7 @@ export default defineComponent({
         v-if="boardPlayers.get('top')"
         class="transform -rotate-180 flex flex-col h-full p-3 items-center"
       >
-        <PlayerCard :player="boardPlayers.get('top') || emptyPlayer" />
+        <PlayerCard :in-board="true" :player="boardPlayers.get('top') || emptyPlayer" />
       </div>
     </div>
     <div class="bg-darker border-b-2">
@@ -102,7 +119,7 @@ export default defineComponent({
         v-if="boardPlayers.get('right')"
         class="transform -rotate-90 flex flex-col h-full p-3 items-center"
       >
-        <PlayerCard :player="boardPlayers.get('right') || emptyPlayer" />
+        <PlayerCard :in-board="true" :player="boardPlayers.get('right') || emptyPlayer" />
       </div>
     </div>
     <div class="bg-dark border-r-2">
@@ -167,7 +184,7 @@ export default defineComponent({
         v-if="boardPlayers.get('left')"
         class="transform rotate-90 flex flex-col h-full p-3 items-center"
       >
-        <PlayerCard :player="boardPlayers.get('left') || emptyPlayer" />
+        <PlayerCard :in-board="true" :player="boardPlayers.get('left') || emptyPlayer" />
       </div>
     </div>
     <div class="bg-darker border-t-2">
@@ -175,14 +192,14 @@ export default defineComponent({
         <transition-group name="hand">
           <div
             v-for="card in playerCards"
-            :key="card"
+            :key="card.id"
             draggable="true"
             class="h-full card-wrapper"
             @dragstart="startDrag($event, card)"
             @dragend="handleDragEnd($event, card)"
           >
             <svg class="h-full" viewBox="0 0 169 245">
-              <use :href="`/images/svg-cards.svg#${card}`" />
+              <use :href="`/images/svg-cards.svg#${card.display}`" />
             </svg>
           </div>
         </transition-group>
@@ -190,7 +207,7 @@ export default defineComponent({
     </div>
     <div class="bg-darker border-t-2">
       <div v-if="boardPlayers.get('bottom')" class="flex flex-col h-full p-3 items-center">
-        <PlayerCard :player="boardPlayers.get('bottom') || emptyPlayer" />
+        <PlayerCard :in-board="true" :player="boardPlayers.get('bottom') || emptyPlayer" />
       </div>
     </div>
   </div>

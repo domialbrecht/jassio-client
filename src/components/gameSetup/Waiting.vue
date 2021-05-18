@@ -59,7 +59,9 @@ export default defineComponent({
       />
     </div>
     <div class="grid grid-cols-4 gap-12">
-      <PlayerCard v-for="p in players" :key="p.id" :player="p" />
+      <div v-for="p in players" :key="p.id" class="flex flex-col items-center">
+        <PlayerCard :player="p" />
+      </div>
       <div v-for="n in 4 - players.length" :key="n" class="flex flex-col items-center">
         <div class="mb-5 flex-grow bg-white w-full rounded-full"></div>
         <div>Läär</div>
@@ -79,6 +81,9 @@ export default defineComponent({
         <span class="heroButtonOverlay"></span>
         <span class="label relative z-10 cursor-pointer">Starte</span>
       </a>
+    </div>
+    <div v-else>
+      <h3 class="text-3xl">Der Host wrid z game starte</h3>
     </div>
   </div>
 </template>

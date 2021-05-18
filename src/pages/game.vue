@@ -31,7 +31,9 @@ export default defineComponent({
       players.value = pl
       gameRunning.value = true
     }
-
+    socket.on('abandoned', () => {
+      gameRunning.value = false
+    })
     provide('socket', socket)
     return {
       leaveGame, key, onStart, gameRunning, players,

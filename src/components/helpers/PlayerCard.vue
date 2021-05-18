@@ -10,7 +10,13 @@ export default defineComponent({
 
 </script>
 <template>
-  <svg id="Layer_1" class="w-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 68 64">
+  <svg
+    id="Layer_1"
+    class="w-full"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 68 64"
+    :class="!inBoard ? 'mb-2' : ''"
+  >
     <ellipse cx="34" cy="32" rx="32.5" ry="30.5" :fill="player.teamRed ? '#6f1a5f' : '#384d82'" />
     <path
       :fill="player.isHost ? '#ffbc00' : 'black'"
