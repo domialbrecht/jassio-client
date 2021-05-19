@@ -2,10 +2,8 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import Obeabe from './rulesTypes/Obeabe.vue'
-import Undeufe from './rulesTypes/Undeufe.vue'
-import Trumpf from './rulesTypes/Trumpf.vue'
-import Slalom from './rulesTypes/Slalom.vue'
 import { setupScrollAnimations } from '~/helpers'
+import { RuleTypes } from '~/defs'
 
 onMounted(() => {
   setupScrollAnimations()
@@ -15,28 +13,7 @@ const activeType = ref({
   color: 'bg-green-400',
   component: Obeabe,
 })
-const types = [
-  {
-    name: 'Obeabe',
-    color: 'bg-green-400',
-    component: Obeabe,
-  },
-  {
-    name: 'Undeufe',
-    color: 'bg-blue-400',
-    component: Undeufe,
-  },
-  {
-    name: 'Trumpf',
-    color: 'bg-red-400',
-    component: Trumpf,
-  },
-  {
-    name: 'Slalom',
-    color: 'bg-violet-400',
-    component: Slalom,
-  },
-]
+const types = RuleTypes
 </script>
 <template>
   <div class="relative mt-48">

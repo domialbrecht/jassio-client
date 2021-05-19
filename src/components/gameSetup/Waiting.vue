@@ -74,13 +74,10 @@ export default defineComponent({
           @click="copyKey"
         >Iladig kopiere</button>
       </div>
-      <a
-        class="cursor-pointer heroButton px-8 py-3 text-2xl text-white relative tracking-widest bg-highlight uppercase"
+      <button
+        class="cursor-pointer heroButton px-8 py-3 text-2xl text-white relative tracking-widest bg-highlight hover:bg-contrast uppercase uppercase"
         @click="onStart"
-      >
-        <span class="heroButtonOverlay"></span>
-        <span class="label relative z-10 cursor-pointer">Starte</span>
-      </a>
+      >Starte</button>
     </div>
     <div v-else>
       <h3 class="text-3xl">Der Host wrid z game starte</h3>

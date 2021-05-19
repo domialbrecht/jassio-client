@@ -44,7 +44,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <header class="absolute h-10 bg-dark w-full flex items-center px-5 justify-between text-white">
+  <header class="absolute h-10 bg-gray-900 w-full flex items-center px-5 justify-between text-white">
     <span class="pointer" @click="leaveGame">LEAVE</span>
     <router-link to="/">HELP</router-link>
   </header>

@@ -2,13 +2,14 @@
 import { Socket } from 'socket.io-client'
 import { ref, defineComponent, PropType, inject } from 'vue'
 import PlayerCard from '../helpers/PlayerCard.vue'
+import TypeSelector from './TypeSelector.vue'
 import useCardDrag from './cardDrag'
 import useBoardConnection from './socketHandler'
 import { IPlayer, ICard, IBoard } from '~/types'
 
 export default defineComponent({
   components: {
-    PlayerCard,
+    PlayerCard, TypeSelector,
   },
   props: {
     players: { type: Array as PropType<Array<IPlayer>>, required: true },
@@ -31,9 +32,10 @@ export default defineComponent({
       ['left', props.players.filter(p => p.teamRed)[1]],
     ])
 
-    const playerCards = ref<ICard[]>([]) // Cards of client player
-    const otherCards = ref([]) // Simple number array for other player cards
+    const playerCards = ref<ICard[]>([{ id: 4, display: 'heart_10', suit: 'heart', value: 14 }, { id: 3, display: 'heart_8', suit: 'heart', value: 13 }, { id: 35, display: 'club_10', suit: 'club', value: 5 }, { id: 39, display: 'club_1', suit: 'club', value: 9 }, { id: 23, display: 'spade_8', suit: 'spade', value: 3 }, { id: 6, display: 'heart_king', suit: 'heart', value: 16 }, { id: 9, display: 'heart_jack', suit: 'heart', value: 19 }, { id: 13, display: 'diamond_8', suit: 'diamond', value: 3 }, { id: 36, display: 'club_jack', suit: 'club', value: 6 }]) // Cards of client player
+    const otherCards = ref([1, 2, 3, 4, 5, 6, 7, 8, 9]) // Simple number array for other player cards
     const tempHand = ref<ICard[]>([])
+    tempHand.value = playerCards.value
     const playedCards = ref<IBoard>({
       r1: { id: 0, display: '', value: 0, suit: 'heart' },
       b1: { id: 0, display: '', value: 0, suit: 'heart' },
@@ -43,8 +45,11 @@ export default defineComponent({
 
     const stichRed = ref(false) // If at least one stich red to show card back
     const stichBlue = ref(false) // If at least one stich blue to show card back
-
-    useBoardConnection(socket, playerCards, tempHand)
+    const showPicker = ref(true)
+    const onSelectType = () => {
+      showPicker.value = false
+    }
+    // useBoardConnection(socket, playerCards, tempHand)
 
     const {
       startDrag,
@@ -55,7 +60,7 @@ export default defineComponent({
     } = useCardDrag(playerCards, playedCards, tempHand)
 
     return {
-      playerCards, otherCards, playedCards, stichRed, stichBlue, startDrag, handleDrop, allowDrop, handleDragEnd, boardPlayers, emptyPlayer, dragActive,
+      playerCards, otherCards, playedCards, stichRed, stichBlue, startDrag, handleDrop, allowDrop, handleDragEnd, boardPlayers, emptyPlayer, dragActive, showPicker, onSelectType,
     }
   },
 })
@@ -180,6 +185,9 @@ export default defineComponent({
       </div>
     </div>
   </div>
+  <transition name="fade">
+    <TypeSelector v-if="showPicker" @selected="onSelectType" />
+  </transition>
 </template>
 <style scoped>
 .board {
@@ -251,5 +259,15 @@ export default defineComponent({
 svg,
 svg * {
   pointer-events: none;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease-in;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
