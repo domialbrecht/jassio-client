@@ -3,7 +3,7 @@
 @import url("./util/scrollbar.css");
 /* Responsive blocker */
 
-@media (max-width: 1450px) {
+/*@media (max-width: 1450px) {
   #app {
     display: none;
   }
@@ -15,7 +15,7 @@
     position: absolute;
     top: 100px;
   }
-}
+}*/
 
 html, body, #app {
   @apply font-sans;

@@ -2,14 +2,9 @@
 import { Socket } from 'socket.io-client'
 import { ref, defineComponent, PropType, inject } from 'vue'
 import PlayerCard from '../helpers/PlayerCard.vue'
-import { IPlayer } from '~/types'
-
-interface Card {
-  id: number
-  display: string
-  value: number
-  suit: 'heart' | 'diamond' | 'spade' | 'club'
-}
+import useCardDrag from './cardDrag'
+import useBoardConnection from './socketHandler'
+import { IPlayer, ICard, IBoard } from '~/types'
 
 export default defineComponent({
   components: {
@@ -36,57 +31,31 @@ export default defineComponent({
       ['left', props.players.filter(p => p.teamRed)[1]],
     ])
 
-    const playerCards = ref<Card[]>([]) // Cards of client player
+    const playerCards = ref<ICard[]>([]) // Cards of client player
     const otherCards = ref([]) // Simple number array for other player cards
-    const playedCards = ref({
+    const tempHand = ref<ICard[]>([])
+    const playedCards = ref<IBoard>({
       r1: { id: 0, display: '', value: 0, suit: 'heart' },
       b1: { id: 0, display: '', value: 0, suit: 'heart' },
       r2: { id: 0, display: '', value: 0, suit: 'heart' },
       b2: { id: 0, display: '', value: 0, suit: 'heart' },
     }) // Container for cards in pot
-    const tempHand = playerCards.value // Copy of client hand to reset after drag end
 
     const stichRed = ref(false) // If at least one stich red to show card back
     const stichBlue = ref(false) // If at least one stich blue to show card back
 
-    const dragCard = ref({ id: 0, display: '', value: 0, suit: 'heart' }) // Var for dragged card info
-    const dragActive = ref(false) // Helper for class to prevent effects while drag
-    const startDrag = (evt: DragEvent, card: Card) => {
-      if (!evt.dataTransfer) return
-      dragActive.value = true
-      playerCards.value = playerCards.value.filter((c) => {
-        return c !== card
-      })
-      dragCard.value = card
-      evt.dataTransfer.dropEffect = 'move'
-      evt.dataTransfer.effectAllowed = 'move'
-    }
-    const handleDrop = (evt: DragEvent) => {
-      if (!evt || !dragCard.value) return
-      evt.preventDefault()
-      playedCards.value.r2 = dragCard.value
-      dragCard.value = { id: 0, display: '', value: 0, suit: 'heart' }
-      console.log('drop')
-      console.log(evt)
-    }
-    const allowDrop = (evt: DragEvent) => {
-      evt.preventDefault()
-    }
-    const handleDragEnd = (evt: DragEvent, card: Card) => {
-      console.log('dragend')
-      if (evt.dataTransfer?.dropEffect === 'none') {
-        dragActive.value = false
-        dragCard.value = card
-        playerCards.value = tempHand
-      }
-    }
+    useBoardConnection(socket, playerCards, tempHand)
 
-    socket.on('getCards', (cards) => {
-      playerCards.value = cards
-    })
+    const {
+      startDrag,
+      handleDrop,
+      allowDrop,
+      handleDragEnd,
+      dragActive,
+    } = useCardDrag(playerCards, playedCards, tempHand)
 
     return {
-      playerCards, otherCards, playedCards, tempHand, stichRed, stichBlue, startDrag, handleDrop, allowDrop, handleDragEnd, boardPlayers, emptyPlayer, dragActive,
+      playerCards, otherCards, playedCards, stichRed, stichBlue, startDrag, handleDrop, allowDrop, handleDragEnd, boardPlayers, emptyPlayer, dragActive,
     }
   },
 })
