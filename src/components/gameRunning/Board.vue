@@ -1,15 +1,15 @@
 <script lang="ts">
 import { Socket } from 'socket.io-client'
 import { ref, defineComponent, PropType, inject } from 'vue'
+import draggable from 'vuedraggable'
 import PlayerCard from '../helpers/PlayerCard.vue'
 import TypeSelector from './TypeSelector.vue'
-import useCardDrag from './cardDrag'
 import useBoardConnection from './socketHandler'
 import { IPlayer, ICard, IBoard } from '~/types'
 
 export default defineComponent({
   components: {
-    PlayerCard, TypeSelector,
+    PlayerCard, TypeSelector, draggable,
   },
   props: {
     players: { type: Array as PropType<Array<IPlayer>>, required: true },
@@ -32,16 +32,18 @@ export default defineComponent({
       ['left', props.players.filter(p => p.teamRed)[1]],
     ])
 
-    const playerCards = ref<ICard[]>([{ id: 4, display: 'heart_10', suit: 'heart', value: 14 }, { id: 3, display: 'heart_8', suit: 'heart', value: 13 }, { id: 35, display: 'club_10', suit: 'club', value: 5 }, { id: 39, display: 'club_1', suit: 'club', value: 9 }, { id: 23, display: 'spade_8', suit: 'spade', value: 3 }, { id: 6, display: 'heart_king', suit: 'heart', value: 16 }, { id: 9, display: 'heart_jack', suit: 'heart', value: 19 }, { id: 13, display: 'diamond_8', suit: 'diamond', value: 3 }, { id: 36, display: 'club_jack', suit: 'club', value: 6 }]) // Cards of client player
+    const playerCards = ref<ICard[]>([{ id: 4, display: 'heart_10', suit: 'heart', value: 14 }, { id: 3, display: 'heart_8', suit: 'heart', value: 13 }, { id: 35, display: 'club_10', suit: 'club', value: 5 }, { id: 39, display: 'club_1', suit: 'club', value: 9 }, { id: 23, display: 'spade_8', suit: 'spade', value: 3 }, { id: 6, display: 'heart_king', suit: 'heart', value: 16 }, { id: 9, display: 'heart_jack', suit: 'heart', value: 19 }, { id: 13, display: 'diamond_8', suit: 'diamond', value: 3 }, { id: 36, display: 'club_jack', suit: 'club', value: 6 }])
+    // Cards of client player
     const otherCards = ref([1, 2, 3, 4, 5, 6, 7, 8, 9]) // Simple number array for other player cards
-    const tempHand = ref<ICard[]>([])
-    tempHand.value = playerCards.value
-    const playedCards = ref<IBoard>({
-      r1: { id: 0, display: '', value: 0, suit: 'heart' },
-      b1: { id: 0, display: '', value: 0, suit: 'heart' },
-      r2: { id: 0, display: '', value: 0, suit: 'heart' },
-      b2: { id: 0, display: '', value: 0, suit: 'heart' },
-    }) // Container for cards in pot
+    // Simple single space array for holding player cards, has to be array for draggable
+    const instanceOfCard = (object: any): object is ICard => {
+      return 'display' in object
+    }
+    const playerPlayedCard = ref<ICard[]>([])
+    const cardPlayed = (evt: any) => {
+      if (!evt.added || !evt.added.element || !instanceOfCard(evt.added.element)) return
+      console.log(evt.added.element)
+    }
 
     const stichRed = ref(false) // If at least one stich red to show card back
     const stichBlue = ref(false) // If at least one stich blue to show card back
@@ -56,16 +58,8 @@ export default defineComponent({
     }
     // useBoardConnection(socket, playerCards, tempHand)
 
-    const {
-      startDrag,
-      handleDrop,
-      allowDrop,
-      handleDragEnd,
-      dragActive,
-    } = useCardDrag(playerCards, playedCards, tempHand)
-
     return {
-      playerCards, otherCards, playedCards, stichRed, stichBlue, pointsRed, pointsBlue, startDrag, handleDrop, allowDrop, handleDragEnd, boardPlayers, emptyPlayer, dragActive, showPicker, onSelectType, selectedTypeName,
+      playerCards, otherCards, playerPlayedCard, stichRed, stichBlue, pointsRed, pointsBlue, boardPlayers, emptyPlayer, showPicker, onSelectType, selectedTypeName, cardPlayed,
     }
   },
 })
@@ -130,15 +124,21 @@ export default defineComponent({
         </div>
       </div>
       <div class="w-full h-full field-player field-pb2"></div>
-      <div
+      <draggable
+        v-model="playerPlayedCard"
         class="w-full h-full field-player field-pr2 playable flex items-center justify-center"
-        @dragover="allowDrop($event)"
-        @drop="handleDrop($event)"
+        group="hand"
+        tag="div"
+        ghost-class="w-auto"
+        item-key="id"
+        @change="cardPlayed"
       >
-        <svg v-if="playedCards.r2" class="h-64" viewBox="0 0 169 245">
-          <use :href="`/images/svg-cards.svg#${playedCards.r2}`" />
-        </svg>
-      </div>
+        <template #item="{ element }">
+          <svg class="h-64" viewBox="0 0 169 245">
+            <use :href="`/images/svg-cards.svg#${element.display}`" />
+          </svg>
+        </template>
+      </draggable>
       <div class="w-full h-full field-player field-pb1"></div>
       <div class="w-full h-full field-sr flex items-end justify-end p-4">
         <svg v-if="stichBlue" class="h-44" viewBox="0 0 169 245">
@@ -167,22 +167,21 @@ export default defineComponent({
       </div>
     </div>
     <div class="bg-darker border-t-2">
-      <div class="flex justify-center h-full px-4 py-2 hand" :class="dragActive ? 'dragged' : ''">
-        <transition-group name="hand">
-          <div
-            v-for="card in playerCards"
-            :key="card.id"
-            draggable="true"
-            class="h-full card-wrapper"
-            @dragstart="startDrag($event, card)"
-            @dragend="handleDragEnd($event, card)"
-          >
+      <draggable
+        v-model="playerCards"
+        class="flex justify-center h-full px-4 py-2 hand"
+        group="hand"
+        tag="div"
+        item-key="id"
+      >
+        <template #item="{ element }">
+          <div class="h-full card-wrapper">
             <svg class="h-full" viewBox="0 0 169 245">
-              <use :href="`/images/svg-cards.svg#${card.display}`" />
+              <use :href="`/images/svg-cards.svg#${element.display}`" />
             </svg>
           </div>
-        </transition-group>
-      </div>
+        </template>
+      </draggable>
     </div>
     <div class="bg-darker border-t-2">
       <div v-if="boardPlayers.get('bottom')" class="flex flex-col h-full p-3 items-center">
