@@ -32,7 +32,7 @@ export default defineComponent({
       ['left', props.players.filter(p => p.teamRed)[1]],
     ])
 
-    const playerCards = ref<ICard[]>([{ id: 4, display: 'heart_10', suit: 'heart', value: 14 }, { id: 3, display: 'heart_8', suit: 'heart', value: 13 }, { id: 35, display: 'club_10', suit: 'club', value: 5 }, { id: 39, display: 'club_1', suit: 'club', value: 9 }, { id: 23, display: 'spade_8', suit: 'spade', value: 3 }, { id: 6, display: 'heart_king', suit: 'heart', value: 16 }, { id: 9, display: 'heart_jack', suit: 'heart', value: 19 }, { id: 13, display: 'diamond_8', suit: 'diamond', value: 3 }, { id: 36, display: 'club_jack', suit: 'club', value: 6 }])
+    const playerCards = ref<ICard[]>([])
     // Cards of client player
     const otherCards = ref([1, 2, 3, 4, 5, 6, 7, 8, 9]) // Simple number array for other player cards
     // Simple single space array for holding player cards, has to be array for draggable
@@ -40,9 +40,15 @@ export default defineComponent({
       return 'display' in object
     }
     const playerPlayedCard = ref<ICard[]>([])
+    // Server did not have played card on player, reset
+    socket.on('wrongCard', () => {
+      playerCards.value = playerCards.value.concat(playerPlayedCard.value)
+      playerPlayedCard.value = []
+    })
     const cardPlayed = (evt: any) => {
       if (!evt.added || !evt.added.element || !instanceOfCard(evt.added.element)) return
-      console.log(evt.added.element)
+      const card = evt.added.element as ICard
+      socket.emit('cardPlayed', card.id)
     }
 
     const stichRed = ref(false) // If at least one stich red to show card back
@@ -50,13 +56,22 @@ export default defineComponent({
     const pointsRed = ref(0)
     const pointsBlue = ref(0)
 
-    const showPicker = ref(true)
+    const showPicker = ref(false)
     const selectedTypeName = ref('')
+    // TODO: Secure me on server with check
+    socket.on('turnselect', () => {
+      showPicker.value = true
+    })
     const onSelectType = (type: string) => {
       showPicker.value = false
       selectedTypeName.value = type
+      socket.emit('typeselected', type)
     }
-    // useBoardConnection(socket, playerCards, tempHand)
+    socket.on('typegotselected', (type: string) => {
+      selectedTypeName.value = type
+    })
+
+    useBoardConnection(socket, playerCards)
 
     return {
       playerCards, otherCards, playerPlayedCard, stichRed, stichBlue, pointsRed, pointsBlue, boardPlayers, emptyPlayer, showPicker, onSelectType, selectedTypeName, cardPlayed,
