@@ -45,9 +45,14 @@ export default defineComponent({
 
     const stichRed = ref(false) // If at least one stich red to show card back
     const stichBlue = ref(false) // If at least one stich blue to show card back
+    const pointsRed = ref(0)
+    const pointsBlue = ref(0)
+
     const showPicker = ref(true)
-    const onSelectType = () => {
+    const selectedTypeName = ref('')
+    const onSelectType = (type: string) => {
       showPicker.value = false
+      selectedTypeName.value = type
     }
     // useBoardConnection(socket, playerCards, tempHand)
 
@@ -60,7 +65,7 @@ export default defineComponent({
     } = useCardDrag(playerCards, playedCards, tempHand)
 
     return {
-      playerCards, otherCards, playedCards, stichRed, stichBlue, startDrag, handleDrop, allowDrop, handleDragEnd, boardPlayers, emptyPlayer, dragActive, showPicker, onSelectType,
+      playerCards, otherCards, playedCards, stichRed, stichBlue, pointsRed, pointsBlue, startDrag, handleDrop, allowDrop, handleDragEnd, boardPlayers, emptyPlayer, dragActive, showPicker, onSelectType, selectedTypeName,
     }
   },
 })
@@ -117,11 +122,11 @@ export default defineComponent({
       <div class="w-full h-full field-player field-pr1"></div>
       <div class="w-full h-full field-type text-white flex flex-col items-center">
         <div>
-          <span class="uppercase text-3xl">Obeabe</span>
+          <span class="uppercase text-3xl">{{ selectedTypeName }}</span>
         </div>
         <div class="text-2xl mt-2">
-          <span class="text-purple-800">0</span> /
-          <span class="text-blue-900">0</span>
+          <span class="text-purple-800">{{ pointsRed }}</span> /
+          <span class="text-blue-900">{{ pointsBlue }}</span>
         </div>
       </div>
       <div class="w-full h-full field-player field-pb2"></div>

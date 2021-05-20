@@ -1,18 +1,13 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import Obeabe from './rulesTypes/Obeabe.vue'
 import { setupScrollAnimations } from '~/helpers'
 import { RuleTypes } from '~/defs'
 
 onMounted(() => {
   setupScrollAnimations()
 })
-const activeType = ref({
-  name: 'Obeabe',
-  color: 'bg-green-400',
-  component: Obeabe,
-})
+const activeType = ref('Obeabe')
 const types = RuleTypes
 </script>
 <template>
@@ -167,7 +162,9 @@ const types = RuleTypes
           :key="type.name"
           class="flex flex-col items-center js-animate-in-item animate-in-fade"
         >
-          <div class="w-full h-70" :class="type.color"></div>
+          <div class="w-full h-70 p-6 flex items-center justify-center" :class="type.color">
+            <component :is="type.icon"></component>
+          </div>
           <span class="uppercase text-white text-2xl mt-5">{{ type.name }}</span>
         </div>
       </div>
@@ -337,7 +334,7 @@ const types = RuleTypes
           :key="type.name"
           class="w-4 h-4 mr-2 cursor-pointer"
           :class="type.color"
-          @click="activeType = type"
+          @click="activeType = type.name"
         ></div>
       </div>
       <div class="js-animate-in animate-in-slideX-left">
@@ -362,7 +359,7 @@ const types = RuleTypes
       <transition-group name="ruletype">
         <div
           v-for="type in types"
-          v-show="type.name === activeType.name"
+          v-show="type.name === activeType"
           :key="type.name"
           class="p-10 insetContainer"
           :class="type.color"

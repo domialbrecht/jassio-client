@@ -1,7 +1,9 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
+import SchiebeIcon from '../helpers/SchiebeIcon.vue'
 import { RuleTypes } from '~/defs'
 export default defineComponent({
+  components: { SchiebeIcon },
   emits: ['selected'],
   setup(props, { emit }) {
     const selectType = (type: string) => {
@@ -26,9 +28,11 @@ export default defineComponent({
         <span class="text-2xl">{{ type.name }}</span>
         <button
           v-if="type.name !== 'Trumpf'"
-          class="flex items-center justify-center rounded-2xl w-full h-full text-dark bg-gray-100"
+          class="flex items-center justify-center rounded-2xl w-full h-5/6 text-dark"
           @click="selectType(type.name)"
-        >GO</button>
+        >
+          <component :is="type.icon"></component>
+        </button>
         <div v-else class="grid grid-cols-2 grid-rows-2 flex-grow gap-2 w-full px-4 text-dark">
           <button
             class="flex items-center justify-center rounded-2xl bg-gray-100"
@@ -51,9 +55,11 @@ export default defineComponent({
       <div class="h-60 w-52 flex flex-col items-center p-4 bg-orange-400">
         <span class="text-2xl">Schiebe</span>
         <button
-          class="flex items-center justify-center rounded-2xl w-full h-full text-dark bg-gray-100"
+          class="flex items-center justify-center rounded-2xl w-full h-5/6 text-dar"
           @click="selectType('switch')"
-        >GO</button>
+        >
+          <SchiebeIcon />
+        </button>
       </div>
     </div>
   </div>
