@@ -129,7 +129,7 @@ export default defineComponent({
         class="w-full h-full field-player field-pr2 playable flex items-center justify-center"
         group="hand"
         tag="div"
-        ghost-class="w-auto"
+        ghost-class="ghost-card"
         item-key="id"
         @change="cardPlayed"
       >
@@ -250,6 +250,10 @@ export default defineComponent({
 .card-wrapper {
   width: 162px;
 }
+.ghost-card {
+  width: auto !important;
+}
+
 .hand-enter-active,
 .hand-leave-active {
   max-width: 162px;
