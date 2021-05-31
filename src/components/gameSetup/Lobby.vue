@@ -3,7 +3,7 @@ import { Socket } from 'socket.io-client'
 import { ref, defineComponent, inject, onBeforeMount } from 'vue'
 import Entry from './Entry.vue'
 import Waiting from './Waiting.vue'
-import { IPlayer, IHostSetting } from '~/types'
+import { IPlayer, IHostSetting, ITeamSlots } from '~/types'
 
 export default defineComponent({
   components: {
@@ -19,6 +19,17 @@ export default defineComponent({
     const nameInput = ref('')
     const p: IPlayer[] = []
     const players = ref(p)
+    const playerSlots = ref<ITeamSlots>({
+      r1: undefined,
+      r2: undefined,
+      b1: undefined,
+      b2: undefined,
+    })
+    const assignPlayerSlots = () => {
+      players.value.forEach((p) => {
+        playerSlots.value[p.place] = p.id
+      })
+    }
     const hostSettings = ref<IHostSetting>({
       winAmount: 1000,
       enableWise: true,
@@ -28,20 +39,21 @@ export default defineComponent({
     onBeforeMount(() => { if (props.jkey) joinKey.value = props.jkey })
     // onMounted(() => { mounted = true })
     // onBeforeUnmount(() => { mounted = false })
-    const serverConnect = (username: string, host: boolean, key: string) => {
-      socket.auth = { username, host, key }
+    const serverConnect = (username: string, host: boolean, key: string, place: string) => {
+      socket.auth = { username, host, key, place }
       socket.connect()
     }
     const onHost = (name: string) => {
       clientIsHost.value = true
       nameInput.value = name
-      serverConnect(name, clientIsHost.value, '')
+      serverConnect(name, clientIsHost.value, '', 'r1')
     }
     const onJoin = (name: string) => {
       if (joinKey.value) {
+        const initalPlace = playerSlots.value.r2 ? 'r2' : playerSlots.value.b1 ? 'b1' : 'b2'
         nameInput.value = name
         console.log(`name: ${name}`)
-        serverConnect(name, false, joinKey.value)
+        serverConnect(name, false, joinKey.value, initalPlace)
       }
     }
     const onStart = () => {
@@ -50,22 +62,23 @@ export default defineComponent({
         socket.emit('startGame')
     }
     socket.on('started', () => {
-      emit('gstart', players.value)
+      emit('gstart', players)
     })
     socket.on('hosted', (key: string) => {
       joinKey.value = `${window.location.origin}/game?key=${key}`
       socket.emit('settingChanged', { winAmount: hostSettings.value.winAmount, enableWise: hostSettings.value.enableWise })
     })
     socket.on('players', (sp) => {
-      const newPlayers = sp.map((p: { id: any; name: any; isHost: any }, i: number) => {
+      const newPlayers = sp.map((p: { id: any; name: any; isHost: any; place: any }) => {
         return {
           self: socket.id === p.id,
           isHost: p.isHost,
           id: p.id,
           name: p.name,
-          teamRed: i > 1,
+          place: p.place,
         }
       })
+      assignPlayerSlots()
       players.value = newPlayers
       setupComplete.value = true
     })
@@ -86,7 +99,7 @@ export default defineComponent({
       }
     })
     return {
-      joinKey, nameInput, players, setupComplete, onHost, onJoin, clientIsHost, hostSettings, onStart,
+      joinKey, nameInput, players, playerSlots, assignPlayerSlots, setupComplete, onHost, onJoin, clientIsHost, hostSettings, onStart,
     }
   },
 })
@@ -105,6 +118,7 @@ export default defineComponent({
         :is-host="clientIsHost"
         :jkey="joinKey"
         :players="players"
+        :player-slots="playerSlots"
         :host-settings="hostSettings"
         @start="onStart"
       />

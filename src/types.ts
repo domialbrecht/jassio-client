@@ -2,12 +2,13 @@ export interface IHostSetting {
   winAmount: number
   enableWise: boolean
 }
+
 export interface IPlayer {
   self: boolean
   isHost: boolean
   id: string
   name: string
-  teamRed: boolean
+  place: 'r1' | 'r2' | 'b1' | 'b2'
 }
 
 export interface ICard {
@@ -15,6 +16,13 @@ export interface ICard {
   display: string
   value: number
   suit: 'heart' | 'diamond' | 'spade' | 'club'
+}
+
+export interface ITeamSlots {
+  r1: string | undefined
+  r2: string | undefined
+  b1: string | undefined
+  b2: string | undefined
 }
 
 export interface IBoard {

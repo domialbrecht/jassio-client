@@ -5,7 +5,7 @@ import draggable from 'vuedraggable'
 import PlayerCard from '../helpers/PlayerCard.vue'
 import TypeSelector from './TypeSelector.vue'
 import useBoardConnection from './socketHandler'
-import { IPlayer, ICard, IBoard } from '~/types'
+import { IPlayer, ICard } from '~/types'
 
 export default defineComponent({
   components: {
@@ -40,6 +40,12 @@ export default defineComponent({
       return 'display' in object
     }
     const playerPlayedCard = ref<ICard[]>([])
+    const getOtherCardOffset = (i: number): any => {
+      return {
+        top: `${-10 + 9 * i}%`,
+      }
+    }
+
     // Server did not have played card on player, reset
     socket.on('wrongCard', () => {
       playerCards.value = playerCards.value.concat(playerPlayedCard.value)
@@ -74,7 +80,7 @@ export default defineComponent({
     useBoardConnection(socket, playerCards)
 
     return {
-      playerCards, otherCards, playerPlayedCard, stichRed, stichBlue, pointsRed, pointsBlue, boardPlayers, emptyPlayer, showPicker, onSelectType, selectedTypeName, cardPlayed,
+      playerCards, otherCards, playerPlayedCard, stichRed, stichBlue, pointsRed, pointsBlue, boardPlayers, emptyPlayer, showPicker, onSelectType, selectedTypeName, cardPlayed, getOtherCardOffset,
     }
   },
 })
@@ -92,13 +98,10 @@ export default defineComponent({
     </div>
     <div class="bg-darker border-b-2">
       <div class="flex justify-center w-full h-full px-4 py-2">
-        <div
-          v-for="i in otherCards"
-          :key="i"
-          class="flex justify-center items-center w-full otherCard"
-          :class="i % 2 ? 'bg-red-400' : 'bg-red-600'"
-        >
-          <span class="transform -rotate-180 text-3xl text-white">{{ i }}</span>
+        <div v-for="i in otherCards" :key="i" class="h-full card-wrapper">
+          <svg class="h-full" viewBox="0 0 169 245">
+            <use :href="`/images/svg-cards.svg#back`" fill="red" />
+          </svg>
         </div>
       </div>
     </div>
@@ -110,16 +113,17 @@ export default defineComponent({
         <PlayerCard :in-board="true" :player="boardPlayers.get('right') || emptyPlayer" />
       </div>
     </div>
-    <div class="bg-dark border-r-2">
-      <div class="flex justify-center flex-col w-full h-full px-4 py-2">
-        <div
+    <div class="bg-dark border-r-2 min-h-0">
+      <div class="h-full flex flex-col relative py-22">
+        <svg
           v-for="i in otherCards"
           :key="i"
-          class="flex justify-center items-center h-full h-full otherCard"
-          :class="i % 2 ? 'bg-blue-400' : 'bg-blue-600'"
+          class="w-40 transform rotate-90 absolute left-11"
+          :style="getOtherCardOffset(i)"
+          viewBox="0 0 169 245"
         >
-          <span class="transform rotate-90 text-3xl text-white">{{ i }}</span>
-        </div>
+          <use :href="`/images/svg-cards.svg#back`" fill="#384d82" />
+        </svg>
       </div>
     </div>
     <div class="field grid px-5">
@@ -161,16 +165,17 @@ export default defineComponent({
         </svg>
       </div>
     </div>
-    <div class="bg-dark border-l-2">
-      <div class="flex justify-center flex-col w-full h-full px-4 py-2">
-        <div
+    <div class="bg-dark border-l-2 relative">
+      <div class="h-full flex flex-col relative py-22">
+        <svg
           v-for="i in otherCards"
           :key="i"
-          class="flex justify-center items-center h-full otherCard"
-          :class="i % 2 ? 'bg-blue-400' : 'bg-blue-600'"
+          class="w-40 transform rotate-90 absolute left-11"
+          :style="getOtherCardOffset(i)"
+          viewBox="0 0 169 245"
         >
-          <span class="transform -rotate-90 text-3xl text-white">{{ i }}</span>
-        </div>
+          <use :href="`/images/svg-cards.svg#back`" fill="#384d82" />
+        </svg>
       </div>
     </div>
     <div class="bg-dark border-r-2">
@@ -255,11 +260,6 @@ export default defineComponent({
 .field-pb2 {
   @apply bg-cool-gray-600;
   grid-area: pb2;
-}
-
-.otherCard:hover {
-  transition: transform 0.3s;
-  transform: scale(1.05);
 }
 
 .card-wrapper {
