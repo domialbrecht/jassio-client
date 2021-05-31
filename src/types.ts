@@ -8,7 +8,7 @@ export interface IPlayer {
   isHost: boolean
   id: string
   name: string
-  place: 'r1' | 'r2' | 'b1' | 'b2'
+  place: number
 }
 
 export interface ICard {

@@ -1,32 +1,22 @@
 <script lang="ts">
 import { Socket } from 'socket.io-client'
-import draggable from 'vuedraggable'
-import { ref, defineComponent, PropType, inject, computed } from 'vue'
+import { ref, defineComponent, PropType, inject } from 'vue'
+import IconSwap from 'virtual:vite-icons/mdi/swapHorizontal'
 import PlayerCard from '../helpers/PlayerCard.vue'
-import { IPlayer, IHostSetting, ITeamSlots } from '~/types'
+import { IPlayer, IHostSetting } from '~/types'
 export default defineComponent({
   components: {
-    PlayerCard, draggable,
+    PlayerCard, IconSwap,
   },
   props: {
     jkey: { type: String, default: '' },
     isHost: { type: Boolean, default: false },
     players: { type: Array as PropType<Array<IPlayer>>, required: true },
-    playerSlots: { type: Object as PropType<ITeamSlots>, required: true },
     hostSettings: { type: Object as PropType<IHostSetting>, required: true },
   },
   emits: ['start'],
   setup(props, { emit }) {
     const socket: Socket = inject('socket')!
-    const nonHostPlayers = computed(() => props.players.slice(1))
-    const instanceOfPlayer = (object: any): object is IPlayer => {
-      return 'place' in object
-    }
-    const playerSwitched = (evt: any) => {
-      if (!evt.added || !evt.added.element || !instanceOfPlayer(evt.added.element)) return
-      const player = evt.added.element as IPlayer
-      socket.emit('playerteamchange', player.id, )
-    }
     const copyKey = () => {
       navigator.clipboard.writeText(props.jkey)
     }
@@ -43,7 +33,7 @@ export default defineComponent({
       enableWise.value = settings.enableWise
     })
     return {
-      copyKey, winAmount, enableWise, settingChanged, onStart, nonHostPlayers, playerSwitched,
+      copyKey, winAmount, enableWise, settingChanged, onStart,
     }
   },
 })
@@ -70,21 +60,12 @@ export default defineComponent({
       />
     </div>
     <div class="grid grid-cols-4 gap-12">
-      <div class="flex flex-col items-center">
-        <PlayerCard :player="players[0]" />
+      <div v-for="(p, i) in players" :key="p.id" class="flex flex-col items-center">
+        <PlayerCard :player="p" />
+        <div v-if="i > 0">
+          <IconSwap style="font-size: 2em;" />
+        </div>
       </div>
-      <draggable
-        v-model="nonHostPlayers"
-        class="flex flex-col items-center"
-        tag="div"
-        ghost-class="ghost-player"
-        item-key="id"
-        @change="playerSwitched"
-      >
-        <template #item="{ element }">
-          <PlayerCard :player="element" />
-        </template>
-      </draggable>
       <div v-for="n in 4 - players.length" :key="n" class="flex flex-col items-center">
         <div class="mb-5 flex-grow bg-white w-full rounded-full"></div>
         <div>Läär</div>

@@ -6,6 +6,12 @@ export default defineComponent({
     player: { type: Object as PropType<IPlayer>, required: true },
     inBoard: { type: Boolean, default: false },
   },
+  setup(props, { emit }) {
+    const getPlayerColor = (place: number) => {
+      return place < 2 ? '#6f1a5f' : '#384d82'
+    }
+    return { getPlayerColor }
+  },
 })
 
 </script>
@@ -17,7 +23,7 @@ export default defineComponent({
     viewBox="0 0 68 64"
     :class="!inBoard ? 'mb-2' : ''"
   >
-    <ellipse cx="34" cy="32" rx="32.5" ry="30.5" :fill="player.teamRed ? '#6f1a5f' : '#384d82'" />
+    <ellipse cx="34" cy="32" rx="32.5" ry="30.5" :fill="getPlayerColor(player.place)" />
     <path
       :fill="player.isHost ? '#ffbc00' : 'black'"
       d="M34,3C51.09,3,65,16,65,32S51.09,61,34,61,3,48,3,32,16.91,3,34,3m0-3C15.22,0,0,14.33,0,32S15.22,64,34,64,68,49.67,68,32,52.78,0,34,0Z"
