@@ -4,6 +4,7 @@ import { ref, defineComponent, PropType, inject } from 'vue'
 import IconSwap from 'virtual:vite-icons/mdi/swapHorizontal'
 import PlayerCard from '../helpers/PlayerCard.vue'
 import { IPlayer, IHostSetting } from '~/types'
+import { PlayerPlaceholder } from '~/defs'
 export default defineComponent({
   components: {
     PlayerCard, IconSwap,
@@ -22,6 +23,18 @@ export default defineComponent({
     }
     const winAmount = ref(props.hostSettings.winAmount)
     const enableWise = ref(props.hostSettings.enableWise)
+    const playerToSwitch = ref<IPlayer>(PlayerPlaceholder)
+    const switchInProgress = ref(false)
+    const switchPlayer = (p: IPlayer) => {
+      if (!switchInProgress.value) {
+        playerToSwitch.value = p
+        switchInProgress.value = true
+        return
+      }
+      socket.emit('swapplayerteam', playerToSwitch.value.id, p.id)
+      switchInProgress.value = false
+      playerToSwitch.value = PlayerPlaceholder
+    }
     const onStart = () => {
       emit('start')
     }
@@ -33,7 +46,7 @@ export default defineComponent({
       enableWise.value = settings.enableWise
     })
     return {
-      copyKey, winAmount, enableWise, settingChanged, onStart,
+      copyKey, winAmount, enableWise, settingChanged, onStart, switchPlayer, playerToSwitch,
     }
   },
 })
@@ -62,8 +75,12 @@ export default defineComponent({
     <div class="grid grid-cols-4 gap-12">
       <div v-for="(p, i) in players" :key="p.id" class="flex flex-col items-center">
         <PlayerCard :player="p" />
-        <div v-if="i > 0">
-          <IconSwap style="font-size: 2em;" />
+        <div v-if="i > 0 && isHost">
+          <IconSwap
+            class="text-4xl cursor-pointer"
+            :class="playerToSwitch.id === p.id ? 'text-highlight' : ''"
+            @click="switchPlayer(p)"
+          />
         </div>
       </div>
       <div v-for="n in 4 - players.length" :key="n" class="flex flex-col items-center">
@@ -79,12 +96,13 @@ export default defineComponent({
         >Iladig kopiere</button>
       </div>
       <button
+        v-if="players.length === 4"
         class="cursor-pointer heroButton px-8 py-3 text-2xl text-white relative tracking-widest bg-highlight hover:bg-contrast uppercase uppercase"
         @click="onStart"
       >Starte</button>
     </div>
     <div v-else>
-      <h3 class="text-3xl">Der Host wrid z game starte</h3>
+      <h3 class="text-3xl">Der Host wrid z Spiu starte</h3>
     </div>
   </div>
 </template>

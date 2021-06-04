@@ -1,3 +1,3 @@
 
 export * from './animate-onscroll'
-export * from '../lib/socket'
+export * from '../api/socket'

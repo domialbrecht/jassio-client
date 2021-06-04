@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, computed, ref } from 'vue'
+// import { fetchGameStats } from '~/api/database'
 import Rules from '~/components/Rules.vue'
 import Further from '~/components/Further.vue'
 import Header from '~/components/Header.vue'
@@ -26,6 +27,10 @@ const cards = computed(() => {
     },
   ]
 })
+/* const gameStats = ref([])
+const getGameStats = async () => {
+  gameStats.value = await fetchGameStats()
+} */
 function handleSroll() {
   const rTamount = 10
   const scrollPixelDuration = 200
@@ -92,7 +97,7 @@ onUnmounted(() => {
         <svg
           id="Layer_1"
           data-name="Layer 1"
-          class="absolute w-full bottom-0"
+          class="absolute w-full -bottom-1px"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 1365 86.26"
         >

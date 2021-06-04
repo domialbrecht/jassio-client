@@ -45,12 +45,11 @@ export default defineComponent({
       }
     }
     const onStart = () => {
-      // FIXME: ENABLE if (players.value.length < 4) return
       if (clientIsHost.value)
         socket.emit('startGame')
     }
     socket.on('started', () => {
-      emit('gstart', players)
+      emit('gstart', players.value)
     })
     socket.on('hosted', (key: string) => {
       joinKey.value = `${window.location.origin}/game?key=${key}`

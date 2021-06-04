@@ -1,6 +1,9 @@
 <script lang="ts">
 import { ref, defineComponent } from 'vue'
+import PlayerCard from '~/components/helpers/PlayerCard.vue'
+import { PlayerPlaceholder } from '~/defs'
 export default defineComponent({
+  components: { PlayerCard },
   props: {
     jkey: { type: String, default: '' },
   },
@@ -14,29 +17,29 @@ export default defineComponent({
     const onJoin = () => {
       emit('join', name.value)
     }
-    return { name, onHost, onJoin }
+    return { name, onHost, onJoin, PlayerPlaceholder }
   },
 })
 
 </script>
 <template>
-  <div class="flex items-center justify-between flex-col py-16 h-full">
-    <div
-      class="bg-white rounded-3xl h-full mb-6 w-1/2 border-highlight border-4 flex justify-center items-center"
-    >
-      <span class="text-darker">WIP Avatar apasse</span>
-    </div>
-    <div class="flex items-center flex-col w-1/2">
-      <div class="mb-10">
+  <div class="flex items-center justify-center flex-col py-16 h-full">
+    <div class="mb-6 max-w-3xl p-20 flex justify-center items-center flex-col">
+      <div class="max-w-80">
+        <PlayerCard :player="PlayerPlaceholder" :assigned="false" />
+      </div>
+      <div class="mb-10 mt-5">
         <label class="flex flex-col items-center">
           <input
             v-model="name"
             type="text"
-            class="mt-0 block w-full px-0.5 text-xl placeholder-gray-200 text-center border-0 border-b-2 bg-transparent border-highlight focus:ring-0 focus:border-white"
+            class="mt-0 block w-full px-0.5 text-5xl placeholder-gray-400 text-center border-0 border-b-2 bg-transparent border-highlight focus:outline-none focus-visible:outline-none focus:border-skylight"
             placeholder="Name igä.."
           />
         </label>
       </div>
+    </div>
+    <div class="flex items-center flex-col w-1/2">
       <div class="flex justify-between w-full">
         <div>
           <button

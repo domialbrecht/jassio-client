@@ -1,16 +1,27 @@
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { defineComponent, PropType, computed } from 'vue'
 import { IPlayer } from '~/types'
 export default defineComponent({
   props: {
     player: { type: Object as PropType<IPlayer>, required: true },
     inBoard: { type: Boolean, default: false },
+    assigned: { type: Boolean, default: true },
+    highlight: { type: Boolean, default: false },
   },
   setup(props, { emit }) {
+    const displayClasses = computed(() => {
+      return {
+        'text-white': props.inBoard && !props.highlight,
+        'text-highlight': props.highlight,
+        'text-3xl': props.inBoard,
+        'text-2xl': !props.inBoard,
+      }
+    })
     const getPlayerColor = (place: number) => {
-      return place < 2 ? '#6f1a5f' : '#384d82'
+      if (!props.assigned) return '#ebebeb12'
+      return place % 2 ? '#6f1a5f' : '#384d82'
     }
-    return { getPlayerColor }
+    return { getPlayerColor, displayClasses }
   },
 })
 
@@ -54,5 +65,5 @@ export default defineComponent({
       stroke-width="2"
     />
   </svg>
-  <div class="uppercase" :class="inBoard ? 'text-white text-3xl' : 'text-2xl'">{{ player.name }}</div>
+  <div class="uppercase" :class="displayClasses">{{ player.name }}</div>
 </template>

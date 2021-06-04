@@ -28,7 +28,7 @@ export default defineComponent({
     </div>
     <div class="w-2/3 ml-20 js-animate-in animate-in-slideX-left">
       <h3 class="uppercase text-5xl mb-3 text-white font-bold">Rundeablouf</h3>
-      <p class="text-xl text-white">{{ desc }}</p>
+      <p class="text-xl text-white" v-html="desc"></p>
     </div>
   </div>
   <div class="mt-28 flex items-center">

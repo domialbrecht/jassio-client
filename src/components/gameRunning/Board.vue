@@ -1,6 +1,6 @@
 <script lang="ts">
 import { Socket } from 'socket.io-client'
-import { ref, defineComponent, PropType, inject } from 'vue'
+import { ref, defineComponent, PropType, inject, computed } from 'vue'
 import draggable from 'vuedraggable'
 import PlayerCard from '../helpers/PlayerCard.vue'
 import TypeSelector from './TypeSelector.vue'
@@ -15,23 +15,18 @@ export default defineComponent({
     players: { type: Array as PropType<Array<IPlayer>>, required: true },
   },
   setup(props, { emit }) {
-    const socket: Socket = inject('socket')!
-    // Empty player if boardPlayers are undef
-    const emptyPlayer: IPlayer = {
-      self: false,
-      isHost: false,
-      id: '',
-      name: 'string',
-      teamRed: false,
+    const shiftPlayers = (a: IPlayer[], amount: number) => {
+      if (a.length < 1) return a
+      for (let index = 0; index < amount; index++)
+        a.push(a.shift()!)
+      return a
     }
-    // Map players from props to each side for easy access
-    const boardPlayers = new Map([
-      ['top', props.players.find(p => !p.teamRed && !p.self)],
-      ['right', props.players.filter(p => p.teamRed)[0]],
-      ['bottom', props.players.find(p => p.self)],
-      ['left', props.players.filter(p => p.teamRed)[1]],
-    ])
+    const boardPlayers = ref<IPlayer[]>([])
+    const self = props.players.find(p => p.self)
+    const selfPlace = self?.place
+    boardPlayers.value = shiftPlayers([...props.players], selfPlace || 0)
 
+    const socket: Socket = inject('socket')!
     const playerCards = ref<ICard[]>([])
     // Cards of client player
     const otherCards = ref([1, 2, 3, 4, 5, 6, 7, 8, 9]) // Simple number array for other player cards
@@ -46,13 +41,20 @@ export default defineComponent({
       }
     }
 
-    // Server did not have played card on player, reset
+    const isTurnOfPlayerAtPlace = ref(-1)
+    const selfCanPlay = computed(() => {
+      return self?.place === isTurnOfPlayerAtPlace.value
+    })
+    socket.on('playerturn', (playerPlace: number) => {
+      isTurnOfPlayerAtPlace.value = playerPlace
+    })
     socket.on('wrongCard', () => {
+      // Server did not have played card on player, reset
       playerCards.value = playerCards.value.concat(playerPlayedCard.value)
       playerPlayedCard.value = []
     })
     const cardPlayed = (evt: any) => {
-      if (!evt.added || !evt.added.element || !instanceOfCard(evt.added.element)) return
+      if (!selfCanPlay.value || !evt.added || !evt.added.element || !instanceOfCard(evt.added.element)) return
       const card = evt.added.element as ICard
       socket.emit('cardPlayed', card.id)
     }
@@ -80,20 +82,21 @@ export default defineComponent({
     useBoardConnection(socket, playerCards)
 
     return {
-      playerCards, otherCards, playerPlayedCard, stichRed, stichBlue, pointsRed, pointsBlue, boardPlayers, emptyPlayer, showPicker, onSelectType, selectedTypeName, cardPlayed, getOtherCardOffset,
+      boardPlayers, playerCards, otherCards, playerPlayedCard, stichRed, stichBlue, pointsRed, pointsBlue, showPicker, onSelectType, selectedTypeName, cardPlayed, getOtherCardOffset, isTurnOfPlayerAtPlace,
     }
   },
 })
 
 </script>
 <template>
-  <div class="grid h-full board bg-blue-gray-900 overflow-hidden">
+  <div v-if="boardPlayers.length === 4" class="grid h-full board bg-blue-gray-900 overflow-hidden">
     <div class="bg-darker border-b-2">
-      <div
-        v-if="boardPlayers.get('top')"
-        class="transform -rotate-180 flex flex-col h-full p-3 items-center"
-      >
-        <PlayerCard :in-board="true" :player="boardPlayers.get('top') || emptyPlayer" />
+      <div class="transform -rotate-180 flex flex-col h-full p-3 items-center">
+        <PlayerCard
+          :in-board="true"
+          :player="boardPlayers[2]"
+          :highlight="isTurnOfPlayerAtPlace === boardPlayers[2].place"
+        />
       </div>
     </div>
     <div class="bg-darker border-b-2">
@@ -106,11 +109,12 @@ export default defineComponent({
       </div>
     </div>
     <div class="bg-dark border-l-2">
-      <div
-        v-if="boardPlayers.get('right')"
-        class="transform -rotate-90 flex flex-col h-full p-3 items-center"
-      >
-        <PlayerCard :in-board="true" :player="boardPlayers.get('right') || emptyPlayer" />
+      <div class="transform -rotate-90 flex flex-col h-full p-3 items-center">
+        <PlayerCard
+          :in-board="true"
+          :player="boardPlayers[1]"
+          :highlight="isTurnOfPlayerAtPlace === boardPlayers[1].place"
+        />
       </div>
     </div>
     <div class="bg-dark border-r-2 min-h-0">
@@ -179,11 +183,12 @@ export default defineComponent({
       </div>
     </div>
     <div class="bg-dark border-r-2">
-      <div
-        v-if="boardPlayers.get('left')"
-        class="transform rotate-90 flex flex-col h-full p-3 items-center"
-      >
-        <PlayerCard :in-board="true" :player="boardPlayers.get('left') || emptyPlayer" />
+      <div class="transform rotate-90 flex flex-col h-full p-3 items-center">
+        <PlayerCard
+          :in-board="true"
+          :player="boardPlayers[3]"
+          :highlight="isTurnOfPlayerAtPlace === boardPlayers[3].place"
+        />
       </div>
     </div>
     <div class="bg-darker border-t-2">
@@ -204,8 +209,12 @@ export default defineComponent({
       </draggable>
     </div>
     <div class="bg-darker border-t-2">
-      <div v-if="boardPlayers.get('bottom')" class="flex flex-col h-full p-3 items-center">
-        <PlayerCard :in-board="true" :player="boardPlayers.get('bottom') || emptyPlayer" />
+      <div class="flex flex-col h-full p-3 items-center">
+        <PlayerCard
+          :in-board="true"
+          :player="boardPlayers[0]"
+          :highlight="isTurnOfPlayerAtPlace === boardPlayers[0].place"
+        />
       </div>
     </div>
   </div>

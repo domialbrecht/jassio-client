@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router'
 import { IPlayer } from '~/types'
 import Lobby from '~/components/gameSetup/Lobby.vue'
 import Board from '~/components/gameRunning/Board.vue'
-import socket from '~/lib/socket'
+import socket from '~/api/socket'
 export default defineComponent({
   components: {
     Lobby, Board,

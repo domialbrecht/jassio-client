@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useHead } from '@vueuse/head'
 import { onUnmounted } from 'vue'
-import socket from '~/lib/socket'
+import socket from '~/api/socket'
 
 onUnmounted(() => socket.off('connect_error'))
 
