@@ -7,6 +7,11 @@ import TypeSelector from './TypeSelector.vue'
 import useBoardConnection from './socketHandler'
 import { IPlayer, ICard } from '~/types'
 
+type PlayedCard = {
+  display: string
+  place: number
+}
+
 export default defineComponent({
   components: {
     PlayerCard, TypeSelector, draggable,
@@ -35,6 +40,20 @@ export default defineComponent({
       return 'display' in object
     }
     const playerPlayedCard = ref<ICard[]>([])
+    const otherPlayedCards = ref<PlayedCard[]>([])
+    const getPlayedCardByPlace = (place: number): string => {
+      const card = otherPlayedCards.value.find(c => c.place === place)
+      return card ? card.display : ''
+    }
+    const getRightPlayedCard = computed(() => {
+      return getPlayedCardByPlace(boardPlayers.value[1].place)
+    })
+    const getTopPlayedCard = computed(() => {
+      return getPlayedCardByPlace(boardPlayers.value[2].place)
+    })
+    const getLeftPlayedCard = computed(() => {
+      return getPlayedCardByPlace(boardPlayers.value[3].place)
+    })
     const getOtherCardOffset = (i: number): any => {
       return {
         top: `${-10 + 9 * i}%`,
@@ -56,9 +75,15 @@ export default defineComponent({
     const cardPlayed = (evt: any) => {
       if (!selfCanPlay.value || !evt.added || !evt.added.element || !instanceOfCard(evt.added.element)) return
       const card = evt.added.element as ICard
-      socket.emit('cardPlayed', card.id)
+      socket.emit('cardPlayed', card.id, self?.id)
     }
-
+    socket.on('cards', (cards: PlayedCard[]) => {
+      otherPlayedCards.value = cards
+    })
+    socket.on('clearboard', () => {
+      otherPlayedCards.value = []
+      playerPlayedCard.value = []
+    })
     const stichRed = ref(false) // If at least one stich red to show card back
     const stichBlue = ref(false) // If at least one stich blue to show card back
     const pointsRed = ref(0)
@@ -82,7 +107,7 @@ export default defineComponent({
     useBoardConnection(socket, playerCards)
 
     return {
-      boardPlayers, playerCards, otherCards, playerPlayedCard, stichRed, stichBlue, pointsRed, pointsBlue, showPicker, onSelectType, selectedTypeName, cardPlayed, getOtherCardOffset, isTurnOfPlayerAtPlace,
+      boardPlayers, playerCards, otherCards, playerPlayedCard, otherPlayedCards, getRightPlayedCard, getTopPlayedCard, getLeftPlayedCard, stichRed, stichBlue, pointsRed, pointsBlue, showPicker, onSelectType, selectedTypeName, cardPlayed, getOtherCardOffset, isTurnOfPlayerAtPlace,
     }
   },
 })
@@ -136,7 +161,11 @@ export default defineComponent({
           <use :href="`/images/svg-cards.svg#back`" fill="#6f1a5f" />
         </svg>
       </div>
-      <div class="w-full h-full field-player field-pr1"></div>
+      <div class="w-full h-full field-player field-pr1">
+        <svg v-if="getTopPlayedCard" class="h-64" viewBox="0 0 169 245">
+          <use :href="`/images/svg-cards.svg#${getTopPlayedCard}`" />
+        </svg>
+      </div>
       <div class="w-full h-full field-type text-white flex flex-col items-center">
         <div>
           <span class="uppercase text-3xl">{{ selectedTypeName }}</span>
@@ -146,7 +175,11 @@ export default defineComponent({
           <span class="text-blue-900">{{ pointsBlue }}</span>
         </div>
       </div>
-      <div class="w-full h-full field-player field-pb2"></div>
+      <div class="w-full h-full field-player field-pb2 flex items-center justify-center">
+        <svg v-if="getRightPlayedCard" class="h-64 transform rotate-90" viewBox="0 0 169 245">
+          <use :href="`/images/svg-cards.svg#${getRightPlayedCard}`" />
+        </svg>
+      </div>
       <draggable
         v-model="playerPlayedCard"
         class="w-full h-full field-player field-pr2 playable flex items-center justify-center"
@@ -162,7 +195,11 @@ export default defineComponent({
           </svg>
         </template>
       </draggable>
-      <div class="w-full h-full field-player field-pb1"></div>
+      <div class="w-full h-full field-player field-pb1 flex items-center justify-center">
+        <svg v-if="getLeftPlayedCard" class="h-64 transform rotate-90" viewBox="0 0 169 245">
+          <use :href="`/images/svg-cards.svg#${getLeftPlayedCard}`" />
+        </svg>
+      </div>
       <div class="w-full h-full field-sr flex items-end justify-end p-4">
         <svg v-if="stichBlue" class="h-44" viewBox="0 0 169 245">
           <use :href="`/images/svg-cards.svg#back`" fill="#384d82" />
