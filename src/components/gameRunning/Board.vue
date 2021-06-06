@@ -5,11 +5,13 @@ import draggable from 'vuedraggable'
 import PlayerCard from '../helpers/PlayerCard.vue'
 import TypeSelector from './TypeSelector.vue'
 import useBoardConnection from './socketHandler'
+import useCardValidation from './cardValidation'
 import { IPlayer, ICard } from '~/types'
 
 type PlayedCard = {
   display: string
   place: number
+  value: number
 }
 
 export default defineComponent({
@@ -33,6 +35,10 @@ export default defineComponent({
 
     const socket: Socket = inject('socket')!
     const playerCards = ref<ICard[]>([])
+    let playerCardsBackup: ICard[] = []
+    const backupPlayerHand = () => {
+      playerCardsBackup = playerCards.value
+    }
     // Cards of client player
     const otherCards = ref([1, 2, 3, 4, 5, 6, 7, 8, 9]) // Simple number array for other player cards
     // Simple single space array for holding player cards, has to be array for draggable
@@ -54,6 +60,10 @@ export default defineComponent({
     const getLeftPlayedCard = computed(() => {
       return getPlayedCardByPlace(boardPlayers.value[3].place)
     })
+    const getLastPlayedValue = computed(() => {
+      const card = otherPlayedCards.value.find(c => c.place === 3)
+      return card ? card.value : undefined
+    })
     const getOtherCardOffset = (i: number): any => {
       return {
         top: `${-10 + 9 * i}%`,
@@ -69,11 +79,17 @@ export default defineComponent({
     })
     socket.on('wrongCard', () => {
       // Server did not have played card on player, reset
-      playerCards.value = playerCards.value.concat(playerPlayedCard.value)
+      // FIXME: COULD BE BROKEN IF PLAYER SEND DRAG-START EVENT BEFORE SERVER RESPONDS
+      playerCards.value = playerCardsBackup
       playerPlayedCard.value = []
     })
     const cardPlayed = (evt: any) => {
-      if (!selfCanPlay.value || !evt.added || !evt.added.element || !instanceOfCard(evt.added.element)) return
+      if (!selfCanPlay.value) {
+        playerCards.value = playerCardsBackup
+        playerPlayedCard.value = []
+        return
+      }
+      if (!evt.added || !evt.added.element || !instanceOfCard(evt.added.element)) return
       const card = evt.added.element as ICard
       socket.emit('cardPlayed', card.id, self?.id)
     }
@@ -103,11 +119,25 @@ export default defineComponent({
     socket.on('typegotselected', (type: string) => {
       selectedTypeName.value = type
     })
-
+    const { validCards } = useCardValidation(playerCards, getLastPlayedValue, selectedTypeName)
     useBoardConnection(socket, playerCards)
 
+    const sortCards = () => {
+      playerCards.value = playerCards.value.sort((c1, c2) => c1.id - c2.id)
+    }
+    const keyDownHandler = (e: KeyboardEvent) => {
+      switch (e.code) {
+        case 'KeyS':
+          sortCards()
+          break
+        default:
+          break
+      }
+    }
+    document.addEventListener('keydown', keyDownHandler)
+
     return {
-      boardPlayers, playerCards, otherCards, playerPlayedCard, otherPlayedCards, getRightPlayedCard, getTopPlayedCard, getLeftPlayedCard, stichRed, stichBlue, pointsRed, pointsBlue, showPicker, onSelectType, selectedTypeName, cardPlayed, getOtherCardOffset, isTurnOfPlayerAtPlace,
+      boardPlayers, playerCards, backupPlayerHand, otherCards, playerPlayedCard, otherPlayedCards, getRightPlayedCard, getTopPlayedCard, getLeftPlayedCard, stichRed, stichBlue, pointsRed, pointsBlue, showPicker, onSelectType, selectedTypeName, cardPlayed, getOtherCardOffset, isTurnOfPlayerAtPlace, validCards, getLastPlayedValue,
     }
   },
 })
@@ -235,9 +265,13 @@ export default defineComponent({
         group="hand"
         tag="div"
         item-key="id"
+        @start="backupPlayerHand"
       >
         <template #item="{ element }">
-          <div class="h-full card-wrapper">
+          <div
+            class="h-full card-wrapper"
+            :class="!validCards.includes(element.id) ? 'invalid' : ''"
+          >
             <svg class="h-full" viewBox="0 0 169 245">
               <use :href="`/images/svg-cards.svg#${element.display}`" />
             </svg>
@@ -310,7 +344,21 @@ export default defineComponent({
 
 .card-wrapper {
   width: 162px;
+  position: relative;
 }
+
+.invalid::after {
+  opacity: 0.5;
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 11px;
+  background: #d02655;
+}
+
 .ghost-card {
   width: auto !important;
 }

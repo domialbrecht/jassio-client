@@ -3,6 +3,16 @@ export interface IHostSetting {
   enableWise: boolean
 }
 
+export enum TurnType {
+  UPDOWN = 'Obeabe',
+  DOWNUP = 'Undeufe',
+  SLALOM = 'Slalom',
+  T_HEART = 'Trumpf_heart',
+  T_DIAMOND = 'Trumpf_diamond',
+  T_SPADE = 'Trumpf_spade',
+  T_CLUB = 'Trumpf_club'
+}
+
 export interface IPlayer {
   self: boolean
   isHost: boolean

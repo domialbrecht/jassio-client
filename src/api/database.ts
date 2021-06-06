@@ -1,0 +1,5 @@
+const fetchGameStats = () => {
+
+}
+
+export { fetchGameStats }
