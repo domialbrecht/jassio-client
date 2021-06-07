@@ -95,14 +95,18 @@ export default defineComponent({
     socket.on('cards', (cards: PlayedCard[]) => {
       otherPlayedCards.value = cards
     })
+    const pointsRed = ref(0)
+    const pointsBlue = ref(0)
+    const stichRed = computed(() => pointsRed.value > 0)
+    const stichBlue = computed(() => pointsBlue.value > 0)
+    socket.on('score', (score: { teamA: number; teamB: number }) => {
+      pointsRed.value = pointsRed.value + score.teamB
+      pointsBlue.value = pointsBlue.value + score.teamA
+    })
     socket.on('clearboard', () => {
       otherPlayedCards.value = []
       playerPlayedCard.value = []
     })
-    const stichRed = ref(false) // If at least one stich red to show card back
-    const stichBlue = ref(false) // If at least one stich blue to show card back
-    const pointsRed = ref(0)
-    const pointsBlue = ref(0)
 
     const showPicker = ref(false)
     const selectedTypeName = ref('')
