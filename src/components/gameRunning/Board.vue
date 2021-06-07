@@ -5,7 +5,6 @@ import draggable from 'vuedraggable'
 import PlayerCard from '../helpers/PlayerCard.vue'
 import TypeSelector from './TypeSelector.vue'
 import useBoardConnection from './socketHandler'
-import useCardValidation from './cardValidation'
 import { IPlayer, ICard } from '~/types'
 
 type PlayedCard = {
@@ -119,7 +118,6 @@ export default defineComponent({
     socket.on('typegotselected', (type: string) => {
       selectedTypeName.value = type
     })
-    const { validCards } = useCardValidation(playerCards, getLastPlayedValue, selectedTypeName)
     useBoardConnection(socket, playerCards)
 
     const sortCards = () => {
@@ -137,7 +135,7 @@ export default defineComponent({
     document.addEventListener('keydown', keyDownHandler)
 
     return {
-      boardPlayers, playerCards, backupPlayerHand, otherCards, playerPlayedCard, otherPlayedCards, getRightPlayedCard, getTopPlayedCard, getLeftPlayedCard, stichRed, stichBlue, pointsRed, pointsBlue, showPicker, onSelectType, selectedTypeName, cardPlayed, getOtherCardOffset, isTurnOfPlayerAtPlace, validCards, getLastPlayedValue,
+      boardPlayers, playerCards, backupPlayerHand, otherCards, playerPlayedCard, otherPlayedCards, getRightPlayedCard, getTopPlayedCard, getLeftPlayedCard, stichRed, stichBlue, pointsRed, pointsBlue, showPicker, onSelectType, selectedTypeName, cardPlayed, getOtherCardOffset, isTurnOfPlayerAtPlace, getLastPlayedValue,
     }
   },
 })
@@ -268,10 +266,7 @@ export default defineComponent({
         @start="backupPlayerHand"
       >
         <template #item="{ element }">
-          <div
-            class="h-full card-wrapper"
-            :class="!validCards.includes(element.id) ? 'invalid' : ''"
-          >
+          <div class="h-full card-wrapper">
             <svg class="h-full" viewBox="0 0 169 245">
               <use :href="`/images/svg-cards.svg#${element.display}`" />
             </svg>
