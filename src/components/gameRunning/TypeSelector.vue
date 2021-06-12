@@ -27,13 +27,29 @@ export default defineComponent({
       >
         <span class="text-2xl">{{ type.name }}</span>
         <button
-          v-if="type.name !== 'Trumpf'"
+          v-if="!(type.name === 'Trumpf') && !(type.name === 'Slalom')"
           class="flex items-center justify-center rounded-2xl w-full h-5/6 text-dark"
           @click="selectType(type.name)"
         >
           <component :is="type.icon"></component>
         </button>
-        <div v-else class="grid grid-cols-2 grid-rows-2 flex-grow gap-2 w-full px-4 text-dark">
+        <div
+          v-if="type.name === 'Slalom'"
+          class="grid grid-cols-2 grid-rows-2 flex-grow gap-2 w-full px-4 text-dark"
+        >
+          <button
+            class="flex items-center justify-center rounded-2xl bg-gray-100"
+            @click="selectType(`${type.name}_up`)"
+          >Obe</button>
+          <button
+            class="flex items-center justify-center rounded-2xl bg-gray-100"
+            @click="selectType(`${type.name}_down`)"
+          >Unde</button>
+        </div>
+        <div
+          v-if="type.name === 'Trumpf'"
+          class="grid grid-cols-2 grid-rows-2 flex-grow gap-2 w-full px-4 text-dark"
+        >
           <button
             class="flex items-center justify-center rounded-2xl bg-gray-100"
             @click="selectType(`${type.name}_heart`)"

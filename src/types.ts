@@ -6,7 +6,8 @@ export interface IHostSetting {
 export enum TurnType {
   UPDOWN = 'Obeabe',
   DOWNUP = 'Undeufe',
-  SLALOM = 'Slalom',
+  SLALOM_UP = 'Slalom_up',
+  SLALOM_DOWN = 'Slalom_down',
   T_HEART = 'Trumpf_heart',
   T_DIAMOND = 'Trumpf_diamond',
   T_SPADE = 'Trumpf_spade',
