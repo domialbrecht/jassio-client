@@ -1,6 +1,6 @@
 <script lang="ts">
 import { Socket } from 'socket.io-client'
-import { ref, defineComponent, PropType, inject, computed } from 'vue'
+import { ref, defineComponent, PropType, inject, computed, watchEffect } from 'vue'
 import draggable from 'vuedraggable'
 import PlayerCard from '../helpers/PlayerCard.vue'
 import TypeSelector from './TypeSelector.vue'
@@ -38,8 +38,6 @@ export default defineComponent({
     const backupPlayerHand = () => {
       playerCardsBackup = playerCards.value
     }
-    // Cards of client player
-    const otherCards = ref([1, 2, 3, 4, 5, 6, 7, 8, 9]) // Simple number array for other player cards
     // Simple single space array for holding player cards, has to be array for draggable
     const instanceOfCard = (object: any): object is ICard => {
       return 'display' in object
@@ -69,6 +67,10 @@ export default defineComponent({
       }
     }
 
+    const playerRightPlayedAmount = ref(0)
+    const playerTopPlayedAmount = ref(0)
+    const playerLeftPlayedAmount = ref(0)
+
     const isTurnOfPlayerAtPlace = ref(-1)
     const selfCanPlay = computed(() => {
       return self?.place === isTurnOfPlayerAtPlace.value
@@ -93,6 +95,12 @@ export default defineComponent({
       socket.emit('cardPlayed', card.id, self?.id)
     }
     socket.on('cards', (cards: PlayedCard[]) => {
+      if (isTurnOfPlayerAtPlace.value === boardPlayers.value[1].place)
+        playerRightPlayedAmount.value = playerRightPlayedAmount.value + 1
+      else if (isTurnOfPlayerAtPlace.value === boardPlayers.value[2].place)
+        playerTopPlayedAmount.value = playerTopPlayedAmount.value + 1
+      else if (isTurnOfPlayerAtPlace.value === boardPlayers.value[3].place)
+        playerLeftPlayedAmount.value = playerLeftPlayedAmount.value + 1
       otherPlayedCards.value = cards
     })
     const pointsRed = ref(0)
@@ -100,8 +108,8 @@ export default defineComponent({
     const stichRed = computed(() => pointsRed.value > 0)
     const stichBlue = computed(() => pointsBlue.value > 0)
     socket.on('score', (score: { teamA: number; teamB: number }) => {
-      pointsRed.value = pointsRed.value + score.teamB
-      pointsBlue.value = pointsBlue.value + score.teamA
+      pointsRed.value = score.teamB
+      pointsBlue.value = score.teamA
     })
     socket.on('clearboard', () => {
       otherPlayedCards.value = []
@@ -139,7 +147,7 @@ export default defineComponent({
     document.addEventListener('keydown', keyDownHandler)
 
     return {
-      boardPlayers, playerCards, backupPlayerHand, otherCards, playerPlayedCard, otherPlayedCards, getRightPlayedCard, getTopPlayedCard, getLeftPlayedCard, stichRed, stichBlue, pointsRed, pointsBlue, showPicker, onSelectType, selectedTypeName, cardPlayed, getOtherCardOffset, isTurnOfPlayerAtPlace, getLastPlayedValue,
+      boardPlayers, playerCards, backupPlayerHand, playerPlayedCard, otherPlayedCards, getRightPlayedCard, getTopPlayedCard, getLeftPlayedCard, stichRed, stichBlue, pointsRed, pointsBlue, showPicker, onSelectType, selectedTypeName, cardPlayed, getOtherCardOffset, isTurnOfPlayerAtPlace, getLastPlayedValue, playerRightPlayedAmount, playerTopPlayedAmount, playerLeftPlayedAmount,
     }
   },
 })
@@ -158,7 +166,7 @@ export default defineComponent({
     </div>
     <div class="bg-darker border-b-2">
       <div class="flex justify-center w-full h-full px-4 py-2">
-        <div v-for="i in otherCards" :key="i" class="h-full card-wrapper">
+        <div v-for="i in 9 - playerTopPlayedAmount" :key="i" class="h-full card-wrapper">
           <svg class="h-full" viewBox="0 0 169 245">
             <use :href="`/images/svg-cards.svg#back`" fill="red" />
           </svg>
@@ -177,7 +185,7 @@ export default defineComponent({
     <div class="bg-dark border-r-2 min-h-0">
       <div class="h-full flex flex-col relative py-22">
         <svg
-          v-for="i in otherCards"
+          v-for="i in 9 - playerLeftPlayedAmount"
           :key="i"
           class="w-40 transform rotate-90 absolute left-11"
           :style="getOtherCardOffset(i)"
@@ -241,7 +249,7 @@ export default defineComponent({
     <div class="bg-dark border-l-2 relative">
       <div class="h-full flex flex-col relative py-22">
         <svg
-          v-for="i in otherCards"
+          v-for="i in 9 - playerRightPlayedAmount"
           :key="i"
           class="w-40 transform rotate-90 absolute left-11"
           :style="getOtherCardOffset(i)"

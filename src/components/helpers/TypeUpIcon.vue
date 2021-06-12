@@ -7,11 +7,11 @@
     class="max-h-full"
     data-name="Layer 1"
     xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 262 182.5"
+    viewBox="0 0 262 182"
   >
-    <polygon points="131 38.5 0 182.5 262 182.5 131 38.5" fill="#b3b3b3" />
-    <polygon points="131 19 0 163 262 163 131 19" fill="#ccc" />
-    <polygon points="131 0 0 144 262 144 131 0" fill="#e6e6e6" />
-    <polygon points="131 42.75 55.27 126 206.73 126 131 42.75" fill="#fff" />
+    <polygon points="131 144 0 0 262 0 131 144" fill="#b3b3b3" />
+    <polygon points="131 163 0 19 262 19 131 163" fill="#ccc" />
+    <polygon points="131 182 0 38 262 38 131 182" fill="#e6e6e6" />
+    <polygon points="131 139.25 55.27 56 206.73 56 131 139.25" fill="#fff" />
   </svg>
 </template>
