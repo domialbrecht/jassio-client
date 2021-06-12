@@ -1,6 +1,6 @@
 <script lang="ts">
 import { Socket } from 'socket.io-client'
-import { ref, defineComponent, PropType, inject, computed, watchEffect } from 'vue'
+import { ref, Ref, defineComponent, PropType, inject, computed, onMounted, onBeforeUnmount } from 'vue'
 import draggable from 'vuedraggable'
 import PlayerCard from '../helpers/PlayerCard.vue'
 import TypeSelector from './TypeSelector.vue'
@@ -61,9 +61,30 @@ export default defineComponent({
       const card = otherPlayedCards.value.find(c => c.place === 3)
       return card ? card.value : undefined
     })
+
+    // const sideCards = ref(null)
+    // const { sideCardsWidth, sideCardsHeight } = useSizeObserver(sideCards)
+
+    /* function useSizeObserver(sideCards: Ref) {
+      const sideCardsWidth = ref(0)
+      const sideCardsHeight = ref(0)
+      const resizeObserver = new ResizeObserver((entries) => {
+        for (const entry of entries) {
+          sideCardsWidth.value = entry.contentRect.width
+          sideCardsHeight.value = entry.contentRect.height
+        }
+      })
+      onMounted(() => resizeObserver.observe(sideCards.value))
+      onBeforeUnmount(() => resizeObserver.unobserve(sideCards.value))
+      return {
+        sideCardsWidth,
+        sideCardsHeight,
+      }
+    } */
+
     const getOtherCardOffset = (i: number): any => {
       return {
-        top: `${-10 + 9 * i}%`,
+        top: `${-13 + 8.8 * i}%`,
       }
     }
 
@@ -183,30 +204,31 @@ export default defineComponent({
       </div>
     </div>
     <div class="bg-dark border-r-2 min-h-0">
-      <div class="h-full flex flex-col relative py-22">
+      <div ref="sideCards" class="h-full flex flex-col relative">
         <svg
           v-for="i in 9 - playerLeftPlayedAmount"
           :key="i"
-          class="w-40 transform rotate-90 absolute left-11"
+          class="w-40 absolute left-11"
           :style="getOtherCardOffset(i)"
           viewBox="0 0 169 245"
+          transform="rotate(90)"
         >
           <use :href="`/images/svg-cards.svg#back`" fill="#384d82" />
         </svg>
       </div>
     </div>
-    <div class="field grid px-5">
-      <div class="w-full h-full field-sb p-4 flex items-start">
+    <div class="field relative h-full">
+      <div class="absolute field-sr">
         <svg v-if="stichRed" class="h-44" viewBox="0 0 169 245">
           <use :href="`/images/svg-cards.svg#back`" fill="#6f1a5f" />
         </svg>
       </div>
-      <div class="w-full h-full field-player field-pr1">
-        <svg v-if="getTopPlayedCard" class="h-64" viewBox="0 0 169 245">
-          <use :href="`/images/svg-cards.svg#${getTopPlayedCard}`" />
+      <div class="absolute field-sb">
+        <svg v-if="stichBlue" class="h-44" viewBox="0 0 169 245">
+          <use :href="`/images/svg-cards.svg#back`" fill="#384d82" />
         </svg>
       </div>
-      <div class="w-full h-full field-type text-white flex flex-col items-center">
+      <div class="absolute field-info text-white flex flex-col items-center">
         <div>
           <span class="uppercase text-3xl">{{ selectedTypeName }}</span>
         </div>
@@ -215,45 +237,50 @@ export default defineComponent({
           <span class="text-blue-900">{{ pointsBlue }}</span>
         </div>
       </div>
-      <div class="w-full h-full field-player field-pb2 flex items-center justify-center">
-        <svg v-if="getRightPlayedCard" class="h-64 transform rotate-90" viewBox="0 0 169 245">
-          <use :href="`/images/svg-cards.svg#${getRightPlayedCard}`" />
-        </svg>
-      </div>
-      <draggable
-        v-model="playerPlayedCard"
-        class="w-full h-full field-player field-pr2 playable flex items-center justify-center"
-        group="hand"
-        tag="div"
-        ghost-class="ghost-card"
-        item-key="id"
-        @change="cardPlayed"
-      >
-        <template #item="{ element }">
-          <svg class="h-64" viewBox="0 0 169 245">
-            <use :href="`/images/svg-cards.svg#${element.display}`" />
+      <div class="field-players players-blue">
+        <div class="field-player field-pb1">
+          <svg v-if="getTopPlayedCard" class="h-64" viewBox="0 0 169 245">
+            <use :href="`/images/svg-cards.svg#${getTopPlayedCard}`" />
           </svg>
-        </template>
-      </draggable>
-      <div class="w-full h-full field-player field-pb1 flex items-center justify-center">
-        <svg v-if="getLeftPlayedCard" class="h-64 transform rotate-90" viewBox="0 0 169 245">
-          <use :href="`/images/svg-cards.svg#${getLeftPlayedCard}`" />
-        </svg>
+        </div>
+        <draggable
+          v-model="playerPlayedCard"
+          class="field-player field-pb2 playable"
+          group="hand"
+          tag="div"
+          ghost-class="ghost-card"
+          item-key="id"
+          @change="cardPlayed"
+        >
+          <template #item="{ element }">
+            <svg class="h-64" viewBox="0 0 169 245">
+              <use :href="`/images/svg-cards.svg#${element.display}`" />
+            </svg>
+          </template>
+        </draggable>
       </div>
-      <div class="w-full h-full field-sr flex items-end justify-end p-4">
-        <svg v-if="stichBlue" class="h-44" viewBox="0 0 169 245">
-          <use :href="`/images/svg-cards.svg#back`" fill="#384d82" />
-        </svg>
+      <div class="field-players players-red">
+        <div class="field-player field-pr1">
+          <svg v-if="getLeftPlayedCard" class="h-64" viewBox="0 0 169 245">
+            <use :href="`/images/svg-cards.svg#${getLeftPlayedCard}`" />
+          </svg>
+        </div>
+        <div class="field-player field-pr2">
+          <svg v-if="getRightPlayedCard" class="h-64" viewBox="0 0 169 245">
+            <use :href="`/images/svg-cards.svg#${getRightPlayedCard}`" />
+          </svg>
+        </div>
       </div>
     </div>
     <div class="bg-dark border-l-2 relative">
-      <div class="h-full flex flex-col relative py-22">
+      <div class="h-full flex flex-col relative">
         <svg
           v-for="i in 9 - playerRightPlayedAmount"
           :key="i"
-          class="w-40 transform rotate-90 absolute left-11"
+          class="w-40 absolute left-11"
           :style="getOtherCardOffset(i)"
           viewBox="0 0 169 245"
+          transform="rotate(90)"
         >
           <use :href="`/images/svg-cards.svg#back`" fill="#384d82" />
         </svg>
@@ -310,43 +337,46 @@ export default defineComponent({
     "player4Icon player3Hand player3Icon";
 }
 
-.field {
-  align-self: center;
-  grid-template-columns: 270px auto 200px auto 270px;
-  grid-template-rows: 270px 200px 270px;
-  grid-template-areas:
-    "stichB fill pr1 fill2 type"
-    "pb1 fill5 middle fill7 pb2"
-    "empty fill3 pr2 fill4 stichR";
+.field-players {
+  display: flex;
+  position: absolute;
+  justify-content: space-between;
+}
+
+.players-blue {
+  height: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  flex-direction: column;
+  padding: 20px 0;
+}
+
+.players-red {
+  width: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0 20px;
+}
+
+.field-player {
+  @apply bg-blue-gray-600;
+  min-width: 177px;
+  min-height: 256px;
+  border-radius: 8px;
+}
+
+.field-info {
+  right: 20px;
+}
+
+.field-sr {
+  top: 5px;
+  left: 5px;
 }
 
 .field-sb {
-  grid-area: stichB;
-}
-.field-sr {
-  grid-area: stichR;
-}
-.field-type {
-  grid-area: type;
-}
-.field-player {
-  border: 3px solid;
-}
-.field-pr1 {
-  @apply bg-cool-gray-700;
-  grid-area: pr1;
-}
-.field-pr2 {
-  @apply bg-cool-gray-700;
-  grid-area: pr2;
-}
-.field-pb1 {
-  @apply bg-cool-gray-600;
-  grid-area: pb1;
-}
-.field-pb2 {
-  @apply bg-cool-gray-600;
-  grid-area: pb2;
+  right: 5px;
+  bottom: 5px;
 }
 
 .card-wrapper {
