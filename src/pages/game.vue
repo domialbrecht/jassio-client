@@ -31,6 +31,10 @@ export default defineComponent({
       players.value = pl
       gameRunning.value = true
     }
+    socket.on('connect_error', () => {
+      gameRunning.value = false
+      router.push('/')
+    })
     socket.on('abandoned', () => {
       gameRunning.value = false
       router.push('/')

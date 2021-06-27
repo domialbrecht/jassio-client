@@ -14,6 +14,12 @@ export enum TurnType {
   T_CLUB = 'Trumpf_club'
 }
 
+export enum WisType {
+  BLATT = 'blatt',
+  STOECK = 'stoeck',
+  SIMILAR = 'similar',
+}
+
 export interface IPlayer {
   self: boolean
   isHost: boolean

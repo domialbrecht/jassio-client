@@ -1,9 +1,11 @@
 <script lang="ts">
 import { Socket } from 'socket.io-client'
-import { ref, Ref, defineComponent, PropType, inject, computed, onMounted, onBeforeUnmount } from 'vue'
+import { ref, defineComponent, PropType, inject, computed } from 'vue'
 import draggable from 'vuedraggable'
 import PlayerCard from '../helpers/PlayerCard.vue'
 import TypeSelector from './TypeSelector.vue'
+import WisSelector from './WisSelector.vue'
+import WisList from './WisList.vue'
 import useBoardConnection from './socketHandler'
 import { IPlayer, ICard } from '~/types'
 
@@ -13,9 +15,20 @@ type PlayedCard = {
   value: number
 }
 
+type PlayerWis = {
+  place: number
+  values: number[]
+}
+
+type WisInfo = {
+  playerId: string
+  playerPlace: number
+  highestWisValue: number
+}
+
 export default defineComponent({
   components: {
-    PlayerCard, TypeSelector, draggable,
+    PlayerCard, TypeSelector, WisSelector, WisList, draggable,
   },
   props: {
     players: { type: Array as PropType<Array<IPlayer>>, required: true },
@@ -43,6 +56,7 @@ export default defineComponent({
       return 'display' in object
     }
     const playerPlayedCard = ref<ICard[]>([])
+    const selectedCards = ref<ICard[]>([])
     const otherPlayedCards = ref<PlayedCard[]>([])
     const getPlayedCardByPlace = (place: number): string => {
       const card = otherPlayedCards.value.find(c => c.place === place)
@@ -124,6 +138,34 @@ export default defineComponent({
         playerLeftPlayedAmount.value = playerLeftPlayedAmount.value + 1
       otherPlayedCards.value = cards
     })
+
+    const wisList = ref<WisInfo[]>([])
+    const canWise = computed(() => selfCanPlay.value && playerCards.value.length === 9)
+    const selectCard = (card: ICard) => {
+      if (!canWise.value) return
+      if (selectedCards.value.find(c => c.id === card.id))
+        selectedCards.value = selectedCards.value.filter(c => c.id !== card.id)
+      else selectedCards.value.push(card)
+    }
+    const onSelectWis = (wisType: string) => {
+      socket.emit('wis', self?.id, selectedCards.value, wisType)
+    }
+    socket.on('wisdeclare', (wisInfo: WisInfo[]) => {
+      wisList.value = wisInfo
+      selectedCards.value = []
+    })
+    const getHighestWisByPlace = (place: number): number => {
+      const list = wisList.value.find(w => w.playerPlace === place)
+      if (!list) return 0
+      return list.highestWisValue
+    }
+    const getCardClasses = (card: ICard): any => {
+      return {
+        invalid: false,
+        selected: selectedCards.value.find(c => c.id === card.id),
+      }
+    }
+
     const pointsRed = ref(0)
     const pointsBlue = ref(0)
     const stichRed = computed(() => pointsRed.value > 0)
@@ -133,6 +175,7 @@ export default defineComponent({
       pointsBlue.value = score.teamA
     })
     socket.on('clearboard', () => {
+      wisList.value = []
       otherPlayedCards.value = []
       playerPlayedCard.value = []
     })
@@ -151,7 +194,8 @@ export default defineComponent({
     socket.on('typegotselected', (type: string) => {
       selectedTypeName.value = type
     })
-    useBoardConnection(socket, playerCards)
+
+    useBoardConnection(socket, playerCards, playerRightPlayedAmount, playerTopPlayedAmount, playerLeftPlayedAmount)
 
     const sortCards = () => {
       playerCards.value = playerCards.value.sort((c1, c2) => c1.id - c2.id)
@@ -168,7 +212,7 @@ export default defineComponent({
     document.addEventListener('keydown', keyDownHandler)
 
     return {
-      boardPlayers, playerCards, backupPlayerHand, playerPlayedCard, otherPlayedCards, getRightPlayedCard, getTopPlayedCard, getLeftPlayedCard, stichRed, stichBlue, pointsRed, pointsBlue, showPicker, onSelectType, selectedTypeName, cardPlayed, getOtherCardOffset, isTurnOfPlayerAtPlace, getLastPlayedValue, playerRightPlayedAmount, playerTopPlayedAmount, playerLeftPlayedAmount,
+      boardPlayers, playerCards, backupPlayerHand, playerPlayedCard, otherPlayedCards, getRightPlayedCard, getTopPlayedCard, getLeftPlayedCard, stichRed, stichBlue, pointsRed, pointsBlue, showPicker, onSelectType, selectedTypeName, cardPlayed, getOtherCardOffset, isTurnOfPlayerAtPlace, getLastPlayedValue, playerRightPlayedAmount, playerTopPlayedAmount, playerLeftPlayedAmount, selectCard, selectedCards, getCardClasses, onSelectWis, getHighestWisByPlace,
     }
   },
 })
@@ -183,6 +227,7 @@ export default defineComponent({
           :player="boardPlayers[2]"
           :highlight="isTurnOfPlayerAtPlace === boardPlayers[2].place"
         />
+        <WisList :value="getHighestWisByPlace(boardPlayers[2].place)" />
       </div>
     </div>
     <div class="bg-darker border-b-2">
@@ -201,6 +246,7 @@ export default defineComponent({
           :player="boardPlayers[1]"
           :highlight="isTurnOfPlayerAtPlace === boardPlayers[1].place"
         />
+        <WisList :value="getHighestWisByPlace(boardPlayers[1].place)" />
       </div>
     </div>
     <div class="bg-dark border-r-2 min-h-0">
@@ -293,6 +339,7 @@ export default defineComponent({
           :player="boardPlayers[3]"
           :highlight="isTurnOfPlayerAtPlace === boardPlayers[3].place"
         />
+        <WisList :value="getHighestWisByPlace(boardPlayers[3].place)" />
       </div>
     </div>
     <div class="bg-darker border-t-2">
@@ -305,7 +352,11 @@ export default defineComponent({
         @start="backupPlayerHand"
       >
         <template #item="{ element }">
-          <div class="h-full card-wrapper">
+          <div
+            class="h-full card-wrapper"
+            :class="getCardClasses(element)"
+            @click="selectCard(element)"
+          >
             <svg class="h-full" viewBox="0 0 169 245">
               <use :href="`/images/svg-cards.svg#${element.display}`" />
             </svg>
@@ -313,18 +364,22 @@ export default defineComponent({
         </template>
       </draggable>
     </div>
-    <div class="bg-darker border-t-2">
+    <div class="bg-darker border-t-2 relative">
       <div class="flex flex-col h-full p-3 items-center">
         <PlayerCard
           :in-board="true"
           :player="boardPlayers[0]"
           :highlight="isTurnOfPlayerAtPlace === boardPlayers[0].place"
         />
+        <WisList :value="getHighestWisByPlace(boardPlayers[0].place)" />
       </div>
     </div>
   </div>
   <transition name="fade">
     <TypeSelector v-if="showPicker" @selected="onSelectType" />
+  </transition>
+  <transition name="fade">
+    <WisSelector v-if="selectedCards.length > 0" @selected="onSelectWis" />
   </transition>
 </template>
 <style scoped>
@@ -382,6 +437,7 @@ export default defineComponent({
 .card-wrapper {
   width: 162px;
   position: relative;
+  transition: all 0.3s;
 }
 
 .invalid::after {
@@ -390,10 +446,14 @@ export default defineComponent({
   content: "";
   top: 0;
   left: 0;
-  width: 100%;
+  width: 98%;
   height: 100%;
   border-radius: 11px;
   background: #d02655;
+}
+
+.selected {
+  transform: translateY(-30px);
 }
 
 .ghost-card {
