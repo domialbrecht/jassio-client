@@ -3,7 +3,7 @@
     class="absolute text-white uppercase top-0 h-12 w-full flex z-10 justify-between items-center px-12 py-4"
   >
     <div>
-      <span>Alpha 0.0.1</span>
+      <span>Alpha 0.0.2</span>
     </div>
     <div class="flex items-center">
       <a
