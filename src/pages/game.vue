@@ -39,6 +39,10 @@ export default defineComponent({
       gameRunning.value = false
       router.push('/')
     })
+    socket.on('win', () => {
+      gameRunning.value = false
+      router.push('/')
+    })
     provide('socket', socket)
     return {
       leaveGame, key, onStart, gameRunning, players,
@@ -53,7 +57,9 @@ export default defineComponent({
     class="absolute h-10 bg-gray-900 w-full flex items-center px-5 justify-between text-white"
   >
     <span class="pointer" @click="leaveGame">LEAVE</span>
-    <router-link to="/">HELP</router-link>
+    <router-link to="/">
+      HELP
+    </router-link>
   </header>
   <main class="pt-10 h-full">
     <Lobby v-if="!gameRunning" :jkey="key" @gstart="onStart" />

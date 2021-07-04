@@ -15,11 +15,6 @@ type PlayedCard = {
   value: number
 }
 
-type PlayerWis = {
-  place: number
-  values: number[]
-}
-
 type WisInfo = {
   playerId: string
   playerPlace: number
@@ -140,7 +135,9 @@ export default defineComponent({
     })
 
     const wisList = ref<WisInfo[]>([])
-    const canWise = computed(() => selfCanPlay.value && playerCards.value.length === 9)
+    const canWise = ref(false)
+    // TODO: Enable wise
+    // const canWise = computed(() => selfCanPlay.value && playerCards.value.length === 9 && props.settings.enableWise)
     const selectCard = (card: ICard) => {
       if (!canWise.value) return
       if (selectedCards.value.find(c => c.id === card.id))

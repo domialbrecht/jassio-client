@@ -21,7 +21,7 @@ export default defineComponent({
     const players = ref(p)
     const hostSettings = ref<IHostSetting>({
       winAmount: 1000,
-      enableWise: true,
+      enableWise: false,
     })
     const socket: Socket = inject('socket')!
     const setupComplete = ref(false)

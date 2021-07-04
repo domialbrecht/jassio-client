@@ -53,10 +53,6 @@ export const WisTypes = [
     icon: IconBlatt,
   },
   {
-    name: WisType.STOECK,
-    icon: IconStoeck,
-  },
-  {
     name: WisType.SIMILAR,
     icon: IconSimilar,
   },

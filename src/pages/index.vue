@@ -59,8 +59,8 @@ onUnmounted(() => {
             <div class>
               <div>
                 <h1 class="mb-8 text-8xl text-white font-sans font-bold uppercase">
-                  Jass Online
-                  <br />Intersim.
+                  Intersim
+                  <br />Jass Online.
                 </h1>
                 <div>
                   <router-link

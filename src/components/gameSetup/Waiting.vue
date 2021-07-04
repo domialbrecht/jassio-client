@@ -62,11 +62,11 @@ export default defineComponent({
         class="mt-0 block px-0.5 text-darker text-xl text-center border-0 focus:ring-0 focus:border-white"
         @change="settingChanged"
       />
-      <label for="checkbox" class="text-3xl mr-6">Wise isch erloubt</label>
+      <label for="checkbox" class="text-3xl mr-6">Wise isch erloubt (WIP)</label>
       <input
         id="checkbox"
         v-model="enableWise"
-        :disabled="!isHost"
+        :disabled="true"
         type="checkbox"
         class="h-6 w-6 bg-white block appearance-none justify-self-center checked:bg-highlight"
         @change="settingChanged"
