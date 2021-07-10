@@ -178,10 +178,12 @@ export default defineComponent({
     })
 
     const showPicker = ref(false)
+    const isSwitch = ref(false)
     const selectedTypeName = ref('')
     // TODO: Secure me on server with check
-    socket.on('turnselect', () => {
+    socket.on('turnselect', (sw: boolean) => {
       showPicker.value = true
+      isSwitch.value = sw
     })
     const onSelectType = (type: string) => {
       showPicker.value = false
@@ -209,7 +211,7 @@ export default defineComponent({
     document.addEventListener('keydown', keyDownHandler)
 
     return {
-      boardPlayers, playerCards, backupPlayerHand, playerPlayedCard, otherPlayedCards, getRightPlayedCard, getTopPlayedCard, getLeftPlayedCard, stichRed, stichBlue, pointsRed, pointsBlue, showPicker, onSelectType, selectedTypeName, cardPlayed, getOtherCardOffset, isTurnOfPlayerAtPlace, getLastPlayedValue, playerRightPlayedAmount, playerTopPlayedAmount, playerLeftPlayedAmount, selectCard, selectedCards, getCardClasses, onSelectWis, getHighestWisByPlace,
+      boardPlayers, playerCards, backupPlayerHand, playerPlayedCard, otherPlayedCards, getRightPlayedCard, getTopPlayedCard, getLeftPlayedCard, stichRed, stichBlue, pointsRed, pointsBlue, showPicker, onSelectType, selectedTypeName, cardPlayed, getOtherCardOffset, isTurnOfPlayerAtPlace, getLastPlayedValue, playerRightPlayedAmount, playerTopPlayedAmount, playerLeftPlayedAmount, selectCard, selectedCards, getCardClasses, onSelectWis, getHighestWisByPlace, isSwitch,
     }
   },
 })
@@ -373,7 +375,7 @@ export default defineComponent({
     </div>
   </div>
   <transition name="fade">
-    <TypeSelector v-if="showPicker" @selected="onSelectType" />
+    <TypeSelector v-if="showPicker" :hideswitch="isSwitch" @selected="onSelectType" />
   </transition>
   <transition name="fade">
     <WisSelector v-if="selectedCards.length > 0" @selected="onSelectWis" />

@@ -4,6 +4,9 @@ import SchiebeIcon from '../helpers/SchiebeIcon.vue'
 import { RuleTypes } from '~/defs'
 export default defineComponent({
   components: { SchiebeIcon },
+  props: {
+    hideswitch: { type: Boolean, default: false },
+  },
   emits: ['selected'],
   setup(props, { emit }) {
     const selectType = (type: string) => {
@@ -40,11 +43,15 @@ export default defineComponent({
           <button
             class="flex items-center justify-center rounded-2xl bg-gray-100"
             @click="selectType(`${type.name}_up`)"
-          >Obe</button>
+          >
+            Obe
+          </button>
           <button
             class="flex items-center justify-center rounded-2xl bg-gray-100"
             @click="selectType(`${type.name}_down`)"
-          >Unde</button>
+          >
+            Unde
+          </button>
         </div>
         <div
           v-if="type.name === 'Trumpf'"
@@ -53,22 +60,30 @@ export default defineComponent({
           <button
             class="flex items-center justify-center rounded-2xl bg-gray-100"
             @click="selectType(`${type.name}_heart`)"
-          >Härz</button>
+          >
+            Härz
+          </button>
           <button
             class="flex items-center justify-center rounded-2xl bg-gray-100"
             @click="selectType(`${type.name}_diamond`)"
-          >Egge</button>
+          >
+            Egge
+          </button>
           <button
             class="flex items-center justify-center rounded-2xl bg-gray-100"
             @click="selectType(`${type.name}_spade`)"
-          >Schufle</button>
+          >
+            Schufle
+          </button>
           <button
             class="flex items-center justify-center rounded-2xl bg-gray-100"
             @click="selectType(`${type.name}_club`)"
-          >Chrütz</button>
+          >
+            Chrütz
+          </button>
         </div>
       </div>
-      <div class="h-60 w-52 flex flex-col items-center p-4 bg-orange-400">
+      <div v-if="!hideswitch" class="h-60 w-52 flex flex-col items-center p-4 bg-orange-400">
         <span class="text-2xl">Schiebe</span>
         <button
           class="flex items-center justify-center rounded-2xl w-full h-5/6 text-dar"
