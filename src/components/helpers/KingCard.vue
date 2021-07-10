@@ -1081,6 +1081,10 @@ svg {
 	border-radius: 30px;
   background-image: linear-gradient(320deg, #1f3061, #7e7eab);
 	animation: cardWiggle 5s linear 0s infinite;
+	transition: opacity .5s;
+}
+svg:hover {
+	opacity: 0;
 }
 #base path {
 	fill: transparent;
