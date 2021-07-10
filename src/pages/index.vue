@@ -5,6 +5,9 @@ import Rules from '~/components/Rules.vue'
 import Further from '~/components/Further.vue'
 import Header from '~/components/Header.vue'
 import Footer from '~/components/Footer.vue'
+import KingCard from '~/components/helpers/KingCard.vue'
+import JackCard from '~/components/helpers/JackCard.vue'
+import NumberCard from '~/components/helpers/NumberCard.vue'
 const cardRotate = ref(10)
 const getRotateStyle = (i: number): any => {
   return {
@@ -14,15 +17,15 @@ const getRotateStyle = (i: number): any => {
 const cards = computed(() => {
   return [
     {
-      name: 'club_10',
+      component: NumberCard,
       styles: getRotateStyle(0),
     },
     {
-      name: 'diamond_jack',
+      component: JackCard,
       styles: getRotateStyle(1),
     },
     {
-      name: 'heart_king',
+      component: KingCard,
       styles: getRotateStyle(2),
     },
   ]
@@ -52,7 +55,7 @@ onUnmounted(() => {
 <template>
   <Header />
   <main>
-    <div class="relative heroContainer">
+    <div class="relative heroContainer gradient-main">
       <div class="pt-12 pb-40 absolute top-0 right-0 left-0 bottom-0 hero">
         <div class="flex flex-col container mx-auto h-full">
           <div class="flex justify-between items-center h-full">
@@ -75,12 +78,10 @@ onUnmounted(() => {
               </div>
             </div>
             <div class="relative z-10 h-full cardWrapper">
-              <div v-for="card in cards" :key="card.name" class="z-10 card" :style="card.styles">
+              <div v-for="(card, i) in cards" :key="i" class="z-10 card" :style="card.styles">
                 <div class="playing-card-container">
                   <div class="playing-card">
-                    <svg class="w-full h-full" viewBox="0 0 169 245">
-                      <use :href="`/images/svg-cards.svg#${card.name}`" />
-                    </svg>
+                    <component :is="card.component"></component>
                   </div>
                 </div>
               </div>
@@ -141,7 +142,6 @@ onUnmounted(() => {
   min-height: 860px;
   max-height: 926px;
   background-color: #2b2e4a;
-  background-image: linear-gradient(0deg, #2b2e4a 1%, #06132f 99%);
 }
 
 .cardWrapper {

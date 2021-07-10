@@ -18,7 +18,7 @@ type PlayedCard = {
 type WisInfo = {
   playerId: string
   playerPlace: number
-  highestWisValue: number
+  values: number[]
 }
 
 export default defineComponent({
@@ -135,9 +135,8 @@ export default defineComponent({
     })
 
     const wisList = ref<WisInfo[]>([])
-    const canWise = ref(false)
-    // TODO: Enable wise
-    // const canWise = computed(() => selfCanPlay.value && playerCards.value.length === 9 && props.settings.enableWise)
+    // TODO: Respect settings for wise
+    const canWise = computed(() => selfCanPlay.value && playerCards.value.length === 9)
     const selectCard = (card: ICard) => {
       if (!canWise.value) return
       if (selectedCards.value.find(c => c.id === card.id))
@@ -147,14 +146,23 @@ export default defineComponent({
     const onSelectWis = (wisType: string) => {
       socket.emit('wis', self?.id, selectedCards.value, wisType)
     }
+
+    const callStoeck = () => {
+      socket.emit('stoeck', self?.id)
+    }
+
+    // Response: Get highest wis from server for each player
     socket.on('wisdeclare', (wisInfo: WisInfo[]) => {
       wisList.value = wisInfo
       selectedCards.value = []
     })
-    const getHighestWisByPlace = (place: number): number => {
+
+    // TODO: socket on wislist: Get all wise for winning players
+
+    const getWiseByPlace = (place: number): number[] => {
       const list = wisList.value.find(w => w.playerPlace === place)
-      if (!list) return 0
-      return list.highestWisValue
+      if (!list) return []
+      return list.values
     }
     const getCardClasses = (card: ICard): any => {
       return {
@@ -211,7 +219,7 @@ export default defineComponent({
     document.addEventListener('keydown', keyDownHandler)
 
     return {
-      boardPlayers, playerCards, backupPlayerHand, playerPlayedCard, otherPlayedCards, getRightPlayedCard, getTopPlayedCard, getLeftPlayedCard, stichRed, stichBlue, pointsRed, pointsBlue, showPicker, onSelectType, selectedTypeName, cardPlayed, getOtherCardOffset, isTurnOfPlayerAtPlace, getLastPlayedValue, playerRightPlayedAmount, playerTopPlayedAmount, playerLeftPlayedAmount, selectCard, selectedCards, getCardClasses, onSelectWis, getHighestWisByPlace, isSwitch,
+      boardPlayers, playerCards, backupPlayerHand, playerPlayedCard, otherPlayedCards, getRightPlayedCard, getTopPlayedCard, getLeftPlayedCard, stichRed, stichBlue, pointsRed, pointsBlue, showPicker, onSelectType, selectedTypeName, cardPlayed, getOtherCardOffset, isTurnOfPlayerAtPlace, getLastPlayedValue, playerRightPlayedAmount, playerTopPlayedAmount, playerLeftPlayedAmount, selectCard, selectedCards, getCardClasses, onSelectWis, callStoeck, getWiseByPlace, isSwitch,
     }
   },
 })
@@ -226,7 +234,7 @@ export default defineComponent({
           :player="boardPlayers[2]"
           :highlight="isTurnOfPlayerAtPlace === boardPlayers[2].place"
         />
-        <WisList :value="getHighestWisByPlace(boardPlayers[2].place)" />
+        <WisList :value="getWiseByPlace(boardPlayers[2].place)" />
       </div>
     </div>
     <div class="bg-darker border-b-2">
@@ -245,7 +253,7 @@ export default defineComponent({
           :player="boardPlayers[1]"
           :highlight="isTurnOfPlayerAtPlace === boardPlayers[1].place"
         />
-        <WisList :value="getHighestWisByPlace(boardPlayers[1].place)" />
+        <WisList :value="getWiseByPlace(boardPlayers[1].place)" />
       </div>
     </div>
     <div class="bg-dark border-r-2 min-h-0">
@@ -283,14 +291,14 @@ export default defineComponent({
         </div>
       </div>
       <div class="field-players players-blue">
-        <div class="field-player field-pb1">
+        <div class="field-player field-pb1 bg-blue-gray-600">
           <svg v-if="getTopPlayedCard" class="h-64" viewBox="0 0 169 245">
             <use :href="`/images/svg-cards.svg#${getTopPlayedCard}`" />
           </svg>
         </div>
         <draggable
           v-model="playerPlayedCard"
-          class="field-player field-pb2 playable"
+          class="field-player field-pb2 playable bg-blue-gray-600"
           group="hand"
           tag="div"
           ghost-class="ghost-card"
@@ -305,12 +313,12 @@ export default defineComponent({
         </draggable>
       </div>
       <div class="field-players players-red">
-        <div class="field-player field-pr1">
+        <div class="field-player field-pr1 bg-blue-gray-600">
           <svg v-if="getLeftPlayedCard" class="h-64" viewBox="0 0 169 245">
             <use :href="`/images/svg-cards.svg#${getLeftPlayedCard}`" />
           </svg>
         </div>
-        <div class="field-player field-pr2">
+        <div class="field-player field-pr2 bg-blue-gray-600">
           <svg v-if="getRightPlayedCard" class="h-64" viewBox="0 0 169 245">
             <use :href="`/images/svg-cards.svg#${getRightPlayedCard}`" />
           </svg>
@@ -338,7 +346,7 @@ export default defineComponent({
           :player="boardPlayers[3]"
           :highlight="isTurnOfPlayerAtPlace === boardPlayers[3].place"
         />
-        <WisList :value="getHighestWisByPlace(boardPlayers[3].place)" />
+        <WisList :value="getWiseByPlace(boardPlayers[3].place)" />
       </div>
     </div>
     <div class="bg-darker border-t-2">
@@ -370,7 +378,7 @@ export default defineComponent({
           :player="boardPlayers[0]"
           :highlight="isTurnOfPlayerAtPlace === boardPlayers[0].place"
         />
-        <WisList :value="getHighestWisByPlace(boardPlayers[0].place)" />
+        <WisList :value="getWiseByPlace(boardPlayers[0].place)" />
       </div>
     </div>
   </div>
@@ -378,7 +386,7 @@ export default defineComponent({
     <TypeSelector v-if="showPicker" :hideswitch="isSwitch" @selected="onSelectType" />
   </transition>
   <transition name="fade">
-    <WisSelector v-if="selectedCards.length > 0" @selected="onSelectWis" />
+    <WisSelector v-if="selectedCards.length > 0" @selected="onSelectWis" @stoeck="callStoeck" />
   </transition>
 </template>
 <style scoped>
@@ -413,7 +421,6 @@ export default defineComponent({
 }
 
 .field-player {
-  @apply bg-blue-gray-600;
   min-width: 177px;
   min-height: 256px;
   border-radius: 8px;

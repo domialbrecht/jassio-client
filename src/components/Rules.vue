@@ -126,17 +126,17 @@ const types = RuleTypes
         <div class="ml-10 grid grid-flow-col gap-3" style="max-width:70%;">
           <div v-for="n in 4" :key="n">
             <svg class="w-full h-full" viewBox="0 0 169 245">
-              <use :href="'/images/svg-cards.svg#back'" fill="#2B2E4A" />
+              <use :href="'/images/svg-cards.svg#back'" fill="#1E3A8A" />
             </svg>
           </div>
           <div class>
             <svg class="w-full h-full" viewBox="0 0 169 245">
-              <use :href="'/images/svg-cards.svg#diamond_10'" fill="#2B2E4A" />
+              <use :href="'/images/svg-cards.svg#diamond_10'" fill="#1E3A8A" />
             </svg>
           </div>
           <div v-for="n in 4" :key="n">
             <svg class="w-full h-full" viewBox="0 0 169 245">
-              <use :href="'/images/svg-cards.svg#back'" fill="#2B2E4A" />
+              <use :href="'/images/svg-cards.svg#back'" fill="#1E3A8A" />
             </svg>
           </div>
         </div>
@@ -406,7 +406,7 @@ const types = RuleTypes
 }
 
 .rulesSection.rulesSectionDark {
-  @apply bg-dark;
+  @apply bg-blue-900;
 }
 
 .rulesSection.rulesInset {

@@ -93,11 +93,22 @@ export default defineComponent({
 
 <template>
   <div class="flex items-center h-full relative">
-    <div class="absolute w-16 h-16 bg-contrast top-20"></div>
-    <div class="absolute w-16 h-16 bg-deep right-0 top-80"></div>
-    <div class="absolute w-16 h-16 bg-contrast bottom-80"></div>
-    <div class="absolute w-16 h-16 bg-deep right-0 bottom-20"></div>
-    <div class="container bg-dark text-white h-4/5 mx-auto" :style="{ borderRadius: '40px' }">
+    <div class="absolute animate-wiggle text-contrast text-7xl left-8 top-20">
+      <span>♥</span>
+    </div>
+    <div class="absolute animate-wiggle text-deep right-8 text-7xl top-80">
+      <span>♠</span>
+    </div>
+    <div class="absolute animate-wiggle text-contrast text-7xl left-8 bottom-80">
+      <span>♦️</span>
+    </div>
+    <div class="absolute animate-wiggle text-deep right-8 text-7xl bottom-20">
+      <span>♣️</span>
+    </div>
+    <div
+      class="container bg-blue-900 text-white h-4/5 mx-auto"
+      :style="{ borderRadius: '40px' }"
+    >
       <Entry v-if="!setupComplete" :jkey="joinKey" @host="onHost" @join="onJoin" />
       <Waiting
         v-else
@@ -110,3 +121,8 @@ export default defineComponent({
     </div>
   </div>
 </template>
+<style>
+.bgEntry {
+  background-image: radial-gradient(circle, #163e94 1%, #131952 99%);
+}
+</style>

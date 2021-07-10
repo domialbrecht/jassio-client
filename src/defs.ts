@@ -9,7 +9,6 @@ import IconSlalom from '~/components/helpers/TypeSlalomIcon.vue'
 import IconTrumpf from '~/components/helpers/TypeTrumpfIcon.vue'
 
 import IconBlatt from '~/components/helpers/WisBlattIcon.vue'
-import IconStoeck from '~/components/helpers/WisStoeckIcon.vue'
 import IconSimilar from '~/components/helpers/WisSimilarIcon.vue'
 
 export const PlayerPlaceholder: IPlayer = {
@@ -23,13 +22,13 @@ export const PlayerPlaceholder: IPlayer = {
 export const RuleTypes = [
   {
     name: TurnType.UPDOWN,
-    color: 'bg-green-400',
+    color: 'bg-blue-400',
     component: Obeabe,
     icon: IconUp,
   },
   {
     name: TurnType.DOWNUP,
-    color: 'bg-blue-400',
+    color: 'bg-green-400',
     component: Undeufe,
     icon: IconDown,
   },

@@ -9,17 +9,17 @@ import IconPhone from 'virtual:vite-icons/mdi/phone'
       <h2 class="text-6xl uppercase text-default mb-5">Gäng no verwirrt? Hiu hesch Hiuf</h2>
       <div class="mt-24 grid grid-cols-4 gap-10 grid-flow-row">
         <a
-          class="flex justify-center items-center px-8 py-3 text-2xl text-white tracking-widest bg-dark hover:bg-default uppercase"
+          class="flex justify-center items-center px-8 py-3 text-2xl text-white tracking-widest bg-blue-900 hover:bg-blue-700 uppercase"
           href="https://www.swisslos.ch/de/jass/informationen/jass-regeln/jass-grundlagen.html"
           target="_blank"
         >Jassregle</a>
         <a
-          class="flex justify-center items-center px-8 py-3 text-2xl text-white tracking-widest bg-dark hover:bg-default uppercase"
+          class="flex justify-center items-center px-8 py-3 text-2xl text-white tracking-widest bg-blue-900 hover:bg-blue-700 uppercase"
           href="https://www.jassverzeichnis.ch/index.php/blog/81-ueberblick-weisregeln-beim-jassen"
           target="_blank"
         >Wie Wisä</a>
         <a
-          class="flex justify-center items-center px-8 py-3 text-2xl flex justify-center text-white tracking-widest bg-dark hover:bg-default uppercase"
+          class="flex justify-center items-center px-8 py-3 text-2xl flex justify-center text-white tracking-widest bg-blue-900 hover:bg-blue-700 uppercase"
           href="discrod"
           target="_blank"
         >
@@ -27,7 +27,7 @@ import IconPhone from 'virtual:vite-icons/mdi/phone'
           <IconGithub />
         </a>
         <a
-          class="flex justify-center items-center px-8 py-3 text-2xl flex justify-center text-white tracking-widest bg-dark hover:bg-default uppercase"
+          class="flex justify-center items-center px-8 py-3 text-2xl flex justify-center text-white tracking-widest bg-blue-900 hover:bg-blue-700 uppercase"
           href="discrod"
           target="_blank"
         >

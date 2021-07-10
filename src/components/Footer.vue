@@ -14,11 +14,11 @@
       >
         <path
           d="M1365,0V86.26H0V0C110.94,47.12,374.73,80.26,682.5,80.26S1254.06,47.12,1365,0Z"
-          fill="#06132f"
+          fill="#1E3A8A"
         />
       </svg>
     </div>
-    <div class="bg-darker h-40">
+    <div class="bg-blue-900 h-40">
       <div class="w-full h-full flex items-center text-white">
         <div class="container mx-auto">
           <router-link to="/about" class="block uppercase mb-3 hover:text-highlight">Über z Projekt</router-link>
