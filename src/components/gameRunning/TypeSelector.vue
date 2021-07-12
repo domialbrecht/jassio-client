@@ -31,7 +31,7 @@ export default defineComponent({
         <span class="text-2xl">{{ type.name }}</span>
         <button
           v-if="!(type.name === 'Trumpf') && !(type.name === 'Slalom')"
-          class="flex items-center justify-center rounded-2xl w-full h-5/6 text-dark"
+          class="flex items-center justify-center rounded-2xl w-full h-5/6 text-white text-8xl"
           @click="selectType(type.name)"
         >
           <component :is="type.icon"></component>

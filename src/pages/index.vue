@@ -115,27 +115,6 @@ onUnmounted(() => {
   <Footer />
 </template>
 
-<style>
-.heroButton .heroButtonOverlay {
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: #51c4d3;
-  opacity: 0.8;
-  transform: scaleX(0);
-  transform-origin: 100% 100%;
-  transition: transform 0.4s cubic-bezier(0.53, 0.21, 0, 1);
-  will-change: transform;
-}
-
-.heroButton:hover .heroButtonOverlay {
-  transform-origin: 0 0;
-  transform: scaleX(1);
-}
-</style>
 <style scoped>
 .heroContainer {
   height: 94vh;

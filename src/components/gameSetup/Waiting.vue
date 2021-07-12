@@ -91,13 +91,13 @@ export default defineComponent({
     <div v-if="isHost" class="flex justify-between w-full items-center">
       <div>
         <button
-          class="px-8 py-3 text-2xl text-white tracking-widest bg-accent hover:bg-skylight uppercase"
+          class="px-8 py-3 text-2xl text-white tracking-widest bg-highlight hover:bg-contrast uppercase border-0 rounded-4xl focus:ring-0 focus:outline-none"
           @click="copyKey"
         >Iladig kopiere</button>
       </div>
       <button
         v-if="players.length === 4"
-        class="cursor-pointer heroButton px-8 py-3 text-2xl text-white relative tracking-widest bg-highlight hover:bg-contrast uppercase uppercase"
+        class="cursor-pointer heroButton px-8 py-3 text-2xl text-white relative tracking-widest bg-highlight hover:bg-contrast uppercase border-0 rounded-4xl focus:outline-none"
         @click="onStart"
       >Starte</button>
     </div>

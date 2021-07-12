@@ -18,7 +18,13 @@ type PlayedCard = {
 type WisInfo = {
   playerId: string
   playerPlace: number
-  values: number[]
+  wise: number[]
+}
+
+type WisDeclare = {
+  id: number
+  type: string
+  cards: ICard[]
 }
 
 export default defineComponent({
@@ -135,6 +141,9 @@ export default defineComponent({
     })
 
     const wisList = ref<WisInfo[]>([])
+    const wiseAreFinal = ref(false)
+    const wisDeclarelist = ref<WisDeclare[]>([])
+    let wisId = 0
     // TODO: Respect settings for wise
     const canWise = computed(() => selfCanPlay.value && playerCards.value.length === 9)
     const selectCard = (card: ICard) => {
@@ -144,30 +153,65 @@ export default defineComponent({
       else selectedCards.value.push(card)
     }
     const onSelectWis = (wisType: string) => {
-      socket.emit('wis', self?.id, selectedCards.value, wisType)
+      wisId += 1
+      wisDeclarelist.value.push({ id: wisId, type: wisType, cards: selectedCards.value })
+      selectedCards.value = []
     }
 
-    const callStoeck = () => {
-      socket.emit('stoeck', self?.id)
+    const sendWis = () => {
+      const hasStoeck = wisDeclarelist.value.find(w => w.type === 'stoeck')
+      const wise = wisDeclarelist.value.filter(w => w.type !== 'stoeck')
+      if (wise) socket.emit('wis', self?.id, wisDeclarelist.value)
+      if (hasStoeck) socket.emit('stoeck', self?.id)
     }
+    // Response: Some wis not valid, clear all
+    socket.on('wisinvalid', () => {
+      wisId = 0
+      selectedCards.value = []
+      wisDeclarelist.value = []
+    })
 
     // Response: Get highest wis from server for each player
     socket.on('wisdeclare', (wisInfo: WisInfo[]) => {
       wisList.value = wisInfo
       selectedCards.value = []
+      wisId = 0
+      wisDeclarelist.value = []
     })
 
-    // TODO: socket on wislist: Get all wise for winning players
+    // Response: Get all wise for winning players
+    const tempPointsRed = ref(0)
+    const tempPointsBlue = ref(0)
+    socket.on('wiswin', (wisInfo: WisInfo[], score: { teamA: number; teamB: number }) => {
+      wisList.value = wisInfo
+      wiseAreFinal.value = true
+      tempPointsRed.value = score.teamB
+      tempPointsBlue.value = score.teamA
+      setTimeout(() => {
+        wiseAreFinal.value = false
+        wisList.value = []
+      }, 5000)
+    })
+
+    socket.on('cleartempwis', () => {
+      tempPointsRed.value = 0
+      tempPointsBlue.value = 0
+    })
 
     const getWiseByPlace = (place: number): number[] => {
       const list = wisList.value.find(w => w.playerPlace === place)
       if (!list) return []
-      return list.values
+      return list.wise
     }
+
+    const getCardWisid = (card: ICard): number | undefined => {
+      return wisDeclarelist.value.find(w => w.cards.includes(card))?.id
+    }
+
     const getCardClasses = (card: ICard): any => {
       return {
         invalid: false,
-        selected: selectedCards.value.find(c => c.id === card.id),
+        selected: selectedCards.value.find(c => c.id === card.id) || getCardWisid(card),
       }
     }
 
@@ -180,7 +224,6 @@ export default defineComponent({
       pointsBlue.value = score.teamA
     })
     socket.on('clearboard', () => {
-      wisList.value = []
       otherPlayedCards.value = []
       playerPlayedCard.value = []
     })
@@ -219,7 +262,7 @@ export default defineComponent({
     document.addEventListener('keydown', keyDownHandler)
 
     return {
-      boardPlayers, playerCards, backupPlayerHand, playerPlayedCard, otherPlayedCards, getRightPlayedCard, getTopPlayedCard, getLeftPlayedCard, stichRed, stichBlue, pointsRed, pointsBlue, showPicker, onSelectType, selectedTypeName, cardPlayed, getOtherCardOffset, isTurnOfPlayerAtPlace, getLastPlayedValue, playerRightPlayedAmount, playerTopPlayedAmount, playerLeftPlayedAmount, selectCard, selectedCards, getCardClasses, onSelectWis, callStoeck, getWiseByPlace, isSwitch,
+      boardPlayers, playerCards, backupPlayerHand, playerPlayedCard, otherPlayedCards, getRightPlayedCard, getTopPlayedCard, getLeftPlayedCard, stichRed, stichBlue, pointsRed, pointsBlue, tempPointsRed, tempPointsBlue, showPicker, onSelectType, selectedTypeName, cardPlayed, getOtherCardOffset, isTurnOfPlayerAtPlace, getLastPlayedValue, playerRightPlayedAmount, playerTopPlayedAmount, playerLeftPlayedAmount, selectCard, selectedCards, wisDeclarelist, getCardClasses, getCardWisid, onSelectWis, sendWis, getWiseByPlace, wiseAreFinal, isSwitch,
     }
   },
 })
@@ -234,7 +277,7 @@ export default defineComponent({
           :player="boardPlayers[2]"
           :highlight="isTurnOfPlayerAtPlace === boardPlayers[2].place"
         />
-        <WisList :value="getWiseByPlace(boardPlayers[2].place)" />
+        <WisList :final="wiseAreFinal" :value="getWiseByPlace(boardPlayers[2].place)" />
       </div>
     </div>
     <div class="bg-darker border-b-2">
@@ -253,7 +296,7 @@ export default defineComponent({
           :player="boardPlayers[1]"
           :highlight="isTurnOfPlayerAtPlace === boardPlayers[1].place"
         />
-        <WisList :value="getWiseByPlace(boardPlayers[1].place)" />
+        <WisList :final="wiseAreFinal" :value="getWiseByPlace(boardPlayers[1].place)" />
       </div>
     </div>
     <div class="bg-dark border-r-2 min-h-0">
@@ -286,8 +329,8 @@ export default defineComponent({
           <span class="uppercase text-3xl">{{ selectedTypeName }}</span>
         </div>
         <div class="text-2xl mt-2">
-          <span class="text-purple-800">{{ pointsRed }}</span> /
-          <span class="text-blue-900">{{ pointsBlue }}</span>
+          <span class="text-purple-800">{{ pointsRed }}</span><span v-if="tempPointsRed > 0" class="text-gray-400">{{ ` (+${tempPointsRed})` }}</span> /
+          <span class="text-blue-900">{{ pointsBlue }}</span><span v-if="tempPointsBlue > 0" class="text-gray-400">{{ ` (+${tempPointsBlue})` }}</span>
         </div>
       </div>
       <div class="field-players players-blue">
@@ -346,7 +389,7 @@ export default defineComponent({
           :player="boardPlayers[3]"
           :highlight="isTurnOfPlayerAtPlace === boardPlayers[3].place"
         />
-        <WisList :value="getWiseByPlace(boardPlayers[3].place)" />
+        <WisList :final="wiseAreFinal" :value="getWiseByPlace(boardPlayers[3].place)" />
       </div>
     </div>
     <div class="bg-darker border-t-2">
@@ -362,6 +405,7 @@ export default defineComponent({
           <div
             class="h-full card-wrapper"
             :class="getCardClasses(element)"
+            :data-wisid="getCardWisid(element)"
             @click="selectCard(element)"
           >
             <svg class="h-full" viewBox="0 0 169 245">
@@ -378,7 +422,7 @@ export default defineComponent({
           :player="boardPlayers[0]"
           :highlight="isTurnOfPlayerAtPlace === boardPlayers[0].place"
         />
-        <WisList :value="getWiseByPlace(boardPlayers[0].place)" />
+        <WisList :final="wiseAreFinal" :value="getWiseByPlace(boardPlayers[0].place)" />
       </div>
     </div>
   </div>
@@ -386,7 +430,7 @@ export default defineComponent({
     <TypeSelector v-if="showPicker" :hideswitch="isSwitch" @selected="onSelectType" />
   </transition>
   <transition name="fade">
-    <WisSelector v-if="selectedCards.length > 0" @selected="onSelectWis" @stoeck="callStoeck" />
+    <WisSelector v-if="selectedCards.length > 0 || wisDeclarelist.length > 0" @selected="onSelectWis" @send="sendWis" />
   </transition>
 </template>
 <style scoped>
@@ -446,7 +490,7 @@ export default defineComponent({
   transition: all 0.3s;
 }
 
-.invalid::after {
+.card-wrapper[data-wisid]::after, .invalid::after {
   opacity: 0.5;
   position: absolute;
   content: "";
@@ -455,6 +499,25 @@ export default defineComponent({
   width: 98%;
   height: 100%;
   border-radius: 11px;
+}
+
+.card-wrapper[data-wisid='1']::after {
+  background: #93C5FD;
+}
+
+.card-wrapper[data-wisid='2']::after {
+  background: #6EE7B7;
+}
+
+.card-wrapper[data-wisid='3']::after {
+  background: #FCD34D;
+}
+
+.card-wrapper[data-wisid='4']::after {
+  background: #C4B5FD;
+}
+
+.invalid::after {
   background: #d02655;
 }
 

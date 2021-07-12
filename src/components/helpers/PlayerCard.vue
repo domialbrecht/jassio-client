@@ -19,7 +19,7 @@ export default defineComponent({
     })
     const getPlayerColor = (place: number) => {
       if (!props.assigned) return '#ebebeb12'
-      return place % 2 ? '#6f1a5f' : '#384d82'
+      return place % 2 ? '#9D174D' : '#1E40AF'
     }
     return { getPlayerColor, displayClasses }
   },
@@ -36,7 +36,7 @@ export default defineComponent({
   >
     <ellipse cx="34" cy="32" rx="32.5" ry="30.5" :fill="getPlayerColor(player.place)" />
     <path
-      :fill="player.isHost ? '#ffbc00' : 'black'"
+      :fill="player.isHost ? '#ffbc00' : 'white'"
       d="M34,3C51.09,3,65,16,65,32S51.09,61,34,61,3,48,3,32,16.91,3,34,3m0-3C15.22,0,0,14.33,0,32S15.22,64,34,64,68,49.67,68,32,52.78,0,34,0Z"
     />
     <ellipse cx="17.5" cy="32.5" rx="5" ry="8" fill="#f1eaea" />

@@ -22,25 +22,25 @@ export const PlayerPlaceholder: IPlayer = {
 export const RuleTypes = [
   {
     name: TurnType.UPDOWN,
-    color: 'bg-blue-400',
+    color: 'bg-blue-300',
     component: Obeabe,
     icon: IconUp,
   },
   {
     name: TurnType.DOWNUP,
-    color: 'bg-green-400',
+    color: 'bg-indigo-300',
     component: Undeufe,
     icon: IconDown,
   },
   {
     name: 'Trumpf',
-    color: 'bg-red-400',
+    color: 'bg-purple-300',
     component: Trumpf,
     icon: IconTrumpf,
   },
   {
     name: 'Slalom',
-    color: 'bg-violet-400',
+    color: 'bg-pink-300',
     component: Slalom,
     icon: IconSlalom,
   },

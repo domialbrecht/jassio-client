@@ -66,3 +66,27 @@ html, body, #app {
   @apply inline-block cursor-pointer select-none opacity-75 transition duration-200 ease-in-out hover: opacity-100 hover:text-teal-600;
   font-size: 0.9em;
 }
+
+.heroButton {
+  @apply rounded-4xl;
+}
+
+.heroButton .heroButtonOverlay {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  @apply bg-blue-700;
+  @apply rounded-4xl;
+  transform: scaleX(0);
+  transform-origin: 100% 100%;
+  transition: transform 0.4s cubic-bezier(0.53, 0.21, 0, 1);
+  will-change: transform;
+}
+
+.heroButton:hover .heroButtonOverlay {
+  transform-origin: 0 0;
+  transform: scaleX(1);
+}

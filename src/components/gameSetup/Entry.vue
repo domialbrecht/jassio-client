@@ -44,19 +44,19 @@ export default defineComponent({
         <div>
           <button
             v-if="!jkey"
-            class="px-8 py-3 text-2xl text-white tracking-widest bg-accent hover:bg-skylight uppercase"
+            class="px-8 py-3 text-2xl text-white tracking-widest bg-highlight hover:bg-contrast uppercase rounded-4xl focus:outline-none"
             @click="onHost"
           >Host</button>
         </div>
         <div class="flex">
           <input
             type="text"
-            class="mt-0 block w-full px-0.5 text-darker text-xl text-center border-0 focus:ring-0 focus:border-white"
+            class="mt-0 mr-4 block w-full px-0.5 text-darker text-xl text-center border-0 rounded-4xl focus:ring-0 focus:border-white"
             readonly
             :value="jkey"
           />
           <button
-            class="px-8 py-3 text-2xl text-white tracking-widest bg-highlight hover:bg-contrast uppercase"
+            class="px-8 py-3 text-2xl text-white tracking-widest bg-highlight hover:bg-contrast uppercase rounded-4xl focus:outline-none"
             @click="onJoin"
           >Join</button>
         </div>

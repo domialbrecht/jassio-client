@@ -13,7 +13,7 @@ const types = RuleTypes
 <template>
   <div class="relative mt-48">
     <div class="container mx-auto mb-40 text-center">
-      <h2 class="text-6xl uppercase text-default mb-5">Weisch nid wie? Hie d Regle</h2>
+      <h2 class="text-6xl uppercase text-blue-900 mb-5">Weisch nid wie? Hie d Regle</h2>
       <p class="text-lg">
         Nachfougend isch der Spiuablouf erklärt. Klick jewils uf d ?-Element
         für Tipps und Spiubispiu. Die Regle si natürlech ou für z normale
@@ -35,7 +35,7 @@ const types = RuleTypes
           </div>
         </div>
         <div class="w-1/3 js-animate-in animate-in-slideX-left">
-          <h3 class="uppercase text-5xl mb-3 text-default font-bold">Z Setup</h3>
+          <h3 class="uppercase text-5xl mb-3 text-blue-900 font-bold">Z Setup</h3>
           <p class="text-xl">
             Zum spile vomene Schieber, so heisst die Jassart wo mir hie spile,
             bruchsch aus ersts mau vier Lüt. Gjasset seuber wird ner i zwöier
@@ -80,7 +80,7 @@ const types = RuleTypes
           </div>
         </div>
         <div class="w-1/3 js-animate-in animate-in-slideX-left">
-          <h3 class="uppercase text-5xl mb-3 text-default font-bold">D Jasscharte</h3>
+          <h3 class="uppercase text-5xl mb-3 text-blue-900 font-bold">D Jasscharte</h3>
           <p class="text-xl">
             Es Jassdeck besteit us 36 Charte, ufteilt i vier verschideni
             Farbe. D Farbe vo links nach rechts heisse:
@@ -162,7 +162,7 @@ const types = RuleTypes
           :key="type.name"
           class="flex flex-col items-center js-animate-in-item animate-in-fade"
         >
-          <div class="w-full h-70 p-6 flex items-center justify-center" :class="type.color">
+          <div class="w-full h-70 p-6 flex items-center justify-center text-white text-8xl" :class="type.color">
             <component :is="type.icon"></component>
           </div>
           <span class="uppercase text-white text-2xl mt-5">{{ type.name }}</span>
@@ -183,9 +183,9 @@ const types = RuleTypes
     <div class="rulesSection p-20">
       <div class="help">?</div>
       <div class="js-animate-in animate-in-slideX-left">
-        <h3 class="uppercase text-5xl mb-3 text-default font-bold">2/3 Wisä</h3>
+        <h3 class="uppercase text-5xl mb-3 text-blue-900 font-bold">2/3 Wisä</h3>
         <div class="flex justify-between items-center">
-          <p class="text-xl text-default">
+          <p class="text-xl text-blue-900">
             Jede Spiler cha zum Zitpunkt vo sire erste Charte pro Rundi "Wisä". Vo Wisä redt me we e Spiler e gwüssi Kombination a Charte het. Je nachdäm was für ne Wis me het bechunt z Team ner Pünkt. Pro Rundi cha nur eis Team Pünkt für ä Wis ufschribe, und zwar immer das mite der Kombination mitem meiste Wärt.
             <br />
             <br />Generell mues e Wis mit der erste Charte agäh wärdä(we der Spiler wot Wisä, mä mues nid). Die einzigi Usnahm si d "Stöck". Die cha der Spiler agäh wener die zwöiti Charte vor Kombi usspiut. Vergisst mä ä Wis isch Päch gsi. Het ei Spiler mehreri Wisä de seiter nur der höchst. Nachdem me het festgsteut weles Team der höchst Wis het, cha das Team sämtlächi Wise deklariere und verbuechä(ou di wo zerst nid si gseit worde).
@@ -338,9 +338,9 @@ const types = RuleTypes
         ></div>
       </div>
       <div class="js-animate-in animate-in-slideX-left">
-        <h3 class="uppercase text-5xl mb-3 text-default font-bold">3/3 Usspilä</h3>
+        <h3 class="uppercase text-5xl mb-3 text-blue-900 font-bold">3/3 Usspilä</h3>
         <div>
-          <p class="text-xl text-default">
+          <p class="text-xl text-blue-900">
             Nachem Wisä, oder we niemer öppis z Wisä het, faht die eigentlechi Rundi a. Der Spiler wo Vorhand het spiut die ersti Charte us. När der nächst Spiler am Chlapf nah.
             <span
               class="text-purple-500"
