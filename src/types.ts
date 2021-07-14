@@ -48,3 +48,21 @@ export interface IBoard {
   r2: ICard
   b2: ICard
 }
+
+export type PlayedCard = {
+  display: string
+  place: number
+  value: number
+}
+
+export type WisInfo = {
+  playerId: string
+  playerPlace: number
+  wise: number[]
+}
+
+export type WisDeclare = {
+  id: number
+  type: string
+  cards: ICard[]
+}

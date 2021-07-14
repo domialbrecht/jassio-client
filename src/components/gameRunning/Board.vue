@@ -1,31 +1,16 @@
 <script lang="ts">
 import { Socket } from 'socket.io-client'
-import { ref, defineComponent, PropType, inject, computed } from 'vue'
+import { ref, defineComponent, PropType, inject } from 'vue'
 import draggable from 'vuedraggable'
 import PlayerCard from '../helpers/PlayerCard.vue'
 import TypeSelector from './TypeSelector.vue'
 import WisSelector from './WisSelector.vue'
 import WisList from './WisList.vue'
-import useBoardConnection from './socketHandler'
-import { IPlayer, ICard } from '~/types'
-
-type PlayedCard = {
-  display: string
-  place: number
-  value: number
-}
-
-type WisInfo = {
-  playerId: string
-  playerPlace: number
-  wise: number[]
-}
-
-type WisDeclare = {
-  id: number
-  type: string
-  cards: ICard[]
-}
+import useCardFunctions from './logic/cardHandler'
+import useTurnFunctions from './logic/turnHandler'
+import useScoreFunctions from './logic/scoreHandler'
+import useWisFunctions from './logic/wisHandler'
+import { IPlayer } from '~/types'
 
 export default defineComponent({
   components: {
@@ -34,7 +19,16 @@ export default defineComponent({
   props: {
     players: { type: Array as PropType<Array<IPlayer>>, required: true },
   },
-  setup(props, { emit }) {
+  setup(props) {
+    // ==============================
+    // Socket instance
+    // ==============================
+    const socket: Socket = inject('socket')!
+    // ==============================
+
+    // ==============================
+    // Sync player places with server
+    // ==============================
     const shiftPlayers = (a: IPlayer[], amount: number) => {
       if (a.length < 1) return a
       for (let index = 0; index < amount; index++)
@@ -45,208 +39,71 @@ export default defineComponent({
     const self = props.players.find(p => p.self)
     const selfPlace = self?.place
     boardPlayers.value = shiftPlayers([...props.players], selfPlace || 0)
+    // ==============================
 
-    const socket: Socket = inject('socket')!
-    const playerCards = ref<ICard[]>([])
-    let playerCardsBackup: ICard[] = []
-    const backupPlayerHand = () => {
-      playerCardsBackup = playerCards.value
-    }
-    // Simple single space array for holding player cards, has to be array for draggable
-    const instanceOfCard = (object: any): object is ICard => {
-      return 'display' in object
-    }
-    const playerPlayedCard = ref<ICard[]>([])
-    const selectedCards = ref<ICard[]>([])
-    const otherPlayedCards = ref<PlayedCard[]>([])
-    const getPlayedCardByPlace = (place: number): string => {
-      const card = otherPlayedCards.value.find(c => c.place === place)
-      return card ? card.display : ''
-    }
-    const getRightPlayedCard = computed(() => {
-      return getPlayedCardByPlace(boardPlayers.value[1].place)
-    })
-    const getTopPlayedCard = computed(() => {
-      return getPlayedCardByPlace(boardPlayers.value[2].place)
-    })
-    const getLeftPlayedCard = computed(() => {
-      return getPlayedCardByPlace(boardPlayers.value[3].place)
-    })
-    const getLastPlayedValue = computed(() => {
-      const card = otherPlayedCards.value.find(c => c.place === 3)
-      return card ? card.value : undefined
-    })
+    // ==============================
+    // Load use-functions
+    // ==============================
+    // Card server functions
+    const {
+      selfCanPlay,
+      playerCards,
+      backupPlayerHand,
+      playerPlayedCard,
+      otherPlayedCards,
+      getRightPlayedCard,
+      getTopPlayedCard,
+      getLeftPlayedCard,
+      cardPlayed,
+      getOtherCardOffset,
+      isTurnOfPlayerAtPlace,
+      getLastPlayedValue,
+      playerRightPlayedAmount,
+      playerTopPlayedAmount,
+      playerLeftPlayedAmount,
+    } = useCardFunctions(socket, self, boardPlayers.value)
+    // Wis fnctions
+    const {
+      selectCard,
+      selectedCards,
+      wisDeclarelist,
+      getCardClasses,
+      getCardWisid,
+      onSelectWis,
+      sendWis,
+      getWiseByPlace,
+      wiseAreFinal,
+      tempPointsRed,
+      tempPointsBlue,
+    } = useWisFunctions(socket, self, selfCanPlay, playerCards)
+    // Updating and displaying scores
+    const {
+      pointsRed,
+      pointsBlue,
+      stichRed,
+      stichBlue,
+    } = useScoreFunctions(socket)
+    // For selecting turn types and moving turns
+    const {
+      selectedTypeName,
+      showPicker,
+      isSwitch,
+      onSelectType,
+    } = useTurnFunctions(socket)
+    // ==============================
 
-    // const sideCards = ref(null)
-    // const { sideCardsWidth, sideCardsHeight } = useSizeObserver(sideCards)
-
-    /* function useSizeObserver(sideCards: Ref) {
-      const sideCardsWidth = ref(0)
-      const sideCardsHeight = ref(0)
-      const resizeObserver = new ResizeObserver((entries) => {
-        for (const entry of entries) {
-          sideCardsWidth.value = entry.contentRect.width
-          sideCardsHeight.value = entry.contentRect.height
-        }
-      })
-      onMounted(() => resizeObserver.observe(sideCards.value))
-      onBeforeUnmount(() => resizeObserver.unobserve(sideCards.value))
-      return {
-        sideCardsWidth,
-        sideCardsHeight,
-      }
-    } */
-
-    const getOtherCardOffset = (i: number): any => {
-      return {
-        top: `${-13 + 8.8 * i}%`,
-      }
-    }
-
-    const playerRightPlayedAmount = ref(0)
-    const playerTopPlayedAmount = ref(0)
-    const playerLeftPlayedAmount = ref(0)
-
-    const isTurnOfPlayerAtPlace = ref(-1)
-    const selfCanPlay = computed(() => {
-      return self?.place === isTurnOfPlayerAtPlace.value
-    })
-    socket.on('playerturn', (playerPlace: number) => {
-      isTurnOfPlayerAtPlace.value = playerPlace
-    })
-    socket.on('wrongCard', () => {
-      // Server did not have played card on player, reset
-      // FIXME: COULD BE BROKEN IF PLAYER SEND DRAG-START EVENT BEFORE SERVER RESPONDS
-      playerCards.value = playerCardsBackup
-      playerPlayedCard.value = []
-    })
-    const cardPlayed = (evt: any) => {
-      if (!selfCanPlay.value) {
-        playerCards.value = playerCardsBackup
-        playerPlayedCard.value = []
-        return
-      }
-      if (!evt.added || !evt.added.element || !instanceOfCard(evt.added.element)) return
-      const card = evt.added.element as ICard
-      socket.emit('cardPlayed', card.id, self?.id)
-    }
-    socket.on('cards', (cards: PlayedCard[]) => {
-      if (isTurnOfPlayerAtPlace.value === boardPlayers.value[1].place)
-        playerRightPlayedAmount.value = playerRightPlayedAmount.value + 1
-      else if (isTurnOfPlayerAtPlace.value === boardPlayers.value[2].place)
-        playerTopPlayedAmount.value = playerTopPlayedAmount.value + 1
-      else if (isTurnOfPlayerAtPlace.value === boardPlayers.value[3].place)
-        playerLeftPlayedAmount.value = playerLeftPlayedAmount.value + 1
-      otherPlayedCards.value = cards
-    })
-
-    const wisList = ref<WisInfo[]>([])
-    const wiseAreFinal = ref(false)
-    const wisDeclarelist = ref<WisDeclare[]>([])
-    let wisId = 0
-    // TODO: Respect settings for wise
-    const canWise = computed(() => selfCanPlay.value && playerCards.value.length === 9)
-    const selectCard = (card: ICard) => {
-      if (!canWise.value) return
-      if (selectedCards.value.find(c => c.id === card.id))
-        selectedCards.value = selectedCards.value.filter(c => c.id !== card.id)
-      else selectedCards.value.push(card)
-    }
-    const onSelectWis = (wisType: string) => {
-      wisId += 1
-      wisDeclarelist.value.push({ id: wisId, type: wisType, cards: selectedCards.value })
-      selectedCards.value = []
-    }
-
-    const sendWis = () => {
-      const hasStoeck = wisDeclarelist.value.find(w => w.type === 'stoeck')
-      const wise = wisDeclarelist.value.filter(w => w.type !== 'stoeck')
-      if (wise) socket.emit('wis', self?.id, wisDeclarelist.value)
-      if (hasStoeck) socket.emit('stoeck', self?.id)
-    }
-    // Response: Some wis not valid, clear all
-    socket.on('wisinvalid', () => {
-      wisId = 0
-      selectedCards.value = []
-      wisDeclarelist.value = []
-    })
-
-    // Response: Get highest wis from server for each player
-    socket.on('wisdeclare', (wisInfo: WisInfo[]) => {
-      wisList.value = wisInfo
-      selectedCards.value = []
-      wisId = 0
-      wisDeclarelist.value = []
-    })
-
-    // Response: Get all wise for winning players
-    const tempPointsRed = ref(0)
-    const tempPointsBlue = ref(0)
-    socket.on('wiswin', (wisInfo: WisInfo[], score: { teamA: number; teamB: number }) => {
-      wisList.value = wisInfo
-      wiseAreFinal.value = true
-      tempPointsRed.value = score.teamB
-      tempPointsBlue.value = score.teamA
-      setTimeout(() => {
-        wiseAreFinal.value = false
-        wisList.value = []
-      }, 5000)
-    })
-
-    socket.on('cleartempwis', () => {
-      tempPointsRed.value = 0
-      tempPointsBlue.value = 0
-    })
-
-    const getWiseByPlace = (place: number): number[] => {
-      const list = wisList.value.find(w => w.playerPlace === place)
-      if (!list) return []
-      return list.wise
-    }
-
-    const getCardWisid = (card: ICard): number | undefined => {
-      return wisDeclarelist.value.find(w => w.cards.includes(card))?.id
-    }
-
-    const getCardClasses = (card: ICard): any => {
-      return {
-        invalid: false,
-        selected: selectedCards.value.find(c => c.id === card.id) || getCardWisid(card),
-      }
-    }
-
-    const pointsRed = ref(0)
-    const pointsBlue = ref(0)
-    const stichRed = computed(() => pointsRed.value > 0)
-    const stichBlue = computed(() => pointsBlue.value > 0)
-    socket.on('score', (score: { teamA: number; teamB: number }) => {
-      pointsRed.value = score.teamB
-      pointsBlue.value = score.teamA
-    })
+    // ==============================
+    // General socket handlers
+    // ==============================
     socket.on('clearboard', () => {
       otherPlayedCards.value = []
       playerPlayedCard.value = []
     })
+    // ==============================
 
-    const showPicker = ref(false)
-    const isSwitch = ref(false)
-    const selectedTypeName = ref('')
-    // TODO: Secure me on server with check
-    socket.on('turnselect', (sw: boolean) => {
-      showPicker.value = true
-      isSwitch.value = sw
-    })
-    const onSelectType = (type: string) => {
-      showPicker.value = false
-      selectedTypeName.value = type
-      socket.emit('typeselected', type)
-    }
-    socket.on('typegotselected', (type: string) => {
-      selectedTypeName.value = type
-    })
-
-    useBoardConnection(socket, playerCards, playerRightPlayedAmount, playerTopPlayedAmount, playerLeftPlayedAmount)
-
+    // ==============================
+    // Player card functions
+    // ==============================
     const sortCards = () => {
       playerCards.value = playerCards.value.sort((c1, c2) => c1.id - c2.id)
     }
@@ -260,9 +117,48 @@ export default defineComponent({
       }
     }
     document.addEventListener('keydown', keyDownHandler)
+    // ==============================
 
     return {
-      boardPlayers, playerCards, backupPlayerHand, playerPlayedCard, otherPlayedCards, getRightPlayedCard, getTopPlayedCard, getLeftPlayedCard, stichRed, stichBlue, pointsRed, pointsBlue, tempPointsRed, tempPointsBlue, showPicker, onSelectType, selectedTypeName, cardPlayed, getOtherCardOffset, isTurnOfPlayerAtPlace, getLastPlayedValue, playerRightPlayedAmount, playerTopPlayedAmount, playerLeftPlayedAmount, selectCard, selectedCards, wisDeclarelist, getCardClasses, getCardWisid, onSelectWis, sendWis, getWiseByPlace, wiseAreFinal, isSwitch,
+      // Board and Places
+      boardPlayers,
+      playerCards,
+      backupPlayerHand,
+      playerPlayedCard,
+      otherPlayedCards,
+      getRightPlayedCard,
+      getTopPlayedCard,
+      getLeftPlayedCard,
+      // Score
+      stichRed,
+      stichBlue,
+      pointsRed,
+      pointsBlue,
+      // Select
+      showPicker,
+      onSelectType,
+      isSwitch,
+      // Cards
+      cardPlayed,
+      getOtherCardOffset,
+      isTurnOfPlayerAtPlace,
+      getLastPlayedValue,
+      playerRightPlayedAmount,
+      playerTopPlayedAmount,
+      playerLeftPlayedAmount,
+      // Wise
+      selectedTypeName,
+      selectCard,
+      selectedCards,
+      wisDeclarelist,
+      getCardClasses,
+      getCardWisid,
+      onSelectWis,
+      sendWis,
+      getWiseByPlace,
+      wiseAreFinal,
+      tempPointsRed,
+      tempPointsBlue,
     }
   },
 })
