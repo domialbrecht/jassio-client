@@ -1,5 +1,5 @@
 <script lang="ts">
-import { ref, defineComponent } from 'vue'
+import { defineComponent } from 'vue'
 import { WisTypes } from '~/defs'
 import IconStoeck from '~/components/helpers/WisStoeckIcon.vue'
 export default defineComponent({

@@ -3,11 +3,11 @@ import { ref, provide, onMounted, onUnmounted, defineComponent } from 'vue'
 import { useRouter } from 'vue-router'
 import { IPlayer } from '~/types'
 import Lobby from '~/components/gameSetup/Lobby.vue'
-import Board from '~/components/gameRunning/Board.vue'
+import Boardwrapper from '~/components/gameRunning/BoardWrapper.vue'
 import socket from '~/api/socket'
 export default defineComponent({
   components: {
-    Lobby, Board,
+    Lobby, Boardwrapper,
   },
   setup() {
     const router = useRouter()
@@ -63,7 +63,7 @@ export default defineComponent({
   </header>
   <main class="pt-10 h-full">
     <Lobby v-if="!gameRunning" :jkey="key" @gstart="onStart" />
-    <Board v-else :players="players" />
+    <Boardwrapper v-else :players="players" />
   </main>
 </template>
 

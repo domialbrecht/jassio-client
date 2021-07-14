@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import SchiebeIcon from '../helpers/SchiebeIcon.vue'
+import SchiebeIcon from '~/components/helpers/SchiebeIcon.vue'
 import { RuleTypes } from '~/defs'
 export default defineComponent({
   components: { SchiebeIcon },

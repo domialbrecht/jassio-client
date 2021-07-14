@@ -2,14 +2,14 @@
 import { Socket } from 'socket.io-client'
 import { ref, defineComponent, PropType, inject } from 'vue'
 import draggable from 'vuedraggable'
-import PlayerCard from '../helpers/PlayerCard.vue'
-import TypeSelector from './TypeSelector.vue'
-import WisSelector from './WisSelector.vue'
+import useCardFunctions from '../logic/cardHandler'
+import useTurnFunctions from '../logic/turnHandler'
+import useScoreFunctions from '../logic/scoreHandler'
+import useWisFunctions from '../logic/wisHandler'
 import WisList from './WisList.vue'
-import useCardFunctions from './logic/cardHandler'
-import useTurnFunctions from './logic/turnHandler'
-import useScoreFunctions from './logic/scoreHandler'
-import useWisFunctions from './logic/wisHandler'
+import WisSelector from './WisSelector.vue'
+import TypeSelector from './TypeSelector.vue'
+import PlayerCard from '~/components/helpers/PlayerCard.vue'
 import { IPlayer } from '~/types'
 
 export default defineComponent({
@@ -20,6 +20,7 @@ export default defineComponent({
     players: { type: Array as PropType<Array<IPlayer>>, required: true },
   },
   setup(props) {
+    // ==============================
     // ==============================
     // Socket instance
     // ==============================
@@ -120,6 +121,7 @@ export default defineComponent({
     // ==============================
 
     return {
+      // View
       // Board and Places
       boardPlayers,
       playerCards,
