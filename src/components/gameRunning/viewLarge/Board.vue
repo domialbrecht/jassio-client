@@ -9,12 +9,13 @@ import useWisFunctions from '../logic/wisHandler'
 import WisList from './WisList.vue'
 import WisSelector from './WisSelector.vue'
 import TypeSelector from './TypeSelector.vue'
+import SmallPlayer from './SmallPlayer.vue'
 import PlayerCard from '~/components/helpers/PlayerCard.vue'
 import { IPlayer } from '~/types'
 
 export default defineComponent({
   components: {
-    PlayerCard, TypeSelector, WisSelector, WisList, draggable,
+    PlayerCard, TypeSelector, WisSelector, WisList, draggable, SmallPlayer,
   },
   props: {
     players: { type: Array as PropType<Array<IPlayer>>, required: true },
@@ -211,7 +212,7 @@ export default defineComponent({
         </svg>
       </div>
     </div>
-    <div class="field relative h-full">
+    <div class="showSmall field relative h-full">
       <div class="absolute field-sr">
         <svg v-if="stichRed" class="h-44" viewBox="0 0 169 245">
           <use :href="`/images/svg-cards.svg#back`" fill="#6f1a5f" />
@@ -227,8 +228,10 @@ export default defineComponent({
           <span class="uppercase text-3xl">{{ selectedTypeName }}</span>
         </div>
         <div class="text-2xl mt-2">
-          <span class="text-purple-800">{{ pointsRed }}</span><span v-if="tempPointsRed > 0" class="text-gray-400">{{ ` (+${tempPointsRed})` }}</span> /
-          <span class="text-blue-900">{{ pointsBlue }}</span><span v-if="tempPointsBlue > 0" class="text-gray-400">{{ ` (+${tempPointsBlue})` }}</span>
+          <span class="text-purple-800">{{ pointsRed }}</span>
+          <span v-if="tempPointsRed > 0" class="text-gray-400">{{ ` (+${tempPointsRed})` }}</span> /
+          <span class="text-blue-900">{{ pointsBlue }}</span>
+          <span v-if="tempPointsBlue > 0" class="text-gray-400">{{ ` (+${tempPointsBlue})` }}</span>
         </div>
       </div>
       <div class="field-players players-blue">
@@ -265,6 +268,16 @@ export default defineComponent({
           </svg>
         </div>
       </div>
+      <div class="hideLarge absolute mt-2 left-5">
+        <div class="flex gap-4">
+          <div v-for="player in boardPlayers" :key="player.id" class="flex flex-col items-center">
+            <SmallPlayer :player="player" :final="wiseAreFinal" :wisvalues="getWiseByPlace(player.place)" :is-turn-of-player-at-place="isTurnOfPlayerAtPlace" />
+          </div>
+        </div>
+      </div>
+      <div class="hideLarge absolute mt-2 bottom-2 right-5 text-2xl" :class="isTurnOfPlayerAtPlace === boardPlayers[0].place ? 'text-highlight' : 'text-white'">
+        {{ boardPlayers[0].name }}
+      </div>
     </div>
     <div class="bg-dark border-l-2 relative">
       <div class="h-full flex flex-col relative">
@@ -290,7 +303,7 @@ export default defineComponent({
         <WisList :final="wiseAreFinal" :value="getWiseByPlace(boardPlayers[3].place)" />
       </div>
     </div>
-    <div class="bg-darker border-t-2">
+    <div class="showSmall bg-darker border-t-2">
       <draggable
         v-model="playerCards"
         class="flex justify-center h-full px-4 py-2 hand"
@@ -328,17 +341,36 @@ export default defineComponent({
     <TypeSelector v-if="showPicker" :hideswitch="isSwitch" @selected="onSelectType" />
   </transition>
   <transition name="fade">
-    <WisSelector v-if="selectedCards.length > 0 || wisDeclarelist.length > 0" @selected="onSelectWis" @send="sendWis" />
+    <WisSelector
+      v-if="selectedCards.length > 0 || wisDeclarelist.length > 0"
+      @selected="onSelectWis"
+      @send="sendWis"
+    />
   </transition>
 </template>
 <style scoped>
 .board {
-  grid-template-columns: 250px auto 250px;
-  grid-template-rows: 250px auto 250px;
-  grid-template-areas:
-    "player1Icon player1Hand player2Icon"
-    "player4Hand board player2Hand"
-    "player4Icon player3Hand player3Icon";
+  grid-template-rows: auto 250px;
+}
+
+@media (max-width: 1800px), (max-height: 1099px) {
+  .board > div:not(.showSmall) {
+    display: none;
+  }
+}
+
+@media (min-width: 1801px) and (min-height: 1100px) {
+  .board {
+    grid-template-columns: 250px auto 250px;
+    grid-template-rows: 250px auto 250px;
+    grid-template-areas:
+      "player1Icon player1Hand player2Icon"
+      "player4Hand board player2Hand"
+      "player4Icon player3Hand player3Icon";
+  }
+  .hideLarge {
+    display: none;
+  }
 }
 
 .field-players {
@@ -373,22 +405,39 @@ export default defineComponent({
 }
 
 .field-sr {
-  top: 5px;
-  left: 5px;
+  top: 50%;
+  left: 30%;
+  transform: translateY(-50%);
+  @media (min-width: 1801px) and (min-height: 1100px) {
+    transform: none;
+    top: 5px;
+    left: 5px;
+  }
 }
 
 .field-sb {
-  right: 5px;
-  bottom: 5px;
+  top: 50%;
+  right: 30%;
+  transform: translateY(-50%);
+  @media (min-width: 1801px) and (min-height: 1100px) {
+    top: auto;
+    transform: none;
+    right: 5px;
+    bottom: 5px;
+  }
 }
 
 .card-wrapper {
-  width: 162px;
+  width: calc(162px * 0.8);
+  @media (min-width: 1480px) {
+    width: 162px;
+  }
   position: relative;
   transition: all 0.3s;
 }
 
-.card-wrapper[data-wisid]::after, .invalid::after {
+.card-wrapper[data-wisid]::after,
+.invalid::after {
   opacity: 0.5;
   position: absolute;
   content: "";
@@ -399,20 +448,20 @@ export default defineComponent({
   border-radius: 11px;
 }
 
-.card-wrapper[data-wisid='1']::after {
-  background: #93C5FD;
+.card-wrapper[data-wisid="1"]::after {
+  background: #93c5fd;
 }
 
-.card-wrapper[data-wisid='2']::after {
-  background: #6EE7B7;
+.card-wrapper[data-wisid="2"]::after {
+  background: #6ee7b7;
 }
 
-.card-wrapper[data-wisid='3']::after {
-  background: #FCD34D;
+.card-wrapper[data-wisid="3"]::after {
+  background: #fcd34d;
 }
 
-.card-wrapper[data-wisid='4']::after {
-  background: #C4B5FD;
+.card-wrapper[data-wisid="4"]::after {
+  background: #c4b5fd;
 }
 
 .invalid::after {

@@ -16,13 +16,10 @@ const props = defineProps({
 // Determine which board version to show for different device sizes
 // This is easier to manage, due to many changes view necesarry
 // ==============================
-const boardView = window.innerWidth > 900 ? (window.innerWidth > 1150 ? 0 : 1) : 2
+// const boardView = window.innerWidth > 900 ? (window.innerWidth > 1150 ? 0 : 1) : 2
 </script>
 <template>
-  <div v-if="boardView === 0" class="h-full w-full">
+  <div class="h-full w-full">
     <Board :players="props.players" />
-  </div>
-  <div v-else class="mt-2 w-full text-center">
-    Sorry, die Biudschirmgrössi isch no unsupported :(
   </div>
 </template>

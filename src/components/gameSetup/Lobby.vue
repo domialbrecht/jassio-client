@@ -93,16 +93,16 @@ export default defineComponent({
 
 <template>
   <div class="flex items-center h-full relative">
-    <div class="absolute animate-wiggle text-contrast text-7xl left-8 top-20">
+    <div class="absolute animate-wiggle text-contrast text-7xl left-2 2xl:left-8 top-20">
       <span>♥</span>
     </div>
-    <div class="absolute animate-wiggle text-deep right-8 text-7xl top-80">
+    <div class="absolute animate-wiggle text-deep right-2 2xl:right-8 text-7xl top-80">
       <span>♠</span>
     </div>
-    <div class="absolute animate-wiggle text-contrast text-7xl left-8 bottom-80">
+    <div class="absolute animate-wiggle text-contrast text-7xl left-2 2xl:left-8 bottom-80">
       <span>♦️</span>
     </div>
-    <div class="absolute animate-wiggle text-deep right-8 text-7xl bottom-20">
+    <div class="absolute animate-wiggle text-deep right-2 2xl:right-8 text-7xl bottom-20">
       <span>♣️</span>
     </div>
     <div

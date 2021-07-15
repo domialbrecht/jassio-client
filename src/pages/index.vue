@@ -57,7 +57,7 @@ onUnmounted(() => {
   <main>
     <div class="relative heroContainer gradient-main">
       <div class="pt-12 pb-40 absolute top-0 right-0 left-0 bottom-0 hero">
-        <div class="flex flex-col container mx-auto h-full">
+        <div class="flex flex-col container mx-auto pl-12 pr-24 h-full">
           <div class="flex justify-between items-center h-full">
             <div class>
               <div>
