@@ -1,6 +1,6 @@
 import { io } from 'socket.io-client'
 
-const URL = import.meta.env.MODE === 'development' ? 'http://localhost:5100' : 'https://jassio-api.herokuapp.com'
+const URL = import.meta.env.MODE === 'development' ? 'http://localhost:5100' : 'https://api.sirfilior.com'
 const socket = io(URL, { autoConnect: false, reconnectionAttempts: 5 })
 
 socket.onAny((event, ...args) => {
