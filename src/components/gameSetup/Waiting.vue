@@ -74,7 +74,7 @@ export default defineComponent({
     </div>
     <div class="grid grid-cols-4 gap-12">
       <div v-for="(p, i) in players" :key="p.id" class="flex flex-col items-center">
-        <PlayerCard :player="p" />
+        <PlayerCard :name="p.name" />
         <div v-if="i > 0 && isHost">
           <IconSwap
             class="text-4xl cursor-pointer"

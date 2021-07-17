@@ -172,8 +172,9 @@ export default defineComponent({
     <div class="bg-darker border-b-2">
       <div class="transform -rotate-180 flex flex-col h-full p-3 items-center">
         <PlayerCard
+          v-if="boardPlayers[2]"
           :in-board="true"
-          :player="boardPlayers[2]"
+          :name="boardPlayers[2].name"
           :highlight="isTurnOfPlayerAtPlace === boardPlayers[2].place"
         />
         <WisList :final="wiseAreFinal" :value="getWiseByPlace(boardPlayers[2].place)" />
@@ -191,8 +192,9 @@ export default defineComponent({
     <div class="bg-dark border-l-2">
       <div class="transform -rotate-90 flex flex-col h-full p-3 items-center">
         <PlayerCard
+          v-if="boardPlayers[1]"
           :in-board="true"
-          :player="boardPlayers[1]"
+          :name="boardPlayers[1].name"
           :highlight="isTurnOfPlayerAtPlace === boardPlayers[1].place"
         />
         <WisList :final="wiseAreFinal" :value="getWiseByPlace(boardPlayers[1].place)" />
@@ -236,7 +238,7 @@ export default defineComponent({
       </div>
       <div class="field-players players-blue">
         <div class="field-player field-pb1 bg-blue-gray-600">
-          <svg v-if="getTopPlayedCard" class="h-64" viewBox="0 0 169 245">
+          <svg v-if="getTopPlayedCard" class="h-full" viewBox="0 0 169 245">
             <use :href="`/images/svg-cards.svg#${getTopPlayedCard}`" />
           </svg>
         </div>
@@ -258,12 +260,12 @@ export default defineComponent({
       </div>
       <div class="field-players players-red">
         <div class="field-player field-pr1 bg-blue-gray-600">
-          <svg v-if="getLeftPlayedCard" class="h-64" viewBox="0 0 169 245">
+          <svg v-if="getLeftPlayedCard" class="h-full" viewBox="0 0 169 245">
             <use :href="`/images/svg-cards.svg#${getLeftPlayedCard}`" />
           </svg>
         </div>
         <div class="field-player field-pr2 bg-blue-gray-600">
-          <svg v-if="getRightPlayedCard" class="h-64" viewBox="0 0 169 245">
+          <svg v-if="getRightPlayedCard" class="h-full" viewBox="0 0 169 245">
             <use :href="`/images/svg-cards.svg#${getRightPlayedCard}`" />
           </svg>
         </div>
@@ -296,8 +298,9 @@ export default defineComponent({
     <div class="bg-dark border-r-2">
       <div class="transform rotate-90 flex flex-col h-full p-3 items-center">
         <PlayerCard
+          v-if="boardPlayers[3]"
           :in-board="true"
-          :player="boardPlayers[3]"
+          :name="boardPlayers[3].name"
           :highlight="isTurnOfPlayerAtPlace === boardPlayers[3].place"
         />
         <WisList :final="wiseAreFinal" :value="getWiseByPlace(boardPlayers[3].place)" />
@@ -329,8 +332,9 @@ export default defineComponent({
     <div class="bg-darker border-t-2 relative">
       <div class="flex flex-col h-full p-3 items-center">
         <PlayerCard
+          v-if="boardPlayers[0]"
           :in-board="true"
-          :player="boardPlayers[0]"
+          :name="boardPlayers[0].name"
           :highlight="isTurnOfPlayerAtPlace === boardPlayers[0].place"
         />
         <WisList :final="wiseAreFinal" :value="getWiseByPlace(boardPlayers[0].place)" />
@@ -353,13 +357,13 @@ export default defineComponent({
   grid-template-rows: auto 250px;
 }
 
-@media (max-width: 1800px), (max-height: 1099px) {
+@media (max-width: 1800px), (max-height: 999px) {
   .board > div:not(.showSmall) {
     display: none;
   }
 }
 
-@media (min-width: 1801px) and (min-height: 1100px) {
+@media (min-width: 1801px) and (min-height: 1000px) {
   .board {
     grid-template-columns: 250px auto 250px;
     grid-template-rows: 250px auto 250px;
@@ -395,6 +399,20 @@ export default defineComponent({
 }
 
 .field-player {
+  align-self: center;
+  width: calc(177px * 0.8);
+  height: calc(256px * 0.8);
+  border-radius: 8px;
+  @media (min-width: 1801px) and (min-height: 1100px) {
+    width: auto;
+    height: auto;
+    min-width: 177px;
+    min-height: 256px;
+    border-radius: 8px;
+  }
+}
+
+.playable {
   min-width: 177px;
   min-height: 256px;
   border-radius: 8px;
@@ -429,7 +447,7 @@ export default defineComponent({
 
 .card-wrapper {
   width: calc(162px * 0.8);
-  @media (min-width: 1480px) {
+  @media (min-width: 1480px) and (min-height: 1100px) {
     width: 162px;
   }
   position: relative;

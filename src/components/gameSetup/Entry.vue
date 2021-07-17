@@ -25,9 +25,8 @@ export default defineComponent({
 <template>
   <div class="flex items-center justify-center flex-col py-16 h-full">
     <div class="mb-6 max-w-3xl p-10 2xl:p-20 flex justify-center items-center flex-col">
-      <span>Der Avatar isch no WIP</span>
       <div class="max-w-80">
-        <PlayerCard :player="PlayerPlaceholder" :assigned="false" />
+        <PlayerCard :name="name" :show-name="false" :assigned="false" />
       </div>
       <div class="mb-10 mt-5">
         <label class="flex flex-col items-center">

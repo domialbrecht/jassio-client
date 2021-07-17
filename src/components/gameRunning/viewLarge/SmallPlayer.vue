@@ -28,7 +28,7 @@ const props = defineProps({
   <PlayerCard
     :in-board="true"
     :tiny="true"
-    :player="props.player"
+    :name="props.player.name"
     :highlight="props.isTurnOfPlayerAtPlace === player.place"
   />
   <div v-if="props.wisvalues.length > 0" class="flex flex-col" :class="props.final ? 'text-green-300' : 'text-highlight'">
