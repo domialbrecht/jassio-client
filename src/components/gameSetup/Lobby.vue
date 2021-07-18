@@ -20,8 +20,8 @@ export default defineComponent({
     const p: IPlayer[] = []
     const players = ref(p)
     const hostSettings = ref<IHostSetting>({
-      winAmount: 1000,
-      enableWise: false,
+      winAmount: 200,
+      enableWise: true,
     })
     const socket: Socket = inject('socket')!
     const setupComplete = ref(false)

@@ -20,6 +20,11 @@ export enum WisType {
   SIMILAR = 'similar',
 }
 
+export enum Team {
+  TeamA,
+  TeamB
+}
+
 export interface IPlayer {
   self: boolean
   isHost: boolean

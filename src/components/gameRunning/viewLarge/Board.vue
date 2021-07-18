@@ -10,12 +10,13 @@ import WisList from './WisList.vue'
 import WisSelector from './WisSelector.vue'
 import TypeSelector from './TypeSelector.vue'
 import SmallPlayer from './SmallPlayer.vue'
+import Finished from './Finished.vue'
 import PlayerCard from '~/components/helpers/PlayerCard.vue'
 import { IPlayer } from '~/types'
 
 export default defineComponent({
   components: {
-    PlayerCard, TypeSelector, WisSelector, WisList, draggable, SmallPlayer,
+    PlayerCard, TypeSelector, WisSelector, WisList, draggable, SmallPlayer, Finished,
   },
   props: {
     players: { type: Array as PropType<Array<IPlayer>>, required: true },
@@ -84,6 +85,7 @@ export default defineComponent({
       pointsBlue,
       stichRed,
       stichBlue,
+      winnerTeam,
     } = useScoreFunctions(socket)
     // For selecting turn types and moving turns
     const {
@@ -137,6 +139,7 @@ export default defineComponent({
       stichBlue,
       pointsRed,
       pointsBlue,
+      winnerTeam,
       // Select
       showPicker,
       onSelectType,
@@ -350,6 +353,9 @@ export default defineComponent({
       @selected="onSelectWis"
       @send="sendWis"
     />
+  </transition>
+  <transition name="fade">
+    <Finished v-if="winnerTeam !== undefined" :host-place="boardPlayers[0].place" :team="winnerTeam" />
   </transition>
 </template>
 <style scoped>
