@@ -8,8 +8,6 @@
     "preview-https": "serve dist"
   },
   "dependencies": {
-    "@dicebear/avatars": "^4.6.9",
-    "@dicebear/avatars-bottts-sprites": "^4.6.9",
     "@vueuse/core": "^4.9.1",
     "@vueuse/head": "^0.5.1",
     "nprogress": "^0.2.0",
