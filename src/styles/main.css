@@ -25,6 +25,15 @@ html, body, #app {
   min-height: 100vh;
 }
 
+#app {
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex-grow: 1;
+}
+
 .playing-card-container {
   position: relative;
   width: 100%;

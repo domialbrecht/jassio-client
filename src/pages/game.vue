@@ -66,8 +66,3 @@ export default defineComponent({
     <Boardwrapper v-else :players="players" />
   </main>
 </template>
-
-<route lang="yaml">
-meta:
-  layout: gamelayout
-</route>

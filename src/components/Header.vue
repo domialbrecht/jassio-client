@@ -1,11 +1,28 @@
+<script setup lang="ts">
+import { defineProps } from 'vue'
+const props = defineProps({
+  showBackground: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+})
+</script>
+
 <template>
   <header
     class="absolute text-white uppercase top-0 h-12 w-full flex z-10 justify-between items-center px-12 py-4"
+    :class="showBackground ? 'bg-gray-900 gradient-main' : ''"
   >
     <div>
-      <span>Alpha 0.0.2</span>
+      <router-link to="/" class="hover:text-gray-300">
+        Home | Alpha 0.0.2
+      </router-link>
     </div>
     <div class="flex items-center">
+      <router-link to="/login" class="mr-4 hover:text-gray-300">
+        Login
+      </router-link>
       <a
         href="https://trello.com/b/PM3YjevD/jassio"
         target="_blank"

@@ -106,8 +106,7 @@ export default defineComponent({
       <span>♣️</span>
     </div>
     <div
-      class="container bg-blue-900 text-white h-4/5 mx-auto"
-      :style="{ borderRadius: '40px' }"
+      class="container bg-blue-900 text-white h-4/5 mx-auto rounded-[40px]"
     >
       <Entry v-if="!setupComplete" :jkey="joinKey" @host="onHost" @join="onJoin" />
       <Waiting
