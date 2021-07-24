@@ -12,12 +12,22 @@ import About from './pages/about.vue'
 import Login from './pages/login.vue'
 import Profile from './pages/profile.vue'
 
+import { authState } from './api/user'
+
 const routes = [
   { path: '/', component: Index },
   { path: '/game', component: Game },
   { path: '/about', component: About },
   { path: '/login', component: Login },
-  { path: '/profile', component: Profile },
+  {
+    path: '/profile',
+    component: Profile,
+    beforeEnter: async() => {
+      // reject the navigation
+      const canAccess = authState.value.authenticated
+      if (!canAccess) return '/'
+    },
+  },
 ]
 const router = createRouter({ history: createWebHistory(), routes })
 router.beforeEach(() => { NProgress.start() })

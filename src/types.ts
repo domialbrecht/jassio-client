@@ -3,6 +3,14 @@ export interface IHostSetting {
   enableWise: boolean
 }
 
+export interface User {
+  email: string
+}
+
+export interface GameStats {
+  amount: number
+}
+
 export enum TurnType {
   UPDOWN = 'Obeabe',
   DOWNUP = 'Undeufe',

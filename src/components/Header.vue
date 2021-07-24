@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { defineProps } from 'vue'
+import { authState } from '~/api/user'
 const props = defineProps({
   showBackground: {
     type: Boolean,
@@ -7,12 +8,18 @@ const props = defineProps({
     default: false,
   },
 })
+const logout = () => {
+  const AUTH_KEY = 'jassio_token'
+  window.localStorage.removeItem(AUTH_KEY)
+  authState.value.user = undefined
+  authState.value.authenticated = false
+}
 </script>
 
 <template>
   <header
     class="absolute text-white uppercase top-0 h-12 w-full flex z-10 justify-between items-center px-12 py-4"
-    :class="showBackground ? 'bg-gray-900 gradient-main' : ''"
+    :class="props.showBackground ? 'bg-gray-900 gradient-main' : ''"
   >
     <div>
       <router-link to="/" class="hover:text-gray-300">
@@ -20,9 +27,17 @@ const props = defineProps({
       </router-link>
     </div>
     <div class="flex items-center">
-      <router-link to="/login" class="mr-4 hover:text-gray-300">
+      <router-link v-if="authState.authenticated" to="/profile" class="mr-4 hover:text-gray-300">
+        Profile
+      </router-link>
+      <router-link v-if="!authState.authenticated" to="/login" class="mr-4 hover:text-gray-300">
         Login
       </router-link>
+      <span
+        v-else
+        class="mr-4 hover:text-gray-300 cursor-pointer"
+        @click="logout"
+      >Logout</span>
       <a
         href="https://trello.com/b/PM3YjevD/jassio"
         target="_blank"

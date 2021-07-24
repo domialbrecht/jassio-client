@@ -1,5 +1,0 @@
-const fetchGameStats = () => {
-
-}
-
-export { fetchGameStats }

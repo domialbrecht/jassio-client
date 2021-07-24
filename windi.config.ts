@@ -41,7 +41,4 @@ export default defineConfig({
       },
     },
   },
-  variants: {
-    animation: ['hover'],
-  },
 })
