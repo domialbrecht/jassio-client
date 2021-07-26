@@ -9,9 +9,6 @@ import KingCard from '~/components/helpers/KingCard.vue'
 import JackCard from '~/components/helpers/JackCard.vue'
 import NumberCard from '~/components/helpers/NumberCard.vue'
 import NumberSpinner from '~/components/helpers/NumberSpinner.vue'
-import useStats from '~/api/stats'
-
-const { isFetching: statsLoading, gameStats } = useStats()
 
 const cardRotate = ref(10)
 const getRotateStyle = (i: number): any => {
@@ -90,7 +87,7 @@ onUnmounted(() => {
           </div>
           <div class="uppercase text-white text-2xl">
             <span class="desc">
-              <NumberSpinner :loading="statsLoading" :value="gameStats?.amount" label="Spiu gspiut" />
+              <NumberSpinner :loading="false" :value="3" label="Spiu gspiut" />
             </span>
             <span class="desc">64 Bure Gwise</span>
             <span class="desc">Mark 10 Streak</span>

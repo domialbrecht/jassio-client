@@ -6,7 +6,14 @@
         Login / Registriere
       </h1>
       <div class="px-10 pt-8 pb-8">
-        <form class="mt-12" @submit.prevent="login">
+        <div v-if="errorMessage" class="mb-3 bg-red-400 rounded-2xl py-2 px-2 flex justify-center text-base leading-6 font-medium text-white">
+          <span>{{ errorMessage }}</span>
+        </div>
+        <div v-if="hasLoading" class="bg-green-400 rounded-2xl py-2 px-2 flex justify-center text-base leading-6 font-medium text-white">
+          <span class="mr-2">Loading</span>
+          <LoadingSpinner />
+        </div>
+        <form class="mt-12" @submit.prevent="submit">
           <div class="relative">
             <input
               id="email"
@@ -37,10 +44,17 @@
               class="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
             >Password</label>
           </div>
-          <button type="submit" class="mt-10 px-4 py-2 rounded-4xl bg-blue-900 hover:bg-blue-600 text-white font-semibold text-center block w-full focus:outline-none focus:ring focus:ring-offset-2 focus:ring-blue-700 focus:ring-opacity-80 cursor-pointer">
+          <button
+            type="submit"
+            class="mt-10 px-4 py-2 rounded-4xl bg-blue-900 hover:bg-blue-600 text-white font-semibold text-center block w-full focus:outline-none focus:ring focus:ring-offset-2 focus:ring-blue-700 focus:ring-opacity-80 cursor-pointer"
+          >
             Ilogge
           </button>
-          <button class="mt-2 px-4 py-2 rounded-4xl bg-blue-500 hover:bg-blue-300 text-white font-semibold text-center block w-full focus:outline-none focus:ring focus:ring-offset-2 focus:ring-blue-400 focus:ring-opacity-80 cursor-pointer" @click="register">
+          <button
+            type="button"
+            class="mt-2 px-4 py-2 rounded-4xl bg-blue-500 hover:bg-blue-300 text-white font-semibold text-center block w-full focus:outline-none focus:ring focus:ring-offset-2 focus:ring-blue-400 focus:ring-opacity-80 cursor-pointer"
+            @click="register"
+          >
             Registriere
           </button>
         </form>
@@ -50,44 +64,56 @@
   <Footer />
 </template>
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import Header from '~/components/Header.vue'
 import Footer from '~/components/Footer.vue'
-import { useUser, authState } from '~/api/user'
+import { useApi } from '~/api/api'
+import { useAuth } from '~/api/auth'
+import LoadingSpinner from '~/components/helpers/LoadingSpinner.vue'
+
 const router = useRouter()
-const AUTH_KEY = 'jassio_token'
 
 const username = ref()
 const password = ref()
-const loading = ref(false)
-const hasError = ref()
 
-const setToken = async(token: string) => {
-  return window.localStorage.setItem(AUTH_KEY, token)
-}
+const {
+  loading: loginLoading,
+  data: loginData,
+  post: loginPost,
+  errorMessage: loginErrorMessage,
+} = useApi('auth/login')
+const {
+  loading: registerLoading,
+  data: registerData,
+  post: registerPost,
+  errorMessage: registerErrorMessage,
+} = useApi('auth/signup')
+const { setUser } = useAuth()
 
-const login = () => {
-  const { isFetching, error, data } = useUser().login(username.value, password.value)
-  loading.value = isFetching.value
-  hasError.value = error.value
-  watch(data, async(val) => {
-    if (val) {
-      authState.value.authenticated = true
-      await setToken(data.value.token)
-      router.push('/profile')
-    }
-  })
-  console.log('login')
-}
+const hasLoading = computed(() => {
+  return loginLoading.value || registerLoading.value
+})
+const errorMessage = computed(() => {
+  if (loginErrorMessage.value) return loginErrorMessage.value
+  else if (registerErrorMessage.value) return registerErrorMessage.value
+  else return null
+})
+
 const register = () => {
-  const { isFetching, error, data } = useUser().register(username.value, password.value)
-  loading.value = isFetching.value
-  hasError.value = error.value
-  watch(data, (val) => {
-    if (val)
-      login()
+  registerPost({ email: username.value, password: password.value }).then(() => {
+    // TODO: Implement remember me in ui
+    setUser(registerData.value, true)
+    router.push({ name: 'profile' })
   })
-  console.log('register')
 }
+
+const submit = () => {
+  loginPost({ email: username.value, password: password.value }).then(() => {
+    // TODO: Implement remember me in ui
+    setUser(loginData.value, true)
+    router.push({ name: 'profile' })
+  })
+}
+
 </script>

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { defineProps } from 'vue'
-import { authState } from '~/api/user'
+import { useRouter } from 'vue-router'
+import { useAuth } from '../api/auth'
+const router = useRouter()
 const props = defineProps({
   showBackground: {
     type: Boolean,
@@ -8,11 +10,9 @@ const props = defineProps({
     default: false,
   },
 })
-const logout = () => {
-  const AUTH_KEY = 'jassio_token'
-  window.localStorage.removeItem(AUTH_KEY)
-  authState.value.user = undefined
-  authState.value.authenticated = false
+const { logout, user } = useAuth()
+const logoutNav = () => {
+  logout().then(() => router.push({ name: 'home' }))
 }
 </script>
 
@@ -27,16 +27,16 @@ const logout = () => {
       </router-link>
     </div>
     <div class="flex items-center">
-      <router-link v-if="authState.authenticated" to="/profile" class="mr-4 hover:text-gray-300">
+      <router-link v-if="user" to="/profile" class="mr-4 hover:text-gray-300">
         Profile
       </router-link>
-      <router-link v-if="!authState.authenticated" to="/login" class="mr-4 hover:text-gray-300">
+      <router-link v-if="!user" to="/login" class="mr-4 hover:text-gray-300">
         Login
       </router-link>
       <span
         v-else
         class="mr-4 hover:text-gray-300 cursor-pointer"
-        @click="logout"
+        @click="logoutNav"
       >Logout</span>
       <a
         href="https://trello.com/b/PM3YjevD/jassio"

@@ -10,6 +10,7 @@ specifiers:
   '@vuedx/typescript-plugin-vue': ^0.6.3
   '@vueuse/core': ^4.9.1
   '@vueuse/head': ^0.5.1
+  axios: ^0.21.1
   cross-env: ^7.0.3
   eslint: ^7.25.0
   https-localhost: ^4.6.4
@@ -30,6 +31,7 @@ specifiers:
 dependencies:
   '@vueuse/core': 4.9.1_vue@3.0.11
   '@vueuse/head': 0.5.1_vue@3.0.11
+  axios: 0.21.1
   nprogress: 0.2.0
   selector-observer: 2.1.6
   socket.io-client: 4.0.1
@@ -1131,6 +1133,14 @@ packages:
       array-filter: 1.0.0
     dev: true
 
+  /axios/0.21.1:
+    resolution: {integrity: sha512-dKQiRHxGD9PPRIUNIWvZhPTPpl1rf/OxTYKsqKUDjBwYylTvV7SjSHJb9ratfyzM6wCdLCOYLzs73qpg5c4iGA==}
+    dependencies:
+      follow-redirects: 1.14.1
+    transitivePeerDependencies:
+      - debug
+    dev: false
+
   /backo2/1.0.2:
     resolution: {integrity: sha1-MasayLEpNjRj41s+u2n038+6eUc=}
     dev: false
@@ -2192,6 +2202,16 @@ packages:
   /flatted/3.1.1:
     resolution: {integrity: sha512-zAoAQiudy+r5SvnSw3KJy5os/oRJYHzrzja/tBDqrZtNhUw8bt6y8OBzMWcjWr+8liV8Eb6yOhw8WZ7VFZ5ZzA==}
     dev: true
+
+  /follow-redirects/1.14.1:
+    resolution: {integrity: sha512-HWqDgT7ZEkqRzBvc2s64vSZ/hfOceEol3ac/7tKwzuvEyWx3/4UegXh5oBOIotkGsObyk3xznnSRVADBgWSQVg==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dev: false
 
   /foreach/2.0.5:
     resolution: {integrity: sha1-C+4AUBiusmDQo6865ljdATbsG5k=}
