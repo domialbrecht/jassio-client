@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig } from 'axios'
 import { computed, ref } from 'vue'
 import { useAuth, API_TOKEN } from './auth'
 
-const URL = import.meta.env.MODE === 'development' ? 'http://localhost:5100' : 'https://api.sirfilior.com'
+const URL = import.meta.env.MODE === 'development' ? 'http://localhost:5100' : 'https://api.jasse.io'
 
 export const useApi = (endpoint: string, access_token?: string) => {
   const api = axios.create({
