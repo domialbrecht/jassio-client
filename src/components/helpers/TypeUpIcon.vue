@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import IconArrowUp from 'virtual:vite-icons/carbon/arrow-up'
+import IconArrowUp from '~icons/carbon/arrow-up'
 </script>
 <template>
   <div>

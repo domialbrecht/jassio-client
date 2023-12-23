@@ -1,28 +1,25 @@
-import { defineConfig } from 'vite-plugin-windicss'
-import typography from 'windicss/plugin/typography'
-
-export default defineConfig({
+import typography from '@tailwindcss/typography'
+/** @type {import('tailwindcss').Config} */
+export default {
   darkMode: 'class',
-  plugins: [
-    typography(),
-  ],
+  content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   theme: {
     fontFamily: {
-      sans: ['Rubik', 'sans-serif'],
+      sans: ['Rubik', 'sans-serif']
     },
     extend: {
       keyframes: {
         wiggle: {
           '0%, 100%': {
-            transform: 'rotate(-3deg)',
+            transform: 'rotate(-3deg)'
           },
           '50%': {
-            transform: 'rotate(3deg)',
-          },
-        },
+            transform: 'rotate(3deg)'
+          }
+        }
       },
       animation: {
-        wiggle: 'wiggle 1s ease-in-out infinite',
+        wiggle: 'wiggle 1s ease-in-out infinite'
       },
       colors: {
         light: '#DAE1E7',
@@ -37,8 +34,10 @@ export default defineConfig({
         subdue: '#903749',
         mellow: '#53354A',
         contrast: '#E84545',
-        highlight: '#F73859',
-      },
-    },
+        highlight: '#F73859'
+      }
+    }
   },
-})
+  plugins: [typography],
+  safelist: ['prose', 'prose-sm', 'm-auto', 'text-left']
+}

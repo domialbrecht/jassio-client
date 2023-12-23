@@ -1,8 +1,12 @@
 import { Socket } from 'socket.io-client'
 import { ref, computed } from 'vue'
-import { ICard, PlayedCard, IPlayer } from '~/types'
+import type { ICard, PlayedCard, IPlayer } from '~/types'
 
-export default function useCardFunctions(socket: Socket, self: IPlayer | undefined, boardPlayers: IPlayer[]) {
+export default function useCardFunctions(
+  socket: Socket,
+  self: IPlayer | undefined,
+  boardPlayers: IPlayer[]
+) {
   const playerCards = ref<ICard[]>([])
   let playerCardsBackup: ICard[] = []
   const backupPlayerHand = () => {
@@ -15,7 +19,7 @@ export default function useCardFunctions(socket: Socket, self: IPlayer | undefin
   const playerPlayedCard = ref<ICard[]>([])
   const otherPlayedCards = ref<PlayedCard[]>([])
   const getPlayedCardByPlace = (place: number): string => {
-    const card = otherPlayedCards.value.find(c => c.place === place)
+    const card = otherPlayedCards.value.find((c) => c.place === place)
     return card ? card.display : ''
   }
   const getRightPlayedCard = computed(() => {
@@ -28,13 +32,13 @@ export default function useCardFunctions(socket: Socket, self: IPlayer | undefin
     return getPlayedCardByPlace(boardPlayers[3].place)
   })
   const getLastPlayedValue = computed(() => {
-    const card = otherPlayedCards.value.find(c => c.place === 3)
+    const card = otherPlayedCards.value.find((c) => c.place === 3)
     return card ? card.value : undefined
   })
 
   const getOtherCardOffset = (i: number): any => {
     return {
-      top: `${-13 + 8.8 * i}%`,
+      top: `${-13 + 8.8 * i}%`
     }
   }
 
@@ -98,6 +102,6 @@ export default function useCardFunctions(socket: Socket, self: IPlayer | undefin
     getLastPlayedValue,
     playerRightPlayedAmount,
     playerTopPlayedAmount,
-    playerLeftPlayedAmount,
+    playerLeftPlayedAmount
   }
 }

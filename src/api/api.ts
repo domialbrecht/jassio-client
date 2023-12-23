@@ -1,15 +1,17 @@
-import axios, { AxiosRequestConfig } from 'axios'
+import axios from 'axios'
+import type { AxiosRequestConfig } from 'axios'
 import { computed, ref } from 'vue'
 import { useAuth, API_TOKEN } from './auth'
 
-const URL = import.meta.env.MODE === 'development' ? 'http://localhost:5100' : 'https://api.jasse.io'
+const URL =
+  import.meta.env.MODE === 'development' ? 'http://localhost:5100' : 'https://api.jasse.io'
 
 export const useApi = (endpoint: string, access_token?: string) => {
   const api = axios.create({
     baseURL: URL,
     headers: {
-      Authorization: access_token ? `Bearer ${access_token}` : undefined,
-    },
+      Authorization: access_token ? `Bearer ${access_token}` : undefined
+    }
   })
 
   const data = ref()
@@ -20,14 +22,15 @@ export const useApi = (endpoint: string, access_token?: string) => {
     loading.value = true
     error.value = undefined
 
-    return api.post(endpoint, payload)
-      .then(res => data.value = res.data)
+    return api
+      .post(endpoint, payload)
+      .then((res) => (data.value = res.data))
       .catch((e) => {
         error.value = e
 
         throw e
       })
-      .finally(() => loading.value = false)
+      .finally(() => (loading.value = false))
   }
 
   const get = (query?: Record<string, any>, config?: AxiosRequestConfig) => {
@@ -42,24 +45,25 @@ export const useApi = (endpoint: string, access_token?: string) => {
         .join('&')}`
     }
 
-    return api.get(endpoint + queryString, config)
-      .then(res => data.value = res.data)
+    return api
+      .get(endpoint + queryString, config)
+      .then((res) => (data.value = res.data))
       .catch((e) => {
         error.value = e
 
         throw e
       })
-      .finally(() => loading.value = false)
+      .finally(() => (loading.value = false))
   }
 
   const errorMessage = computed(() => {
     if (error.value) {
       if (error.value.response && error.value.response.data)
         return error.value.response.data.message
-      else
-        return error.value.response
+      else return error.value.response
+    } else {
+      return null
     }
-    else { return null }
   })
 
   return {
@@ -68,7 +72,7 @@ export const useApi = (endpoint: string, access_token?: string) => {
     error,
     get,
     post,
-    errorMessage,
+    errorMessage
   }
 }
 

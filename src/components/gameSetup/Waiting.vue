@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Socket } from 'socket.io-client'
 import { ref, defineComponent, PropType, inject } from 'vue'
-import IconSwap from 'virtual:vite-icons/mdi/swapHorizontal'
+import IconSwap from '~icons/mdi/swapHorizontal'
 import PlayerCard from '../helpers/PlayerCard.vue'
 import { IPlayer, IHostSetting } from '~/types'
 import { PlayerPlaceholder } from '~/defs'

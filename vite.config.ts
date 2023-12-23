@@ -1,44 +1,25 @@
-import path from 'path'
+import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
-import Pages from 'vite-plugin-pages'
-import ViteIcons from 'vite-plugin-icons'
-import WindiCSS from 'vite-plugin-windicss'
+import VueRouter from 'unplugin-vue-router/vite'
+import Icons from 'unplugin-icons/vite'
 
+// https://vitejs.dev/config/
 export default defineConfig({
   resolve: {
     alias: {
-      '~/': `${path.resolve(__dirname, 'src')}/`,
-    },
+      '~': fileURLToPath(new URL('./src', import.meta.url))
+    }
   },
   plugins: [
-    Vue({
-      include: [/\.vue$/, /\.md$/],
+    VueRouter({
+      /* options */
     }),
 
-    // https://github.com/hannoeru/vite-plugin-pages
-    Pages({
-      extensions: ['vue', 'md'],
-    }),
+    Vue({}),
 
-    // https://github.com/antfu/vite-plugin-icons
-    ViteIcons(),
-
-    // https://github.com/antfu/vite-plugin-windicss
-    WindiCSS({
-      safelist: 'prose prose-sm m-auto text-left',
-    }),
-
-  ],
-
-  optimizeDeps: {
-    include: [
-      'vue',
-      'vue-router',
-      '@vueuse/core',
-    ],
-    exclude: [
-      'vue-demi',
-    ],
-  },
+    Icons({
+      /* options */
+    })
+  ]
 })

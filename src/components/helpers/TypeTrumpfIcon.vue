@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import IconStar from 'virtual:vite-icons/carbon/star'
+import IconStar from '~icons/carbon/star'
 </script>
 <template>
   <div>

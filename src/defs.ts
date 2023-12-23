@@ -1,4 +1,5 @@
-import { IPlayer, TurnType, WisType } from './types'
+import { TurnType, WisType } from './types'
+import type { IPlayer } from './types'
 import Undeufe from '~/components/rulesTypes/Undeufe.vue'
 import Trumpf from '~/components/rulesTypes/Trumpf.vue'
 import Slalom from '~/components/rulesTypes/Slalom.vue'
@@ -16,7 +17,7 @@ export const PlayerPlaceholder: IPlayer = {
   isHost: false,
   id: '',
   name: '',
-  place: 0,
+  place: 0
 }
 
 export const RuleTypes = [
@@ -24,35 +25,35 @@ export const RuleTypes = [
     name: TurnType.UPDOWN,
     color: 'bg-blue-300',
     component: Obeabe,
-    icon: IconUp,
+    icon: IconUp
   },
   {
     name: TurnType.DOWNUP,
     color: 'bg-indigo-300',
     component: Undeufe,
-    icon: IconDown,
+    icon: IconDown
   },
   {
     name: 'Trumpf',
     color: 'bg-purple-300',
     component: Trumpf,
-    icon: IconTrumpf,
+    icon: IconTrumpf
   },
   {
     name: 'Slalom',
     color: 'bg-pink-300',
     component: Slalom,
-    icon: IconSlalom,
-  },
+    icon: IconSlalom
+  }
 ]
 
 export const WisTypes = [
   {
     name: WisType.BLATT,
-    icon: IconBlatt,
+    icon: IconBlatt
   },
   {
     name: WisType.SIMILAR,
-    icon: IconSimilar,
-  },
+    icon: IconSimilar
+  }
 ]

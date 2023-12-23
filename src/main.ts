@@ -3,8 +3,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { createHead } from '@vueuse/head'
 import NProgress from 'nprogress'
 import App from './App.vue'
-import 'virtual:windi.css'
-import 'virtual:windi-devtools'
 import './styles/main.css'
 import Index from './pages/index.vue'
 import Game from './pages/game.vue'
@@ -23,8 +21,8 @@ const routes = [
     path: '/profile',
     name: 'profile',
     component: Profile,
-    meta: { authRoute: true },
-  },
+    meta: { authRoute: true }
+  }
 ]
 const router = createRouter({ history: createWebHistory(), routes })
 router.beforeEach((to, from, next) => {
@@ -35,23 +33,22 @@ router.beforeEach((to, from, next) => {
     if (to.name !== 'login') {
       console.log('redirect to login')
       next({ name: 'login' })
-    }
-    else {
+    } else {
       next()
     }
-  }
-  else {
+  } else {
     // Accessing login route if already logged in, move to profile
     if (to.name === 'login') {
       console.log('redirect to profile')
       next({ name: 'profile' })
-    }
-    else {
+    } else {
       next()
     }
   }
 })
-router.afterEach(() => { NProgress.done() })
+router.afterEach(() => {
+  NProgress.done()
+})
 const app = createApp(App)
 const head = createHead()
 app.use(head)

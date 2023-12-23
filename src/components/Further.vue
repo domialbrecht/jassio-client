@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import IconGithub from 'virtual:vite-icons/mdi/github'
-import IconPhone from 'virtual:vite-icons/mdi/phone'
+import IconGithub from '~icons/mdi/github'
+import IconPhone from '~icons/mdi/phone'
 
 </script>
 <template>

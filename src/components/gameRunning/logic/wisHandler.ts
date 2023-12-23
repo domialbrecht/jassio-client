@@ -1,8 +1,13 @@
 import { Socket } from 'socket.io-client'
-import { Ref, ref, computed } from 'vue'
-import { IPlayer, ICard, WisInfo, WisDeclare } from '~/types'
+import { type Ref, ref, computed } from 'vue'
+import type { IPlayer, ICard, WisInfo, WisDeclare } from '~/types'
 
-export default function useWisFunctions(socket: Socket, self: IPlayer | undefined, selfCanPlay: Ref<boolean>, playerCards: Ref<ICard[]>) {
+export default function useWisFunctions(
+  socket: Socket,
+  self: IPlayer | undefined,
+  selfCanPlay: Ref<boolean>,
+  playerCards: Ref<ICard[]>
+) {
   const wisList = ref<WisInfo[]>([])
   const wiseAreFinal = ref(false)
   const wisDeclarelist = ref<WisDeclare[]>([])
@@ -12,8 +17,8 @@ export default function useWisFunctions(socket: Socket, self: IPlayer | undefine
   const canWise = computed(() => selfCanPlay.value && playerCards.value.length === 9)
   const selectCard = (card: ICard) => {
     if (!canWise.value) return
-    if (selectedCards.value.find(c => c.id === card.id))
-      selectedCards.value = selectedCards.value.filter(c => c.id !== card.id)
+    if (selectedCards.value.find((c) => c.id === card.id))
+      selectedCards.value = selectedCards.value.filter((c) => c.id !== card.id)
     else selectedCards.value.push(card)
   }
   const onSelectWis = (wisType: string) => {
@@ -23,8 +28,8 @@ export default function useWisFunctions(socket: Socket, self: IPlayer | undefine
   }
 
   const sendWis = () => {
-    const hasStoeck = wisDeclarelist.value.find(w => w.type === 'stoeck')
-    const wise = wisDeclarelist.value.filter(w => w.type !== 'stoeck')
+    const hasStoeck = wisDeclarelist.value.find((w) => w.type === 'stoeck')
+    const wise = wisDeclarelist.value.filter((w) => w.type !== 'stoeck')
     if (wise) socket.emit('wis', self?.id, wisDeclarelist.value)
     if (hasStoeck) socket.emit('stoeck', self?.id)
   }
@@ -63,19 +68,19 @@ export default function useWisFunctions(socket: Socket, self: IPlayer | undefine
   })
 
   const getWiseByPlace = (place: number): number[] => {
-    const list = wisList.value.find(w => w.playerPlace === place)
+    const list = wisList.value.find((w) => w.playerPlace === place)
     if (!list) return []
     return list.wise
   }
 
   const getCardWisid = (card: ICard): number | undefined => {
-    return wisDeclarelist.value.find(w => w.cards.includes(card))?.id
+    return wisDeclarelist.value.find((w) => w.cards.includes(card))?.id
   }
 
   const getCardClasses = (card: ICard): any => {
     return {
       invalid: false,
-      selected: selectedCards.value.find(c => c.id === card.id) || getCardWisid(card),
+      selected: selectedCards.value.find((c) => c.id === card.id) || getCardWisid(card)
     }
   }
   return {
@@ -89,6 +94,6 @@ export default function useWisFunctions(socket: Socket, self: IPlayer | undefine
     onSelectWis,
     sendWis,
     getWiseByPlace,
-    wiseAreFinal,
+    wiseAreFinal
   }
 }
