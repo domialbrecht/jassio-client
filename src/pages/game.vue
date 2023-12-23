@@ -7,22 +7,25 @@ import Boardwrapper from '~/components/gameRunning/BoardWrapper.vue'
 import socket from '~/api/socket'
 export default defineComponent({
   components: {
-    Lobby, Boardwrapper,
+    Lobby,
+    Boardwrapper
   },
   setup() {
     const router = useRouter()
     const leaveGame = () => {
-      if (confirm('Spiu verlah?'))
-        router.push('/')
+      if (confirm('Spiu verlah?')) router.push('/')
     }
 
     let key = ''
     const k = new URLSearchParams(window.location.search).get('key')
-    if (k && typeof k === 'string')
-      key = k
+    if (k && typeof k === 'string') key = k
 
     onMounted(() => console.log('game mount'))
-    onUnmounted(() => { console.log('game unmount'); socket.off('connect_error'); socket.disconnect() })
+    onUnmounted(() => {
+      console.log('game unmount')
+      socket.off('connect_error')
+      socket.disconnect()
+    })
 
     const gameRunning = ref(false)
     const p: IPlayer[] = []
@@ -45,11 +48,14 @@ export default defineComponent({
     })
     provide('socket', socket)
     return {
-      leaveGame, key, onStart, gameRunning, players,
+      leaveGame,
+      key,
+      onStart,
+      gameRunning,
+      players
     }
-  },
+  }
 })
-
 </script>
 
 <template>
@@ -57,9 +63,7 @@ export default defineComponent({
     class="absolute h-10 bg-gray-900 gradient-main w-full flex items-center px-5 justify-between text-white"
   >
     <span class="pointer" @click="leaveGame">LEAVE</span>
-    <router-link to="/">
-      HELP
-    </router-link>
+    <router-link to="/"> HELP </router-link>
   </header>
   <main class="pt-10 h-full">
     <Lobby v-if="!gameRunning" :jkey="key" @gstart="onStart" />

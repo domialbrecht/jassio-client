@@ -10,7 +10,7 @@ onUnmounted(() => socket.off('connect_error'))
 // they will be rendered correctly in the html results with vite-ssg
 useHead({
   title: 'Interism Jass',
-  meta: [{ name: 'description', content: 'Jasse Online' }],
+  meta: [{ name: 'description', content: 'Jasse Online' }]
 })
 </script>
 

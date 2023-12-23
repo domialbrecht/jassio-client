@@ -8,8 +8,8 @@ const props = defineProps({
   players: {
     type: Array as PropType<Array<IPlayer>>,
     required: false,
-    default: false,
-  },
+    default: false
+  }
 })
 
 // ==============================

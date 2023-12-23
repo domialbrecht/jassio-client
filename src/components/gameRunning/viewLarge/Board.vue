@@ -16,10 +16,16 @@ import { IPlayer } from '~/types'
 
 export default defineComponent({
   components: {
-    PlayerCard, TypeSelector, WisSelector, WisList, draggable, SmallPlayer, Finished,
+    PlayerCard,
+    TypeSelector,
+    WisSelector,
+    WisList,
+    draggable,
+    SmallPlayer,
+    Finished
   },
   props: {
-    players: { type: Array as PropType<Array<IPlayer>>, required: true },
+    players: { type: Array as PropType<Array<IPlayer>>, required: true }
   },
   setup(props) {
     // ==============================
@@ -34,12 +40,11 @@ export default defineComponent({
     // ==============================
     const shiftPlayers = (a: IPlayer[], amount: number) => {
       if (a.length < 1) return a
-      for (let index = 0; index < amount; index++)
-        a.push(a.shift()!)
+      for (let index = 0; index < amount; index++) a.push(a.shift()!)
       return a
     }
     const boardPlayers = ref<IPlayer[]>([])
-    const self = props.players.find(p => p.self)
+    const self = props.players.find((p) => p.self)
     const selfPlace = self?.place
     boardPlayers.value = shiftPlayers([...props.players], selfPlace || 0)
     // ==============================
@@ -63,7 +68,7 @@ export default defineComponent({
       getLastPlayedValue,
       playerRightPlayedAmount,
       playerTopPlayedAmount,
-      playerLeftPlayedAmount,
+      playerLeftPlayedAmount
     } = useCardFunctions(socket, self, boardPlayers.value)
     // Wis fnctions
     const {
@@ -77,23 +82,12 @@ export default defineComponent({
       getWiseByPlace,
       wiseAreFinal,
       tempPointsRed,
-      tempPointsBlue,
+      tempPointsBlue
     } = useWisFunctions(socket, self, selfCanPlay, playerCards)
     // Updating and displaying scores
-    const {
-      pointsRed,
-      pointsBlue,
-      stichRed,
-      stichBlue,
-      winnerTeam,
-    } = useScoreFunctions(socket)
+    const { pointsRed, pointsBlue, stichRed, stichBlue, winnerTeam } = useScoreFunctions(socket)
     // For selecting turn types and moving turns
-    const {
-      selectedTypeName,
-      showPicker,
-      isSwitch,
-      onSelectType,
-    } = useTurnFunctions(socket)
+    const { selectedTypeName, showPicker, isSwitch, onSelectType } = useTurnFunctions(socket)
     // ==============================
 
     // ==============================
@@ -164,11 +158,10 @@ export default defineComponent({
       getWiseByPlace,
       wiseAreFinal,
       tempPointsRed,
-      tempPointsBlue,
+      tempPointsBlue
     }
-  },
+  }
 })
-
 </script>
 <template>
   <div v-if="boardPlayers.length === 4" class="grid h-full board bg-blue-gray-900 overflow-hidden">
@@ -276,11 +269,19 @@ export default defineComponent({
       <div class="hideLarge absolute mt-2 left-5">
         <div class="flex gap-4">
           <div v-for="player in boardPlayers" :key="player.id" class="flex flex-col items-center">
-            <SmallPlayer :player="player" :final="wiseAreFinal" :wisvalues="getWiseByPlace(player.place)" :is-turn-of-player-at-place="isTurnOfPlayerAtPlace" />
+            <SmallPlayer
+              :player="player"
+              :final="wiseAreFinal"
+              :wisvalues="getWiseByPlace(player.place)"
+              :is-turn-of-player-at-place="isTurnOfPlayerAtPlace"
+            />
           </div>
         </div>
       </div>
-      <div class="hideLarge absolute mt-2 bottom-2 right-5 text-2xl" :class="isTurnOfPlayerAtPlace === boardPlayers[0].place ? 'text-highlight' : 'text-white'">
+      <div
+        class="hideLarge absolute mt-2 bottom-2 right-5 text-2xl"
+        :class="isTurnOfPlayerAtPlace === boardPlayers[0].place ? 'text-highlight' : 'text-white'"
+      >
         {{ boardPlayers[0].name }}
       </div>
     </div>
@@ -355,7 +356,11 @@ export default defineComponent({
     />
   </transition>
   <transition name="fade">
-    <Finished v-if="winnerTeam !== undefined" :host-place="boardPlayers[0].place" :team="winnerTeam" />
+    <Finished
+      v-if="winnerTeam !== undefined"
+      :host-place="boardPlayers[0].place"
+      :team="winnerTeam"
+    />
   </transition>
 </template>
 <style scoped>
@@ -374,9 +379,9 @@ export default defineComponent({
     grid-template-columns: 250px auto 250px;
     grid-template-rows: 250px auto 250px;
     grid-template-areas:
-      "player1Icon player1Hand player2Icon"
-      "player4Hand board player2Hand"
-      "player4Icon player3Hand player3Icon";
+      'player1Icon player1Hand player2Icon'
+      'player4Hand board player2Hand'
+      'player4Icon player3Hand player3Icon';
   }
   .hideLarge {
     display: none;
@@ -464,7 +469,7 @@ export default defineComponent({
 .invalid::after {
   opacity: 0.5;
   position: absolute;
-  content: "";
+  content: '';
   top: 0;
   left: 0;
   width: 98%;
@@ -472,19 +477,19 @@ export default defineComponent({
   border-radius: 11px;
 }
 
-.card-wrapper[data-wisid="1"]::after {
+.card-wrapper[data-wisid='1']::after {
   background: #93c5fd;
 }
 
-.card-wrapper[data-wisid="2"]::after {
+.card-wrapper[data-wisid='2']::after {
   background: #6ee7b7;
 }
 
-.card-wrapper[data-wisid="3"]::after {
+.card-wrapper[data-wisid='3']::after {
   background: #fcd34d;
 }
 
-.card-wrapper[data-wisid="4"]::after {
+.card-wrapper[data-wisid='4']::after {
   background: #c4b5fd;
 }
 

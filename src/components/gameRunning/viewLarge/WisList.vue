@@ -5,12 +5,12 @@ const props = defineProps({
   final: {
     type: Boolean,
     required: false,
-    default: false,
+    default: false
   },
   value: {
     type: Array as PropType<Array<number>>,
-    required: true,
-  },
+    required: true
+  }
 })
 </script>
 <template>

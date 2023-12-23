@@ -25,7 +25,7 @@ export enum TurnType {
 export enum WisType {
   BLATT = 'blatt',
   STOECK = 'stoeck',
-  SIMILAR = 'similar',
+  SIMILAR = 'similar'
 }
 
 export enum Team {

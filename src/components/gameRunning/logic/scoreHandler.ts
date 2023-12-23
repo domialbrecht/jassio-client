@@ -20,6 +20,6 @@ export default function useScoreFunctions(socket: Socket) {
     pointsBlue,
     stichRed,
     stichBlue,
-    winnerTeam,
+    winnerTeam
   }
 }

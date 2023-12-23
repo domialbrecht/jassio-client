@@ -20,14 +20,7 @@
 					c5.2,0.1,9.3,4.4,9.2,9.6C37,19,41,14.7,46,14.4s9.4,3.7,9.7,8.7C55.7,23.5,55.7,23.8,55.7,24.1z"
             />
           </g>
-          <rect
-            class="clothing"
-            x="18.8"
-            y="14.5"
-
-            width="9.7"
-            height="38"
-          />
+          <rect class="clothing" x="18.8" y="14.5" width="9.7" height="38" />
           <g id="heart-2" class="sign">
             <path
               d="M114.3,222.8c0-11.3,14.2-19.5,18.3-28.5c4.2,8.9,18.4,17.1,18.5,28.4c0.3,5.1-3.7,9.4-8.7,9.7
@@ -35,14 +28,7 @@
 					L114.3,222.8z"
             />
           </g>
-          <rect
-            class="clothing"
-            x="141.9"
-            y="194.4"
-
-            width="9.7"
-            height="37.9"
-          />
+          <rect class="clothing" x="141.9" y="194.4" width="9.7" height="37.9" />
           <line
             fill="none"
             stroke="#000000"
@@ -107,14 +93,18 @@
               transform="matrix(0.53 0 0 1 5.25 38.9902)"
               font-family="'Arial-BoldMT'"
               font-size="45.45px"
-            >K</text>
+            >
+              K
+            </text>
           </g>
           <g id="king-2" class="sign">
             <text
               transform="matrix(-0.53 0 0 -1 164.7598 207.7695)"
               font-family="'Arial-BoldMT'"
               font-size="45.45px"
-            >K</text>
+            >
+              K
+            </text>
           </g>
           <g id="heart-3" class="sign">
             <path
@@ -625,7 +615,10 @@
                   fill="#F8C20F"
                   d="M81.1,116.3l-0.3,1.5c0.3,1.4,0.7,2.7,1,4.1c2-3.1,4.1-6.2,6-9.4l-6-0.2L81.1,116.3"
                 />
-                <polyline class="clothing" points="17.7,106 16.3,106 16.3,107.4 17.7,107.4 17.7,106" />
+                <polyline
+                  class="clothing"
+                  points="17.7,106 16.3,106 16.3,107.4 17.7,107.4 17.7,106"
+                />
                 <polyline
                   fill="#F8C20F"
                   points="20.9,119.6 17.2,119.5 17.9,121.1 19.9,121.4 20.9,119.6"
@@ -1078,45 +1071,47 @@
 </template>
 <style scoped>
 svg {
-	border-radius: 30px;
+  border-radius: 30px;
   background-image: linear-gradient(320deg, #1f3061, #7e7eab);
-	animation: cardWiggle 5s linear 0s infinite;
-	transition: opacity .5s;
+  animation: cardWiggle 5s linear 0s infinite;
+  transition: opacity 0.5s;
 }
 svg:hover {
-	opacity: 0;
+  opacity: 0;
 }
 #base path {
-	fill: transparent;
-	stroke: transparent;
+  fill: transparent;
+  stroke: transparent;
 }
-#crown, #crown_1 {
-	animation: crownBlink 1.5s ease-in 0s infinite alternate;
+#crown,
+#crown_1 {
+  animation: crownBlink 1.5s ease-in 0s infinite alternate;
 }
-.sign{
-	fill: #FFFFFF;
+.sign {
+  fill: #ffffff;
 }
 .ornaments {
-	fill: #ffe344;
+  fill: #ffe344;
 }
 .clothing {
-	fill: transparent;
+  fill: transparent;
 }
 .clothingAlt {
-	fill: transparent;
+  fill: transparent;
 }
 .sword {
-	fill: #ffffff;
-	filter: blur(2px);
-	animation: swordBlink 1.5s ease-in 0s infinite alternate;
+  fill: #ffffff;
+  filter: blur(2px);
+  animation: swordBlink 1.5s ease-in 0s infinite alternate;
 }
 @keyframes cardWiggle {
-  0%, 100% {
-		transform: rotate(-3deg);
-	}
+  0%,
+  100% {
+    transform: rotate(-3deg);
+  }
   50% {
-		transform: rotate(3deg);
-	}
+    transform: rotate(3deg);
+  }
 }
 @keyframes swordBlink {
   from {
@@ -1130,20 +1125,20 @@ svg:hover {
 @keyframes crownBlink {
   from {
     fill: #ffe344;
-		filter: blur(0px);
+    filter: blur(0px);
   }
 
   to {
     fill: #fae77b;
-		filter: blur(2px);
+    filter: blur(2px);
   }
 }
 .ring {
-	fill: #ffffff;
+  fill: #ffffff;
 }
 @keyframes ringFade {
   from {
-		fill: #ffe344;
+    fill: #ffe344;
   }
 
   to {
@@ -1151,96 +1146,96 @@ svg:hover {
   }
 }
 #r1 {
-	animation: ringFade 2s ease-out 0s infinite alternate;
+  animation: ringFade 2s ease-out 0s infinite alternate;
 }
 #r2 {
-	animation: ringFade 2s ease-out 0s infinite alternate;
-	animation-delay: 1s;
+  animation: ringFade 2s ease-out 0s infinite alternate;
+  animation-delay: 1s;
 }
 #r3 {
-	animation: ringFade 2s ease-out 0s infinite alternate;
+  animation: ringFade 2s ease-out 0s infinite alternate;
 }
 #r4 {
-	animation: ringFade 2s ease-out 0s infinite alternate;
+  animation: ringFade 2s ease-out 0s infinite alternate;
 }
 #r5 {
-	animation: ringFade 2s ease-out 0s infinite alternate;
-	animation-delay: 1s;
+  animation: ringFade 2s ease-out 0s infinite alternate;
+  animation-delay: 1s;
 }
 #r6 {
-	animation: ringFade 2s ease-out 0s infinite alternate;
+  animation: ringFade 2s ease-out 0s infinite alternate;
 }
 #r7 {
-	animation: ringFade 2s ease-out 0s infinite alternate;
-	animation-delay: 1.5s;
+  animation: ringFade 2s ease-out 0s infinite alternate;
+  animation-delay: 1.5s;
 }
 #r8 {
-	animation: ringFade 2s ease-out 0s infinite alternate;
+  animation: ringFade 2s ease-out 0s infinite alternate;
 }
 #r9 {
-	animation: ringFade 2s ease-out 0s infinite alternate;
+  animation: ringFade 2s ease-out 0s infinite alternate;
 }
 #r10 {
-	animation: ringFade 2s ease-out 0s infinite alternate;
-	animation-delay: 1s;
+  animation: ringFade 2s ease-out 0s infinite alternate;
+  animation-delay: 1s;
 }
 #r11 {
-	animation: ringFade 2s ease-out 0s infinite alternate;
-	animation-delay: 1s;
+  animation: ringFade 2s ease-out 0s infinite alternate;
+  animation-delay: 1s;
 }
 #r12 {
-	animation: ringFade 2s ease-out 0s infinite alternate;
+  animation: ringFade 2s ease-out 0s infinite alternate;
 }
 #r13 {
-	animation: ringFade 2s ease-out 0s infinite alternate;
+  animation: ringFade 2s ease-out 0s infinite alternate;
 }
 #r14 {
-	animation: ringFade 2s ease-out 0s infinite alternate;
-	animation-delay: 1.5s;
+  animation: ringFade 2s ease-out 0s infinite alternate;
+  animation-delay: 1.5s;
 }
 #r15 {
-	animation: ringFade 2s ease-out 0s infinite alternate;
+  animation: ringFade 2s ease-out 0s infinite alternate;
 }
 #r16 {
-	animation: ringFade 2s ease-out 0s infinite alternate;
-	animation-delay: 1.3s;
+  animation: ringFade 2s ease-out 0s infinite alternate;
+  animation-delay: 1.3s;
 }
 #r17 {
-	animation: ringFade 2s ease-out 0s infinite alternate;
+  animation: ringFade 2s ease-out 0s infinite alternate;
 }
 #r18 {
-	animation: ringFade 2s ease-out 0s infinite alternate;
+  animation: ringFade 2s ease-out 0s infinite alternate;
 }
 #r19 {
-	animation: ringFade 2s ease-out 0s infinite alternate;
-	animation-delay: 1.4s;
+  animation: ringFade 2s ease-out 0s infinite alternate;
+  animation-delay: 1.4s;
 }
 #r20 {
-	animation: ringFade 2s ease-out 0s infinite alternate;
+  animation: ringFade 2s ease-out 0s infinite alternate;
 }
 #r21 {
-	animation: ringFade 2s ease-out 0s infinite alternate;
-	animation-delay: 1.5s;
+  animation: ringFade 2s ease-out 0s infinite alternate;
+  animation-delay: 1.5s;
 }
 #r22 {
-	animation: ringFade 2s ease-out 0s infinite alternate;
-	animation-delay: 1.5s;
+  animation: ringFade 2s ease-out 0s infinite alternate;
+  animation-delay: 1.5s;
 }
 #r23 {
-	animation: ringFade 2s ease-out 0s infinite alternate;
+  animation: ringFade 2s ease-out 0s infinite alternate;
 }
 #r24 {
-	animation: ringFade 2s ease-out 0s infinite alternate;
+  animation: ringFade 2s ease-out 0s infinite alternate;
 }
 #r25 {
-	animation: ringFade 2s ease-out 0s infinite alternate;
-	animation-delay: 2s;
+  animation: ringFade 2s ease-out 0s infinite alternate;
+  animation-delay: 2s;
 }
 #r26 {
-	animation: ringFade 2s ease-out 0s infinite alternate;
+  animation: ringFade 2s ease-out 0s infinite alternate;
 }
 #r27 {
-	animation: ringFade 2s ease-out 0s infinite alternate;
-	animation-delay: 1.4s;
+  animation: ringFade 2s ease-out 0s infinite alternate;
+  animation-delay: 1.4s;
 }
 </style>

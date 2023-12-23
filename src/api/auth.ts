@@ -18,7 +18,7 @@ interface AuthState {
 const state = reactive<AuthState>({
   authenticating: false,
   user: undefined,
-  error: undefined,
+  error: undefined
 })
 
 // Token already set on sysetm
@@ -30,11 +30,8 @@ if (token) {
   get({}, { headers: { Authorization: `Bearer ${token}` } })
 
   watch([loading], () => {
-    if (error.value)
-      window.localStorage.removeItem(TOKEN_KEY)
-
-    else if (data.value)
-      state.user = data.value
+    if (error.value) window.localStorage.removeItem(TOKEN_KEY)
+    else if (data.value) state.user = data.value
 
     state.authenticating = false
   })
@@ -42,8 +39,7 @@ if (token) {
 
 export const useAuth = () => {
   const setUser = (payload: User, remember: boolean): void => {
-    if (remember)
-      window.localStorage.setItem(TOKEN_KEY, payload[API_TOKEN])
+    if (remember) window.localStorage.setItem(TOKEN_KEY, payload[API_TOKEN])
 
     state.user = payload
     state.error = undefined
@@ -51,12 +47,12 @@ export const useAuth = () => {
 
   const logout = (): Promise<void> => {
     window.localStorage.removeItem(TOKEN_KEY)
-    return Promise.resolve(state.user = undefined)
+    return Promise.resolve((state.user = undefined))
   }
 
   return {
     setUser,
     logout,
-    ...toRefs(state),
+    ...toRefs(state)
   }
 }

@@ -7,7 +7,7 @@ export default defineComponent({
     inBoard: { type: Boolean, default: false },
     tiny: { type: Boolean, default: false },
     assigned: { type: Boolean, default: true },
-    highlight: { type: Boolean, default: false },
+    highlight: { type: Boolean, default: false }
   },
   setup(props, { emit }) {
     const displayClasses = computed(() => {
@@ -16,7 +16,7 @@ export default defineComponent({
         'text-highlight': props.highlight,
         'text-3xl': props.inBoard && !props.tiny,
         'text-2xl': !props.inBoard && !props.tiny,
-        'text-lg': props.tiny,
+        'text-lg': props.tiny
       }
     })
     const getPlayerColor = (place: number) => {
@@ -25,9 +25,8 @@ export default defineComponent({
       // return place % 2 ? '#9D174D' : '#1E40AF'
     }
     return { getPlayerColor, displayClasses }
-  },
+  }
 })
-
 </script>
 <template>
   <svg
@@ -35,7 +34,7 @@ export default defineComponent({
     class="w-full"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 68 64"
-    :class="!inBoard ? 'mb-2' : (tiny ? 'h-8 w-8' : '')"
+    :class="!inBoard ? 'mb-2' : tiny ? 'h-8 w-8' : ''"
   >
     <ellipse cx="34" cy="32" rx="32.5" ry="30.5" :fill="getPlayerColor(0)" />
     <path

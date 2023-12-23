@@ -1,4 +1,3 @@
-
 // const sideCards = ref(null)
 // const { sideCardsWidth, sideCardsHeight } = useSizeObserver(sideCards)
 

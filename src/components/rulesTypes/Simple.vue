@@ -9,8 +9,8 @@ export default defineComponent({
     desc: { type: String, required: true },
     pointCards: { type: Array as PropType<string[]>, required: true },
     pointValues: { type: Array as PropType<PointValue[]>, required: true },
-    special: { type: Boolean, default: false },
-  },
+    special: { type: Boolean, default: false }
+  }
 })
 </script>
 <template>
@@ -49,7 +49,8 @@ export default defineComponent({
             <span class="text-3xl mr-3">{{ pv.n }}</span>
             <span
               class="bg-white text-dark rounded-full flex justify-center items-center w-9 h-9"
-            >{{ pv.v }}</span>
+              >{{ pv.v }}</span
+            >
           </li>
         </ul>
       </div>

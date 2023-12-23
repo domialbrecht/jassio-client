@@ -7,10 +7,11 @@ import { IPlayer, IHostSetting } from '~/types'
 
 export default defineComponent({
   components: {
-    Entry, Waiting,
+    Entry,
+    Waiting
   },
   props: {
-    jkey: { type: String, default: '' },
+    jkey: { type: String, default: '' }
   },
   emits: ['gstart'],
   setup(props, { emit }) {
@@ -21,11 +22,13 @@ export default defineComponent({
     const players = ref(p)
     const hostSettings = ref<IHostSetting>({
       winAmount: 200,
-      enableWise: true,
+      enableWise: true
     })
     const socket: Socket = inject('socket')!
     const setupComplete = ref(false)
-    onBeforeMount(() => { if (props.jkey) joinKey.value = props.jkey })
+    onBeforeMount(() => {
+      if (props.jkey) joinKey.value = props.jkey
+    })
     // onMounted(() => { mounted = true })
     // onBeforeUnmount(() => { mounted = false })
     const serverConnect = (username: string, host: boolean, key: string) => {
@@ -45,15 +48,17 @@ export default defineComponent({
       }
     }
     const onStart = () => {
-      if (clientIsHost.value)
-        socket.emit('startGame')
+      if (clientIsHost.value) socket.emit('startGame')
     }
     socket.on('started', () => {
       emit('gstart', players.value)
     })
     socket.on('hosted', (key: string) => {
       joinKey.value = `${window.location.origin}/game?key=${key}`
-      socket.emit('settingChanged', { winAmount: hostSettings.value.winAmount, enableWise: hostSettings.value.enableWise })
+      socket.emit('settingChanged', {
+        winAmount: hostSettings.value.winAmount,
+        enableWise: hostSettings.value.enableWise
+      })
     })
     socket.on('players', (sp) => {
       const newPlayers = sp.map((p: { id: any; name: any; isHost: any; place: any }) => {
@@ -62,7 +67,7 @@ export default defineComponent({
           isHost: p.isHost,
           id: p.id,
           name: p.name,
-          place: p.place,
+          place: p.place
         }
       })
       players.value = newPlayers
@@ -85,9 +90,17 @@ export default defineComponent({
       }
     })
     return {
-      joinKey, nameInput, players, setupComplete, onHost, onJoin, clientIsHost, hostSettings, onStart,
+      joinKey,
+      nameInput,
+      players,
+      setupComplete,
+      onHost,
+      onJoin,
+      clientIsHost,
+      hostSettings,
+      onStart
     }
-  },
+  }
 })
 </script>
 
@@ -105,9 +118,7 @@ export default defineComponent({
     <div class="absolute animate-wiggle text-deep right-2 2xl:right-8 text-7xl bottom-20">
       <span>♣️</span>
     </div>
-    <div
-      class="container bg-blue-900 text-white h-4/5 mx-auto rounded-[40px]"
-    >
+    <div class="container bg-blue-900 text-white h-4/5 mx-auto rounded-[40px]">
       <Entry v-if="!setupComplete" :jkey="joinKey" @host="onHost" @join="onJoin" />
       <Waiting
         v-else

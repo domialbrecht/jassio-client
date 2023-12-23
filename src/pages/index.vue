@@ -13,33 +13,31 @@ import NumberSpinner from '~/components/helpers/NumberSpinner.vue'
 const cardRotate = ref(10)
 const getRotateStyle = (i: number): any => {
   return {
-    transform: `translate(0%, ${28 - cardRotate.value * i}%) rotate(-${cardRotate.value * i}deg)`,
+    transform: `translate(0%, ${28 - cardRotate.value * i}%) rotate(-${cardRotate.value * i}deg)`
   }
 }
 const cards = computed(() => {
   return [
     {
       component: NumberCard,
-      styles: getRotateStyle(0),
+      styles: getRotateStyle(0)
     },
     {
       component: JackCard,
-      styles: getRotateStyle(1),
+      styles: getRotateStyle(1)
     },
     {
       component: KingCard,
-      styles: getRotateStyle(2),
-    },
+      styles: getRotateStyle(2)
+    }
   ]
 })
 function handleSroll() {
   const rTamount = 10
   const scrollPixelDuration = 200
   const dR = rTamount / scrollPixelDuration
-  if (window.scrollY < scrollPixelDuration)
-    cardRotate.value = 10 - dR * window.scrollY
-  else
-    cardRotate.value = 10 - dR * 200
+  if (window.scrollY < scrollPixelDuration) cardRotate.value = 10 - dR * window.scrollY
+  else cardRotate.value = 10 - dR * 200
 }
 onMounted(() => {
   window.addEventListener('scroll', handleSroll)
@@ -147,6 +145,6 @@ onUnmounted(() => {
 
 .desc:not(:last-child)::after {
   padding-left: 20px;
-  content: "|";
+  content: '|';
 }
 </style>

@@ -14,9 +14,11 @@ export default defineComponent({
     }
     const types = WisTypes
     return {
-      selectType, submitWis, types,
+      selectType,
+      submitWis,
+      types
     }
-  },
+  }
 })
 </script>
 <template>
@@ -25,7 +27,11 @@ export default defineComponent({
   >
     <div class="container mx-auto z-10 text-white">
       <div class="grid grid-cols-3 gap-4">
-        <div v-for="type in types" :key="type.name" class="h-60 w-52 flex flex-col items-center p-4">
+        <div
+          v-for="type in types"
+          :key="type.name"
+          class="h-60 w-52 flex flex-col items-center p-4"
+        >
           <span class="text-2xl uppercase">{{ type.name }}</span>
           <button
             class="flex items-center justify-center rounded-2xl w-full h-5/6 text-dark"

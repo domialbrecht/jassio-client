@@ -5,7 +5,7 @@ import { RuleTypes } from '~/defs'
 export default defineComponent({
   components: { SchiebeIcon },
   props: {
-    hideswitch: { type: Boolean, default: false },
+    hideswitch: { type: Boolean, default: false }
   },
   emits: ['selected'],
   setup(props, { emit }) {
@@ -14,9 +14,10 @@ export default defineComponent({
     }
     const types = RuleTypes
     return {
-      selectType, types,
+      selectType,
+      types
     }
-  },
+  }
 })
 </script>
 <template>

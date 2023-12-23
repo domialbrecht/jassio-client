@@ -21,23 +21,19 @@ function toggleAnimationClasses(entries: IntersectionObserverEntry[]) {
 
 function animationOptions(element: Element) {
   const marginBottom = Number(
-    element.getAttribute('data-animate-margin-bottom') || DEFAULTMARGINBOTTOM,
+    element.getAttribute('data-animate-margin-bottom') || DEFAULTMARGINBOTTOM
   )
-  const marginTop = Number(
-    element.getAttribute('data-animate-margin-top') || DEFAULTMARGINTOP,
-  )
-  const threshold = Number(
-    element.getAttribute('data-animate-threshold') || DEFAULTTHRESHOLD,
-  )
+  const marginTop = Number(element.getAttribute('data-animate-margin-top') || DEFAULTMARGINTOP)
+  const threshold = Number(element.getAttribute('data-animate-threshold') || DEFAULTTHRESHOLD)
 
   return {
     marginBottom,
     marginTop,
     threshold,
     isDefault:
-      marginBottom === DEFAULTMARGINBOTTOM
-      && marginTop === DEFAULTMARGINTOP
-      && threshold === DEFAULTTHRESHOLD,
+      marginBottom === DEFAULTMARGINBOTTOM &&
+      marginTop === DEFAULTMARGINTOP &&
+      threshold === DEFAULTTHRESHOLD
   }
 }
 
@@ -46,13 +42,12 @@ export function setupScrollAnimations() {
     const stagger = parseInt(element.getAttribute('data-anmiate-in-stagger')!)
     const items = element.querySelectorAll<HTMLElement>('.js-animate-in-item')
 
-    for (let i = 0; i < items.length; i++)
-      items[i].style.transitionDelay = `${i * stagger}ms`
+    for (let i = 0; i < items.length; i++) items[i].style.transitionDelay = `${i * stagger}ms`
   })
 
   const defaultObserver = new IntersectionObserver(toggleAnimationClasses, {
     rootMargin: `-${DEFAULTMARGINTOP}% 0% -${DEFAULTMARGINBOTTOM}% 0%`,
-    threshold: DEFAULTTHRESHOLD,
+    threshold: DEFAULTTHRESHOLD
   })
   observe('.js-animate-in, .js-animate-in-trigger', (element) => {
     const options = animationOptions(element)
@@ -60,7 +55,7 @@ export function setupScrollAnimations() {
 
     const customObserver = new IntersectionObserver(toggleAnimationClasses, {
       rootMargin: `-${options.marginTop}% 0% -${options.marginBottom}% 0%`,
-      threshold: options.threshold,
+      threshold: options.threshold
     })
     customObserver.observe(element)
   })

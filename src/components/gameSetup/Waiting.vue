@@ -7,13 +7,14 @@ import { IPlayer, IHostSetting } from '~/types'
 import { PlayerPlaceholder } from '~/defs'
 export default defineComponent({
   components: {
-    PlayerCard, IconSwap,
+    PlayerCard,
+    IconSwap
   },
   props: {
     jkey: { type: String, default: '' },
     isHost: { type: Boolean, default: false },
     players: { type: Array as PropType<Array<IPlayer>>, required: true },
-    hostSettings: { type: Object as PropType<IHostSetting>, required: true },
+    hostSettings: { type: Object as PropType<IHostSetting>, required: true }
   },
   emits: ['start'],
   setup(props, { emit }) {
@@ -46,11 +47,16 @@ export default defineComponent({
       enableWise.value = settings.enableWise
     })
     return {
-      copyKey, winAmount, enableWise, settingChanged, onStart, switchPlayer, playerToSwitch,
+      copyKey,
+      winAmount,
+      enableWise,
+      settingChanged,
+      onStart,
+      switchPlayer,
+      playerToSwitch
     }
-  },
+  }
 })
-
 </script>
 <template>
   <div class="w-3/4 mx-auto py-16 h-full flex flex-col justify-between items-center">
@@ -93,13 +99,17 @@ export default defineComponent({
         <button
           class="px-8 py-3 text-2xl text-white tracking-widest bg-highlight hover:bg-contrast uppercase border-0 rounded-4xl focus:ring-0 focus:outline-none"
           @click="copyKey"
-        >Iladig kopiere</button>
+        >
+          Iladig kopiere
+        </button>
       </div>
       <button
         v-if="players.length === 4"
         class="cursor-pointer heroButton px-8 py-3 text-2xl text-white relative tracking-widest bg-highlight hover:bg-contrast uppercase border-0 rounded-4xl focus:outline-none"
         @click="onStart"
-      >Starte</button>
+      >
+        Starte
+      </button>
     </div>
     <div v-else>
       <h3 class="text-3xl">Der Host wrid z Spiu starte</h3>

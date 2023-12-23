@@ -4,9 +4,7 @@
     <div class="flex items-center h-full relative">
       <div class="container mt-10 mx-auto">
         <div class="mb-2">
-          <h2 class="text-2xl mb-4">
-            Profile of {{ userdata?.email }}
-          </h2>
+          <h2 class="text-2xl mb-4">Profile of {{ userdata?.email }}</h2>
         </div>
       </div>
     </div>
@@ -23,5 +21,4 @@ const { user } = useAuth()
 const userdata = computed(() => {
   return user?.value
 })
-
 </script>

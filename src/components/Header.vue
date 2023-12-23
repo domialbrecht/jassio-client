@@ -7,8 +7,8 @@ const props = defineProps({
   showBackground: {
     type: Boolean,
     required: false,
-    default: false,
-  },
+    default: false
+  }
 })
 const { logout, user } = useAuth()
 const logoutNav = () => {
@@ -22,27 +22,20 @@ const logoutNav = () => {
     :class="props.showBackground ? 'bg-gray-900 gradient-main' : ''"
   >
     <div>
-      <router-link to="/" class="hover:text-gray-300">
-        Home | Alpha 0.0.2
-      </router-link>
+      <router-link to="/" class="hover:text-gray-300"> Home | Alpha 0.0.2 </router-link>
     </div>
     <div class="flex items-center">
       <router-link v-if="user" to="/profile" class="mr-4 hover:text-gray-300">
         Profile
       </router-link>
-      <router-link v-if="!user" to="/login" class="mr-4 hover:text-gray-300">
-        Login
-      </router-link>
-      <span
-        v-else
-        class="mr-4 hover:text-gray-300 cursor-pointer"
-        @click="logoutNav"
-      >Logout</span>
+      <router-link v-if="!user" to="/login" class="mr-4 hover:text-gray-300"> Login </router-link>
+      <span v-else class="mr-4 hover:text-gray-300 cursor-pointer" @click="logoutNav">Logout</span>
       <a
         href="https://trello.com/b/PM3YjevD/jassio"
         target="_blank"
         class="mr-8 hover:text-gray-300"
-      >Roadmap</a>
+        >Roadmap</a
+      >
       <a href="https://github.com/Sirfilior/jassio-client" target="_blank">
         <svg
           class="inline h-6 icon"

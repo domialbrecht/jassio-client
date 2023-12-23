@@ -2,14 +2,18 @@
   <Header :show-background="true" />
   <main>
     <div class="flex flex-col justify-center items-center h-full relative mt-20 py-20">
-      <h1 class="text-blue-900 text-5xl">
-        Login / Registriere
-      </h1>
+      <h1 class="text-blue-900 text-5xl">Login / Registriere</h1>
       <div class="px-10 pt-8 pb-8">
-        <div v-if="errorMessage" class="mb-3 bg-red-400 rounded-2xl py-2 px-2 flex justify-center text-base leading-6 font-medium text-white">
+        <div
+          v-if="errorMessage"
+          class="mb-3 bg-red-400 rounded-2xl py-2 px-2 flex justify-center text-base leading-6 font-medium text-white"
+        >
           <span>{{ errorMessage }}</span>
         </div>
-        <div v-if="hasLoading" class="bg-green-400 rounded-2xl py-2 px-2 flex justify-center text-base leading-6 font-medium text-white">
+        <div
+          v-if="hasLoading"
+          class="bg-green-400 rounded-2xl py-2 px-2 flex justify-center text-base leading-6 font-medium text-white"
+        >
           <span class="mr-2">Loading</span>
           <LoadingSpinner />
         </div>
@@ -27,7 +31,8 @@
             <label
               for="email"
               class="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all sibling-placeholder-shown:text-base sibling-placeholder-shown:text-gray-400 sibling-placeholder-shown:top-2 sibling-focus:-top-3.5 sibling-focus:text-gray-600 peer-focus:text-sm"
-            >Email address</label>
+              >Email address</label
+            >
           </div>
           <div class="mt-10 relative">
             <input
@@ -42,7 +47,8 @@
             <label
               for="password"
               class="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
-            >Password</label>
+              >Password</label
+            >
           </div>
           <button
             type="submit"
@@ -81,13 +87,13 @@ const {
   loading: loginLoading,
   data: loginData,
   post: loginPost,
-  errorMessage: loginErrorMessage,
+  errorMessage: loginErrorMessage
 } = useApi('auth/login')
 const {
   loading: registerLoading,
   data: registerData,
   post: registerPost,
-  errorMessage: registerErrorMessage,
+  errorMessage: registerErrorMessage
 } = useApi('auth/signup')
 const { setUser } = useAuth()
 
@@ -115,5 +121,4 @@ const submit = () => {
     router.push({ name: 'profile' })
   })
 }
-
 </script>

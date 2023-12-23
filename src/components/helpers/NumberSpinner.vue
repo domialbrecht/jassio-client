@@ -3,16 +3,16 @@ import { defineProps } from 'vue'
 const props = defineProps({
   loading: {
     type: Boolean,
-    required: true,
+    required: true
   },
   value: {
     type: Number,
-    required: false,
+    required: false
   },
   label: {
     type: String,
-    required: false,
-  },
+    required: false
+  }
 })
 </script>
 <template>

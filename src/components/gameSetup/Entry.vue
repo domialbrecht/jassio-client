@@ -5,7 +5,7 @@ import { PlayerPlaceholder } from '~/defs'
 export default defineComponent({
   components: { PlayerCard },
   props: {
-    jkey: { type: String, default: '' },
+    jkey: { type: String, default: '' }
   },
   emits: ['host', 'join'],
   setup(props, { emit }) {
@@ -18,9 +18,8 @@ export default defineComponent({
       emit('join', name.value)
     }
     return { name, onHost, onJoin, PlayerPlaceholder }
-  },
+  }
 })
-
 </script>
 <template>
   <div class="flex items-center justify-center flex-col py-16 h-full">
@@ -46,7 +45,9 @@ export default defineComponent({
             v-if="!jkey"
             class="px-8 py-3 text-2xl text-white tracking-widest bg-highlight hover:bg-contrast uppercase rounded-4xl focus:outline-none"
             @click="onHost"
-          >Host</button>
+          >
+            Host
+          </button>
         </div>
         <div class="flex">
           <input
@@ -58,7 +59,9 @@ export default defineComponent({
           <button
             class="px-8 py-3 text-2xl text-white tracking-widest bg-highlight hover:bg-contrast uppercase rounded-4xl focus:outline-none"
             @click="onJoin"
-          >Join</button>
+          >
+            Join
+          </button>
         </div>
       </div>
     </div>

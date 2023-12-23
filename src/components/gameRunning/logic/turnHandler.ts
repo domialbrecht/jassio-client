@@ -21,6 +21,6 @@ export default function useTurnFunctions(socket: Socket) {
     selectedTypeName,
     showPicker,
     isSwitch,
-    onSelectType,
+    onSelectType
   }
 }

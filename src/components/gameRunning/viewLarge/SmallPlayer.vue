@@ -8,20 +8,20 @@ const props = defineProps({
   final: {
     type: Boolean,
     required: false,
-    default: false,
+    default: false
   },
   player: {
     type: Object as PropType<IPlayer>,
-    required: true,
+    required: true
   },
   wisvalues: {
     type: Array as PropType<Array<number>>,
-    required: true,
+    required: true
   },
   isTurnOfPlayerAtPlace: {
     type: Number,
-    required: true,
-  },
+    required: true
+  }
 })
 </script>
 <template>
@@ -31,7 +31,11 @@ const props = defineProps({
     :name="props.player.name"
     :highlight="props.isTurnOfPlayerAtPlace === player.place"
   />
-  <div v-if="props.wisvalues.length > 0" class="flex flex-col" :class="props.final ? 'text-green-300' : 'text-highlight'">
+  <div
+    v-if="props.wisvalues.length > 0"
+    class="flex flex-col"
+    :class="props.final ? 'text-green-300' : 'text-highlight'"
+  >
     <span v-for="v in props.wisvalues" :key="v" class="text-lg">{{ v }}</span>
   </div>
 </template>

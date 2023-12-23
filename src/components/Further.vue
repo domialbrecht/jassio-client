@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import IconGithub from '~icons/mdi/github'
 import IconPhone from '~icons/mdi/phone'
-
 </script>
 <template>
   <div class="relative mt-48">
@@ -12,12 +11,14 @@ import IconPhone from '~icons/mdi/phone'
           class="flex justify-center items-center px-8 py-3 text-2xl text-white tracking-widest bg-blue-900 hover:bg-blue-700 uppercase"
           href="https://www.swisslos.ch/de/jass/informationen/jass-regeln/jass-grundlagen.html"
           target="_blank"
-        >Jassregle</a>
+          >Jassregle</a
+        >
         <a
           class="flex justify-center items-center px-8 py-3 text-2xl text-white tracking-widest bg-blue-900 hover:bg-blue-700 uppercase"
           href="https://www.jassverzeichnis.ch/index.php/blog/81-ueberblick-weisregeln-beim-jassen"
           target="_blank"
-        >Wie Wisä</a>
+          >Wie Wisä</a
+        >
         <a
           class="flex justify-center items-center px-8 py-3 text-2xl flex justify-center text-white tracking-widest bg-blue-900 hover:bg-blue-700 uppercase"
           href="discrod"
