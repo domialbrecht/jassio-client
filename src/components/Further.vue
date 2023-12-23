@@ -36,7 +36,7 @@ import IconPhone from '~icons/mdi/phone'
           <IconPhone />
         </a>
       </div>
-      <h2 class="mt-30 text-6xl uppercase text-blue-900 mb-5">Ready? Denn los!</h2>
+      <h2 class="mt-28 text-6xl uppercase text-blue-900 mb-5">Ready? Denn los!</h2>
       <div class="flex justify-center">
         <router-link
           class="px-8 py-3 text-2xl text-white relative tracking-widest bg-highlight uppercase heroButton"

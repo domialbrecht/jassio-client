@@ -96,7 +96,7 @@ onUnmounted(() => {
         <svg
           id="Layer_1"
           data-name="Layer 1"
-          class="absolute w-full -bottom-1px"
+          class="absolute w-full -bottom-[1px]"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 1365 86.26"
         >

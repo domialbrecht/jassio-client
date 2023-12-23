@@ -41,7 +41,7 @@ const types = RuleTypes
           <p class="text-xl">
             Zum spile vomene Schieber, so heisst die Jassart wo mir hie spile, bruchsch aus ersts
             mau vier Lüt. Gjasset seuber wird ner i zwöier Teams. D Teammitglider sitze übers
-            Chrütz. Z Ziel vom Schieber isch vorem andere Team 100 Pünkt z erreiche.
+            Chrütz. Z Ziel vom Schieber isch vorem andere Team 1000 Pünkt z erreiche.
           </p>
         </div>
       </div>

@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent, PropType, computed } from 'vue'
-import { IPlayer } from '~/types'
+import type { IPlayer } from '~/types'
 export default defineComponent({
   props: {
     name: { type: String, required: true },
