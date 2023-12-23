@@ -164,7 +164,7 @@ export default defineComponent({
 })
 </script>
 <template>
-  <div v-if="boardPlayers.length === 4" class="grid h-full board bg-blue-gray-900 overflow-hidden">
+  <div v-if="boardPlayers.length === 4" class="grid h-full board bg-gray-900 overflow-hidden">
     <div class="bg-darker border-b-2">
       <div class="transform -rotate-180 flex flex-col h-full p-3 items-center">
         <PlayerCard
@@ -233,14 +233,14 @@ export default defineComponent({
         </div>
       </div>
       <div class="field-players players-blue">
-        <div class="field-player field-pb1 bg-blue-gray-600">
+        <div class="field-player field-pb1 bg-gray-600">
           <svg v-if="getTopPlayedCard" class="h-full" viewBox="0 0 169 245">
             <use :href="`/images/svg-cards.svg#${getTopPlayedCard}`" />
           </svg>
         </div>
         <draggable
           v-model="playerPlayedCard"
-          class="field-player field-pb2 playable bg-blue-gray-600"
+          class="field-player field-pb2 playable bg-gray-600"
           group="hand"
           tag="div"
           ghost-class="ghost-card"
@@ -255,12 +255,12 @@ export default defineComponent({
         </draggable>
       </div>
       <div class="field-players players-red">
-        <div class="field-player field-pr1 bg-blue-gray-600">
+        <div class="field-player field-pr1 bg-gray-600">
           <svg v-if="getLeftPlayedCard" class="h-full" viewBox="0 0 169 245">
             <use :href="`/images/svg-cards.svg#${getLeftPlayedCard}`" />
           </svg>
         </div>
-        <div class="field-player field-pr2 bg-blue-gray-600">
+        <div class="field-player field-pr2 bg-gray-600">
           <svg v-if="getRightPlayedCard" class="h-full" viewBox="0 0 169 245">
             <use :href="`/images/svg-cards.svg#${getRightPlayedCard}`" />
           </svg>
